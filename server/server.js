@@ -3,11 +3,11 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 //require routes
-const routes = require('./routes')
+const routes = require('../routes')
 
 const { engine } = require('express-handlebars')
 
-const client = require('./config/client')
+const client = require('../config/client')
 
 app.engine('hbs', engine({
   extname: 'hbs'
@@ -16,7 +16,7 @@ app.set('view engine', 'hbs')
 
 //midlewares
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 app.use(routes)
 
