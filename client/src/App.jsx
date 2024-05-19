@@ -1,11 +1,14 @@
 import { useState } from "react";
 import TriviaComponent from "./Main_components/Trivia_Test";
-import "./index.css";
+// import "./index.scss";
+import "./App.css";
 
 function App() {
   return (
     <>
-      <TriviaComponent />
+      <div>
+        <TriviaComponent />
+      </div>
     </>
   );
 }
