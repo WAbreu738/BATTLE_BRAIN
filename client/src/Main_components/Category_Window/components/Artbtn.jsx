@@ -1,8 +1,18 @@
+import { NavLink } from "react-router-dom";
+
 const Artbtn = () => {
   return (
-    <button className="bg-yellow-700 text-white py-4 px-8 rounded-lg text-lg shadow-lg hover:bg-yellow-900 flex items-center justify-center">
+    <NavLink
+      to={{
+        pathname: "/battle",
+        state: {
+          category: "art",
+        },
+      }}
+      className="bg-yellow-700 text-white py-4 px-8 rounded-lg text-lg shadow-lg hover:bg-yellow-900 flex items-center justify-center"
+    >
       ART
-    </button>
+    </NavLink>
   );
 };
 
