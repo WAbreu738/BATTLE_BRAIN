@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeWindow />} />
           <Route path="/lobby" element={<LobbyWindow />} />
-          <Route path="/catagory" element={<CategoryWindow />} />
+          <Route path="/category" element={<CategoryWindow />} />
           <Route path="/battle" element={<BattleMode />} />
         </Routes>
       </div>
