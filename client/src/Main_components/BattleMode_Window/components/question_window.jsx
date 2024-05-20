@@ -34,7 +34,7 @@ const Question = () => {
 
   return (
     <div>
-      <ul>
+      <div>
         {questions.map((question) => {
           const shuffledAnswers = shuffleAnswers(
             question.correctAnswer,
@@ -42,13 +42,16 @@ const Question = () => {
           );
           return (
             <li className="flex flex-col items-center mt-5" key={question.id}>
-              <p className="text-3xl">{question.category}</p>
-              <p>Difficulty: {question.difficulty}</p>
+              {/* <p className="text-3xl">{question.category}</p>
+              <p>Difficulty: {question.difficulty}</p> */}
               <h2 className="my-16 text-4xl">{question.question.text}</h2>
-              <div className="">
+              <div className="p-5">
                 <div className="grid grid-cols-2 gap-5">
                   {shuffledAnswers.map((answer, index) => (
-                    <div className="p-3 border rounded" key={index}>
+                    <div
+                      className="p-3 border rounded-md flex justify-center items-center text-slate-950 min-w-72 max-w-72 bg-gray-300 "
+                      key={index}
+                    >
                       {answer === question.correctAnswer ? (
                         <strong>{answer}</strong>
                       ) : (
@@ -62,7 +65,7 @@ const Question = () => {
             </li>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 };
