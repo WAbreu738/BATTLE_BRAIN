@@ -2,27 +2,19 @@ import React, { useEffect, useState } from "react";
 import Logo from "../Logo/Logo";
 import AvaterSelector from "./components/Avatar_Selector";
 import NameInput from "./components/Name_Input";
-import SingleBtn from "./components/Single_Btn";
-import BattleBtn from "./components/Battle_Btn";
+import GameBtn from "./components/Game_Btn";
 
 const HomeWindow = () => {
   return (
-    <main>
+    <main className="flex flex-col items-center justify-center h-screen p-4 bg-black">
       <div>
         <Logo />
       </div>
 
-      <section>
-        <div>
-          <AvaterSelector />
-        </div>
-
+      <section className="bg-purple-900 bg-opacity-80 shadow-lg rounded-lg p-10 max-w-lg w-full">
+        <AvaterSelector />
         <NameInput />
-
-        <div>
-          <SingleBtn />
-          <BattleBtn />
-        </div>
+        <GameBtn />
       </section>
     </main>
   );
