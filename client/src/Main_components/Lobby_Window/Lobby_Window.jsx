@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import RoomCode from "./components/Roomcode";
-import StartBtn from "./components/Start_btn";
-import PlayerOne from "./components/Player1";
-import PlayerTwo from "./components/Player2";
+import RoomCode from "./components/roomcode";
+import StartBtn from "./components/start_btn";
+import PlayerOne from "./components/player1";
+import PlayerTwo from "./components/player2";
 
 const LobbyWindow = () => {
   return (
