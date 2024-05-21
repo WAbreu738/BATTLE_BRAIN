@@ -4,6 +4,8 @@ import Round from "./components/round";
 import Question from "./components/question_window";
 import Multiplier from "./components/multiplier";
 
+import { useLocation } from "react-router-dom";
+
 const calculatePoints = (timeLeft) => {
   if (timeLeft >= 9) return 500;
   if (timeLeft >= 8) return 450;
@@ -25,8 +27,11 @@ const BattleMode = () => {
   const [countdown, setCountdown] = useState(3); // 3-second countdown state
   const [answerState, setAnswerState] = useState(null); // State to handle correct/incorrect answer
 
+  const location = useLocation();
+  const category = location.state.category;
+
   const fetchQuestions = async () => {
-    const url = "https://the-trivia-api.com/v2/questions?limit=1&categories=science";
+    const url = `https://the-trivia-api.com/v2/questions?limit=1&categories=${category}`;
     const headers = {
       "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
     };
@@ -70,7 +75,7 @@ const BattleMode = () => {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center h-screen p-4 bg-black">
+    <main className="flex flex-col items-center justify-center h-screen p-4 ">
       {countdown > 0 ? (
         <div className="text-6xl text-white">
           <h1>Game starting in {countdown}...</h1>
@@ -79,7 +84,11 @@ const BattleMode = () => {
         <div className="bg-purple-900 bg-opacity-80 shadow-lg rounded-lg p-10 max-w-4xl w-full">
           <div className="flex justify-between">
             <Round />
-            <Timer timeLeft={timeLeft} setTimeLeft={setTimeLeft} isAnswered={isAnswered} />
+            <Timer
+              timeLeft={timeLeft}
+              setTimeLeft={setTimeLeft}
+              isAnswered={isAnswered}
+            />
             <Multiplier />
           </div>
 

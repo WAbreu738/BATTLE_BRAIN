@@ -1,8 +1,14 @@
+import { NavLink } from "react-router-dom";
+
 const Geographybtn = () => {
   return (
-    <button className="bg-pink-700 text-white py-4 px-8 rounded-lg text-lg shadow-lg hover:bg-pink-900 flex items-center justify-center">
+    <NavLink
+      to="/battle"
+      state={{ category: "geography" }}
+      className="bg-pink-700 text-white py-4 px-8 rounded-lg text-lg shadow-lg hover:bg-pink-900 flex items-center justify-center"
+    >
       GEOGRAPHY
-    </button>
+    </NavLink>
   );
 };
 

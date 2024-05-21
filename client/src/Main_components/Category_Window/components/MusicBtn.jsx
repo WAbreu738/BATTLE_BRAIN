@@ -1,8 +1,14 @@
+import { NavLink } from "react-router-dom";
+
 const Musicbtn = () => {
   return (
-    <button className="bg-blue-700 text-white py-4 px-8 rounded-lg text-lg shadow-lg hover:bg-blue-900 flex items-center justify-center">
+    <NavLink
+      to="/battle"
+      state={{ category: "music" }}
+      className="bg-blue-700 text-white py-4 px-8 rounded-lg text-lg shadow-lg hover:bg-blue-900 flex items-center justify-center"
+    >
       MUSIC
-    </button>
+    </NavLink>
   );
 };
 
