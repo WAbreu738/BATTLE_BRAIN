@@ -9,7 +9,13 @@ const shuffleAnswers = (correctAnswer, incorrectAnswers) => {
   return answers;
 };
 
-const Question = ({ question, options, correctAnswer, handleAnswer, answerState }) => {
+const Question = ({
+  question,
+  options,
+  correctAnswer,
+  handleAnswer,
+  answerState,
+}) => {
   const [shuffledAnswers, setShuffledAnswers] = useState([]);
 
   useEffect(() => {
@@ -24,8 +30,10 @@ const Question = ({ question, options, correctAnswer, handleAnswer, answerState 
           {shuffledAnswers.map((answer, index) => (
             <button
               className={`p-3 border rounded-md flex justify-center items-center text-slate-950 min-w-72 max-w-72 
-                ${answerState && answer === correctAnswer ? 'bg-green-500' : ''} 
-                ${answerState && answer !== correctAnswer ? 'bg-red-500' : ''}`}
+                ${
+                  answerState && answer === correctAnswer ? "bg-green-500" : ""
+                } 
+                ${answerState && answer !== correctAnswer ? "bg-red-500" : ""}`}
               key={index}
               onClick={() => handleAnswer(answer)}
               disabled={!!answerState} // Disable buttons once an answer is selected
@@ -40,5 +48,3 @@ const Question = ({ question, options, correctAnswer, handleAnswer, answerState 
 };
 
 export default Question;
-
-

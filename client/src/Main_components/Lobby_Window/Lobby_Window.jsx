@@ -6,7 +6,7 @@ import PlayerTwo from "./components/player2";
 
 const LobbyWindow = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen p-4 bg-black">
+    <div className="flex flex-col items-center justify-center h-screen p-4">
       <div className="mb-8">
         <h1 className="text-5xl font-bold text-purple-500">BattleBrain</h1>
       </div>

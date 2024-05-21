@@ -6,7 +6,7 @@ import GameBtn from "./components/Game_Btn";
 
 const HomeWindow = () => {
   return (
-    <main className="flex flex-col items-center justify-center h-screen p-4 bg-black">
+    <main className="flex flex-col items-center justify-center h-screen p-4">
       <div>
         <Logo />
       </div>
