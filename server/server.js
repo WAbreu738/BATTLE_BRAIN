@@ -2,21 +2,24 @@ const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 3000
 
+
+//packages for db
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const routes = require('./routes')
+
+
 //require routes
-const routes = require('../routes')
 
-const { engine } = require('express-handlebars')
+const client = require('./config/client')
 
-const client = require('../config/client')
 
-app.engine('hbs', engine({
-  extname: 'hbs'
-}))
-app.set('view engine', 'hbs')
 
 //midlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors());
+app.use(bodyParser.json());
 
 app.use(routes)
 

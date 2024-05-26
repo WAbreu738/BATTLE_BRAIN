@@ -19,7 +19,7 @@ const calculatePoints = (timeLeft) => {
   return 50;
 };
 
-const BattleMode = () => {
+const SPPlay = () => {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
@@ -74,6 +74,8 @@ const BattleMode = () => {
     }, 2000);
   };
 
+  console.log(currentQuestion);
+
   return (
     <main className="flex flex-col items-center justify-center h-screen p-4 ">
       {countdown > 0 ? (
@@ -91,6 +93,9 @@ const BattleMode = () => {
             />
             <Multiplier />
           </div>
+
+          {/* Make sure API call is made before referencing the object */}
+          {currentQuestion && <p>{currentQuestion.difficulty}</p>}
 
           <div>
             {currentQuestion && (
@@ -111,4 +116,4 @@ const BattleMode = () => {
   );
 };
 
-export default BattleMode;
+export default SPPlay;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const AvaterSelector = () => {
+const AvatarSelector = () => {
   const [startIdx, setStartIdx] = useState(0);
 
   // Function to handle clicking on the left button
@@ -45,4 +45,4 @@ const AvaterSelector = () => {
   );
 };
 
-export default AvaterSelector;
+export default AvatarSelector;

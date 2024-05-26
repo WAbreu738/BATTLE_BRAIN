@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +14,6 @@
     "@babel/core": "^7.24.5"
   },
   "dependencies": {
-    "axios": "^1.6.8",
     "dotenv": "^16.4.5"
   }
 }
