@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../Logo/Logo";
-import AvaterSelector from "./components/Avatar_Selector";
-import NameInput from "./components/Name_Input";
+import AvatarSelector from "./components/Avatar_Selector";
 import GameBtn from "./components/Game_Btn";
+import LoginButton from "./components/Login_Button";
+import LoginModal from "./components/Login_Modal";
 
 const HomeWindow = () => {
   return (
@@ -12,8 +13,16 @@ const HomeWindow = () => {
       </div>
 
       <section className="bg-purple-900 bg-opacity-80 shadow-lg rounded-lg p-10 max-w-lg w-full">
-        <AvaterSelector />
-        <NameInput />
+        {/* USER INFO (avatar is placeholder atm) */}
+
+        <div className="flex justify-around mb-8">
+          <LoginModal />
+        </div>
+        <AvatarSelector />
+
+        {/* USER INFO END LINE */}
+
+        {/* if logged in, refresh the page and show the gamebtn */}
         <GameBtn />
       </section>
     </main>

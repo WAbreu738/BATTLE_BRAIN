@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 const Timer = ({ timeLeft, setTimeLeft, isAnswered }) => {
   useEffect(() => {
@@ -12,8 +12,8 @@ const Timer = ({ timeLeft, setTimeLeft, isAnswered }) => {
   }, [isAnswered, timeLeft, setTimeLeft]);
 
   return (
-    <div className="absolute top-6 left-2/4 z-20 text-4xl font-bold text-center p-3 w-40 border border-zinc-900 bg-gray-50 text-zinc-900 rounded-full">
-      {timeLeft > 0 ? timeLeft : "Time's up!"}
+    <div className="text-4xl font-bold text-center p-5 border rounded-full">
+      {timeLeft >= 0 ? timeLeft : "Time's up!"}
     </div>
   );
 };
