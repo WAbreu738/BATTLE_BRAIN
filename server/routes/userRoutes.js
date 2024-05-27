@@ -2,11 +2,11 @@ const user_router = require('express').Router()
 const { sign, verify } = require('jsonwebtoken');
 const User = require('../model/User')
 
-//Stream-Chat
-const StreamChat = require('stream-chat').StreamChat
-const api_key = process.env.API_KEY
-const api_secret = process.env.API_SECRET
-const serverClient = StreamChat.getInstance(api_key, api_secret)
+// //Stream-Chat
+// const StreamChat = require('stream-chat').StreamChat
+// const api_key = process.env.API_KEY
+// const api_secret = process.env.API_SECRET
+// const serverClient = StreamChat.getInstance(api_key, api_secret)
 
 function createToken(user) {
   return sign({ id: user._id }, process.env.JWT_SECRET)// Create a JWT token by signing the user's ID with the secret key

@@ -30,7 +30,8 @@ import Background from "./Main_components/Background";
 // export const useStore = () => useContext(Context)
 
 function App() {
-  const client = StreamChat.getInstance("vn99vucvfs62");
+  //StreamChat Stuff
+  // const client = StreamChat.getInstance("vn99vucvfs62");
   //const token = cookie.get("token");
 
   return (
