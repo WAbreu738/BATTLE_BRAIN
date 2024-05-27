@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-const Multiplier = () => {
+const Multiplier = ({ multiplier }) => {
   return (
     <div>
-      <h2 className="text-3xl font-bold text-center">1.5X</h2>
+      <h2 className="text-3xl font-bold text-center">Multiplier: {multiplier}X</h2>
     </div>
   );
 };
