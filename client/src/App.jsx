@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { StreamChat } from "stream-chat";
 // import { useState, useContext, createContext } from "react";
 import HomeWindow from "./Main_components/Home_Window";
 import BattleMode from "./Main_components/BattleMode_Window";
@@ -29,6 +30,9 @@ import Background from "./Main_components/Background";
 // export const useStore = () => useContext(Context)
 
 function App() {
+  const client = StreamChat.getInstance("vn99vucvfs62");
+  //const token = cookie.get("token");
+
   return (
     <>
       <Background />

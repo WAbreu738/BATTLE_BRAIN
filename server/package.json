@@ -21,6 +21,7 @@
     "express-handlebars": "^7.1.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.1",
-    "mongoose": "^8.4.0"
+    "mongoose": "^8.4.0",
+    "stream-chat": "^8.33.0"
   }
 }

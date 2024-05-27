@@ -62,24 +62,24 @@ function LoginModal(props) {
       {/* Trigger button */}
       <button
         onClick={openModal}
-        className="bg-purple-500 text-white py-4 px-8 rounded-lg text-xl shadow-lg hover:bg-purple-700"
+        className="bg-slate-600 border border-gray-600 text-white py-2 px-3 rounded-xl text-xl shadow-lg hover:bg-slate-500 transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
       >
         Login/Register
       </button>
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
-          <div className="relative w-full max-w-md md:max-w-2xl mx-auto">
+          <div className="relative md:w-2/5 w- max-w-md md:max-w-md mx-auto">
             {/* Modal Structure */}
-            <div className="relative bg-white shadow-lg rounded-lg">
+            <div className="relative border border-gray-500 bg-gray-100 shadow-2xl rounded-lg">
               {/* Header */}
-              <div className="flex items-start justify-between p-5 rounded-t border-b border-gray-200">
-                <h3 className="text-xl font-medium leading-6 text-gray-900">
+              <div className="flex items-start justify-between p-3 rounded-t border-b border-gray-300">
+                <h3 className="text-xl font-medium leading-6 text-zinc-900">
                   Login
                 </h3>
                 <button
                   onClick={closeModal}
-                  className="bg-transparent text-black opacity-5 hover:opacity-8"
+                  className="bg-transparent text-zinc-900 opacity-5 hover:opacity-8"
                 >
                   &times;
                 </button>
@@ -111,14 +111,14 @@ function LoginModal(props) {
                     <button
                       type="button"
                       onClick={() => handleSubmit("login")}
-                      className="mr-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                      className="mr-2 bg-cyan-600 hover:bg-cyan-500 text-white py-2 px-4 rounded-lg"
                     >
                       Login
                     </button>
                     <button
                       type="button"
                       onClick={() => handleSubmit("register")}
-                      className="ml-2 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700"
+                      className="ml-2 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-500"
                     >
                       Register
                     </button>
@@ -127,10 +127,10 @@ function LoginModal(props) {
               </div>
 
               {/* Footer */}
-              <div className="flex items-center justify-end p-6 space-x-2 rounded-b border-t border-gray-200">
+              <div className="flex items-center justify-end p-3 space-x-2 rounded-b border-t border-gray-300">
                 <button
                   onClick={closeModal}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg"
+                  className="px-4 py-2 bg-rose-700 hover:bg-rose-600 text-white rounded-lg"
                 >
                   Close
                 </button>

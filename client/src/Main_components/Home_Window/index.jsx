@@ -12,7 +12,7 @@ const HomeWindow = () => {
         <Logo />
       </div>
 
-      <section className="bg-purple-900 bg-opacity-80 shadow-lg rounded-lg p-10 max-w-lg w-full">
+      <section className=" bg-cyan-700 bg-opacity-95 shadow-lg rounded-xl p-10 max-w-lg w-full">
         {/* USER INFO (avatar is placeholder atm) */}
 
         <div className="flex justify-around mb-8">

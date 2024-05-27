@@ -48,9 +48,9 @@ const config = {
     number: {
       density: {
         enable: true,
-        value_area: 1025.8919341219544,
+        value_area: 1000.8919341219544,
       },
-      value: 208,
+      value: 150,
     },
     opacity: {
       value: 0.5,
