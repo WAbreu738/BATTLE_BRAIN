@@ -11,7 +11,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  /* color-scheme: light dark; */
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
@@ -19,6 +19,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  .button {
+    @apply text-white py-4 px-5 rounded-xl shadow-xl transition ease-in-out hover:scale-105 hover:drop-shadow-lg;
+  }
 }
 
 /* body {

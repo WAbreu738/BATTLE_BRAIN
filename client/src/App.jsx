@@ -9,26 +9,6 @@ import SPCategoryWindow from "./Main_components/SPMode_Category";
 import SPPlay from "./Main_components/SPMode_Window";
 import Background from "./Main_components/Background";
 
-// const Context = createContext()
-
-// function Provider(props){
-//   const initialState = {
-//     user: null,
-//     settings: {
-
-//     }
-//   }
-//   const [state, setState] = useState(initialState)
-
-//   return (
-//     <Context.Provider value = {{state, setState}}>
-//       {props.children}
-//     </Context.Provider>
-//   )
-// }
-
-// export const useStore = () => useContext(Context)
-
 function App() {
   //StreamChat Stuff
   // const client = StreamChat.getInstance("vn99vucvfs62");

@@ -1,6 +1,7 @@
 // components/WinnerDisplay.jsx
 import React from "react";
 import Confetti from "react-confetti";
+import { NavLink } from "react-router-dom";
 
 const WinnerDisplay = ({ winner }) => {
   return (
@@ -20,12 +21,12 @@ const WinnerDisplay = ({ winner }) => {
         >
           Play Again
         </button>
-        <button
+        <Navlink
           className="mt-4 px-4 py-2 bg-purple-700 text-white rounded-md"
-          onClick={() => window.location.href = "/categories"} // Redirect to categories page
+          to="//category" // Redirect to categories page
         >
           Continue to Categories
-        </button>
+        </Navlink>
       </div>
     </div>
   );

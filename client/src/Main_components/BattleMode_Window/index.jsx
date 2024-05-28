@@ -9,14 +9,19 @@ import RoundScreen from "./components/RoundScreen";
 
 const calculatePoints = (timeLeft, multiplier) => {
   let points = 0;
-  if (timeLeft >= 9) points = 500;
-  else if (timeLeft >= 8) points = 450;
-  else if (timeLeft >= 7) points = 400;
-  else if (timeLeft >= 6) points = 350;
-  else if (timeLeft >= 5) points = 300;
-  else if (timeLeft >= 4) points = 250;
-  else if (timeLeft >= 3) points = 200;
-  else if (timeLeft >= 2) points = 150;
+  if (timeLeft >= 14) points = 500;
+  else if (timeLeft >= 13) points = 470;
+  else if (timeLeft >= 12) points = 440;
+  else if (timeLeft >= 11) points = 410;
+  else if (timeLeft >= 10) points = 380;
+  else if (timeLeft >= 9) points = 350;
+  else if (timeLeft >= 8) points = 320;
+  else if (timeLeft >= 7) points = 290;
+  else if (timeLeft >= 6) points = 260;
+  else if (timeLeft >= 5) points = 230;
+  else if (timeLeft >= 4) points = 200;
+  else if (timeLeft >= 3) points = 170;
+  else if (timeLeft >= 2) points = 140;
   else if (timeLeft >= 1) points = 100;
   else points = 50;
 
@@ -36,10 +41,11 @@ const BattleMode = () => {
   const [round, setRound] = useState(1);
   const [showRoundScreen, setShowRoundScreen] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
-  const [pointsEarned, setPointsEarned] = useState(0); // New state for points earned from the current question
+  const [pointsEarned, setPointsEarned] = useState(0);
 
   const fetchQuestions = async () => {
-    const url = "https://the-trivia-api.com/v2/questions?limit=1&categories=science";
+    const url =
+      "https://the-trivia-api.com/v2/questions?limit=1&categories=science";
     const headers = {
       "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
     };
@@ -66,7 +72,8 @@ const BattleMode = () => {
     if (showRoundScreen) {
       const timer = setTimeout(() => {
         setShowRoundScreen(false);
-        setTimeLeft(10);
+        setTimeLeft(15);
+        setPointsEarned(0);
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -98,14 +105,14 @@ const BattleMode = () => {
     let points = 0;
     if (answer === currentQuestion.correctAnswer) {
       points = calculatePoints(timeLeft, multiplier);
-      setScore(score + points);
+      // setScore(score + points);
       setAnswerState("correct");
     } else {
       setAnswerState("incorrect");
     }
 
     setPointsEarned(points);
-    
+
     setTimeout(() => {
       setIsAnswered(false);
       setTimeLeft(10);
@@ -140,7 +147,7 @@ const BattleMode = () => {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center">
+    <section className="flex flex-col items-center justify-center relative">
       {showRoundScreen && <RoundScreen round={round} multiplier={multiplier} />}
 
       {winner ? (
@@ -152,47 +159,50 @@ const BattleMode = () => {
               <h1>Game starting in {countdown}...</h1>
             </div>
           ) : (
-            <div className="bg-purple-900 bg-opacity-80 shadow-lg rounded-lg max-w-4xl w-full flex flex-col md:flex-row items-start mt-5">
-              {!showRoundScreen && (
-                <div className="flex flex-col items-center justify-center p-3">
-                  <HealthBar player={playerOne} health={playerOneHealth} />
-                </div>
-              )}
-              <div className="flex-grow p-5">
-                <div className="flex justify-between mb-5 p-5 bg-gray-800 rounded-md">
+            <div className="bg-cyan-600 border border-cyan-800 relative bg-opacity-90 shadow-xl rounded-xl max-w-4xl w-full flex flex-col md:flex-row items-start mt-40">
+              <div className="flex flex-col items-center justify-center absolute left-3 top-1/2 -translate-y-1/2 z-10">
+                <HealthBar player={playerOne} health={playerOneHealth} />
+              </div>
+              <Timer
+                timeLeft={timeLeft}
+                setTimeLeft={setTimeLeft}
+                isAnswered={isAnswered}
+                showRoundScreen={showRoundScreen}
+              />
+
+              <div className="flex-grow p-5 ">
+                <div className="relative flex justify-between items-center mb-5 p-3 bg-cyan-800 rounded-xl mx-16">
                   <Round round={round} />
-                  <Timer
-                    timeLeft={timeLeft}
-                    setTimeLeft={setTimeLeft}
-                    isAnswered={isAnswered}
-                  />
                   <Multiplier multiplier={multiplier} />
                 </div>
 
-                <div className="mb-5 p-5 bg-gray-800 rounded-md">
+                <div className="p-5 bg-cyan-800 rounded-xl flex justify-center mx-16 min-h-80">
                   {currentQuestion && (
                     <Question
                       question={currentQuestion.question.text}
                       options={currentQuestion.incorrectAnswers}
                       correctAnswer={currentQuestion.correctAnswer}
-                      handleAnswer={(answer) => handleAnswer(answer, "playerOne")}
+                      handleAnswer={(answer) =>
+                        handleAnswer(answer, "playerOne")
+                      }
                       answerState={answerState}
                     />
                   )}
                 </div>
 
-                <div className="text-white text-xl mt-4">Score: {score}</div>
-              </div>
-              {!showRoundScreen && (
-                <div className="flex flex-col items-center justify-center p-3">
-                  <HealthBar player={playerTwo} health={playerTwoHealth} />
+                <div className="text-white text-xl mt-4">
+                  Points: {pointsEarned}
                 </div>
-              )}
+              </div>
+
+              <div className="flex flex-col items-center justify-center absolute right-3 top-1/2 -translate-y-1/2">
+                <HealthBar player={playerTwo} health={playerTwoHealth} />
+              </div>
             </div>
           )}
         </>
       )}
-    </main>
+    </section>
   );
 };
 

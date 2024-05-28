@@ -68,7 +68,7 @@ const SPPlay = () => {
 
     setTimeout(() => {
       setIsAnswered(false);
-      setTimeLeft(10);
+      setTimeLeft(15);
       setAnswerState(null);
       fetchQuestions();
     }, 2000);
@@ -77,27 +77,28 @@ const SPPlay = () => {
   console.log(currentQuestion);
 
   return (
-    <main className="flex flex-col items-center justify-center h-screen p-4 ">
+    <section className="flex flex-col items-center justify-center h-screen p-4 ">
       {countdown > 0 ? (
         <div className="text-6xl text-white">
           <h1>Game starting in {countdown}...</h1>
         </div>
       ) : (
-        <div className="bg-purple-900 bg-opacity-80 shadow-lg rounded-lg p-10 max-w-4xl w-full">
-          <div className="flex justify-between">
+        <div className="relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-10 max-w-4xl w-full">
+          <Timer
+            timeLeft={timeLeft}
+            setTimeLeft={setTimeLeft}
+            isAnswered={isAnswered}
+          />
+
+          <div className="flex justify-between items-center mb-5 p-3 bg-cyan-800 rounded-xl">
             <Round />
-            <Timer
-              timeLeft={timeLeft}
-              setTimeLeft={setTimeLeft}
-              isAnswered={isAnswered}
-            />
             <Multiplier />
           </div>
 
           {/* Make sure API call is made before referencing the object */}
-          {currentQuestion && <p>{currentQuestion.difficulty}</p>}
+          {/* {currentQuestion && <p>{currentQuestion.difficulty}</p>} */}
 
-          <div>
+          <div className="p-5 bg-cyan-800 rounded-xl flex justify-center min-h-80">
             {currentQuestion && (
               <Question
                 question={currentQuestion.question.text}
@@ -109,10 +110,10 @@ const SPPlay = () => {
             )}
           </div>
 
-          <div className="text-white text-xl mt-4">Score: {score}</div>
+          {/* <div className="text-white text-xl mt-4">Score: {score}</div> */}
         </div>
       )}
-    </main>
+    </section>
   );
 };
 
