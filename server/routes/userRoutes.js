@@ -39,18 +39,22 @@ user_router.get("/", async (req, res) => {
 
 user_router.post("/register", async (req, res) => {
   try {
-    const newUser = new User(req.body) // Create a new user
-    const token = createToken(newUser) // Create a JWT token for the user
-    res.cookie('token', token, { httpOnly: true }) // Set the token in a cookie, httpOnly prevents client-side JavaScript from reading the cookie data
+    console.log(req.body)
+
+    const newUser = await User.create(req.body)
+    console.log(newUser)
+    const token = createToken(newUser)
+    console.log(token)
+    res.cookie('token', token, { httpOnly: true }) //httpOnly prevents client-side JavaScript from reading the cookie data
 
 
     await newUser.save();
     res.status(201).send(newUser);
   } catch (error) {
     if (error.name === "ValidationError") {
-      // Extract validation errors from the error object
+
       const validationErrors = error.errors;
-      // Construct a more user-friendly error message
+
       const errorMessage = Object.keys(validationErrors)
         .map((key) => `${key} is required.`)
         .join(", ");
@@ -63,15 +67,21 @@ user_router.post("/register", async (req, res) => {
 
 user_router.post("/login", async (req, res) => {
   try {
-    const { username, password } = req.body // Extract username and password from the request body
-    const user = await User.findOne({ username }) // Find the user by username
-      .select("+password") // Include the password in the query result
-
+    const { username, password } = req.body
+    console.log(username)
+    console.log({
+      password: password
+    })
+    const user = await User.findOne({ username })
+    console.log(user)
     if (!user) {
       return res.status(404).send({ message: "User not found" })
     }
 
-    const isMatch = await user.validatePass(password) // Validate the password , this method is defined in the User model
+    const isMatch = await user.validatePass(password)
+
+
+    console.log('ismatch:', isMatch)
 
     if (!isMatch) {
       return res.json({
@@ -122,6 +132,7 @@ function isAuth(req, res, next) {
   }
 }
 
+// user_router.use(isAuth)
 //PROTECTED ROUTES
 
 

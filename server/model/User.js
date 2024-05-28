@@ -1,5 +1,5 @@
 const { model, Schema } = require('mongoose')
-const { hash, compare } = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 // User Model
 const userSchema = new Schema({
@@ -22,19 +22,28 @@ const userSchema = new Schema({
 })
 
 // hash password before saving
-userSchema.pre('save', async function () {
-  this.password = await hash(this.password, 10)//hash is a bcrypt method
+userSchema.pre('save', async function (next) {
+  //check if (this.isNew) to ensure that you only encrypt if the user has not been added to the database. Otherwise it will encrypt on any and all user changes
+  if (this.isNew) {
+    this.password = await bcrypt.hash(this.password, 10)
+  }
+
+  next()
+
 })
 
 
 
-
-
 //validate password method
-userSchema.methods.validatePass = async function (userPassword) {
-  const valid = await compare(userPassword, this.password)//compare is a bcrypt method
+async function comparePasswords(password) {
+  console.log('password', password)
+  console.log('this.password', this.password)
+
+  return bcrypt.compareSync(password, this.password)
+
 }
 
+userSchema.methods.validatePass = comparePasswords;
 
 const User = model('User', userSchema)
 

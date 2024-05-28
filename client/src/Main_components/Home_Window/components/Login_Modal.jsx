@@ -37,10 +37,11 @@ function LoginModal(props) {
 
     try {
       let url = "";
+      console.log(actionType);
       if (actionType === "login") {
-        url = "http://localhost:3000/login"; // Adjust the URL to match your backend login endpoint
+        url = "/api/login"; // Adjust the URL to match your backend login endpoint
       } else if (actionType === "register") {
-        url = "http://localhost:3000/register"; // Adjust the URL to match your backend registration endpoint
+        url = "/api/register"; // Adjust the URL to match your backend registration endpoint
       }
 
       const response = await axios.post(url, playerData);
@@ -94,7 +95,7 @@ function LoginModal(props) {
                     placeholder="Username"
                     value={playerData.username}
                     onChange={(e) => handleInputChange(e, "username")}
-                    className="w-full p-2 mb-2 border border-gray-300 rounded"
+                    className="w-full p-2 mb-2 border rounded text-zinc-900"
                   />
 
                   {/* Password input */}
@@ -103,7 +104,7 @@ function LoginModal(props) {
                     placeholder="Password"
                     value={playerData.password}
                     onChange={(e) => handleInputChange(e, "password")}
-                    className="w-full p-2 mb-2 border border-gray-300 rounded"
+                    className="w-full p-2 mb-2 border rounded text-zinc-900"
                   />
 
                   {/* Separate buttons for Login and Register */}

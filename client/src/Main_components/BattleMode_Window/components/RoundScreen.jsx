@@ -7,7 +7,7 @@ const RoundScreen = ({ round, multiplier }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setRoundTimer(3);
+      setRoundTimer(5);
     }, 5000);
     return () => clearTimeout(timer);
   }, []);
@@ -22,7 +22,11 @@ const RoundScreen = ({ round, multiplier }) => {
   }, [isVisible, roundTimer]);
 
   return (
-    <div className={`fixed inset-0 bg-black flex flex-col items-center justify-center text-white text-6xl font-bold ${isVisible ? "" : "hidden"}`}>
+    <div
+      className={`absolute z-20 top-1/4 translate-y-1 bg-rose-700 border border-rose-900 p-32 rounded-xl flex flex-col items-center justify-center text-white text-6xl font-bold shadow-2xl ${
+        isVisible ? "" : "hidden"
+      }`}
+    >
       <div className="mb-4">Round {round}</div>
       <div>Multiplier: {multiplier}x</div>
       {isVisible && <div>Round starts in: {roundTimer}</div>}
@@ -31,6 +35,3 @@ const RoundScreen = ({ round, multiplier }) => {
 };
 
 export default RoundScreen;
-
-
-

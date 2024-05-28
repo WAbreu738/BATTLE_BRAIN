@@ -1,19 +1,35 @@
 import { useEffect } from "react";
 
-const Timer = ({ timeLeft, setTimeLeft, isAnswered }) => {
+const Timer = ({ timeLeft, setTimeLeft, isAnswered, showRoundScreen }) => {
   useEffect(() => {
     if (!isAnswered && timeLeft > 0) {
       const timer = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-      }, 1000);
+        setTimeLeft((prevTimeLeft) => prevTimeLeft - 0.01);
+      }, 10);
 
       return () => clearInterval(timer);
     }
   }, [isAnswered, timeLeft, setTimeLeft]);
 
+  const formatTime = (time) => {
+    // const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    const milliseconds = Math.floor((time - Math.floor(time)) * 100); // Convert milliseconds to two decimal places
+
+    return `${seconds.toString().padStart(2, "0")}.${milliseconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
   return (
-    <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-20 text-4xl font-bold text-center p-3 w-3/12 border-2 drop-shadow-xl border-zinc-900 bg-gray-50 text-zinc-900 rounded-full">
-      {timeLeft > 0 ? timeLeft : "Time's up!"}
+    <div
+      className={`absolute z-10 top-4 left-1/2 -translate-x-1/2 flex justify-center items-center ${
+        showRoundScreen ? "hidden" : ""
+      }`}
+    >
+      <div className="text-4xl font-bold text-center px-6 py-3 border-2 shadow-xl border-zinc-900 bg-gray-50 text-zinc-900 rounded-full w-56 ">
+        {timeLeft > 0 ? formatTime(timeLeft) : "Time's up!"}
+      </div>
     </div>
   );
 };
