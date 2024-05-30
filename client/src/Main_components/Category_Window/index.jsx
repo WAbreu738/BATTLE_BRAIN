@@ -19,7 +19,10 @@ const CategoryWindow = () => {
         {/* <h2 className="text-4xl font-bold text-white mb-6 text-center">
           Categories
         </h2> */}
-        <img className=" w-9/12 mx-auto -m-4 mb-5" src={Category} />
+        <img
+          className=" w-8/12 mx-auto -m-4 mb-5 bg-cyan-700 rounded-xl shadow-lg"
+          src={Category}
+        />
         <div className="grid grid-cols-3 gap-4">
           <CategoryBtns />
         </div>
