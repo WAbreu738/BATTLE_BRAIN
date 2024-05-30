@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-
-const PlayerOne = () => {
-  return <div></div>;
+const playerOne = {
+  name: "Player One",
+  avatar: "https://via.placeholder.com/50",
 };
 
-export default PlayerOne;
+export default playerOne;

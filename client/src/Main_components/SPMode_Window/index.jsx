@@ -3,6 +3,8 @@ import Timer from "./components/timer";
 import Round from "./components/round";
 import Question from "./components/question_window";
 import Multiplier from "./components/multiplier";
+import HomeBtn from "../HomeBtn";
+import BackBtn from "../BackBtn";
 
 import { useLocation } from "react-router-dom";
 
@@ -74,8 +76,6 @@ const SPPlay = () => {
     }, 2000);
   };
 
-  console.log(currentQuestion);
-
   return (
     <section className="flex flex-col items-center justify-center h-screen p-4 ">
       {countdown > 0 ? (
@@ -108,6 +108,12 @@ const SPPlay = () => {
                 answerState={answerState}
               />
             )}
+          </div>
+          <div className=" absolute -top-5 -right-5">
+            <HomeBtn />
+          </div>
+          <div className=" absolute -top-5 -left-5">
+            <BackBtn />
           </div>
 
           {/* <div className="text-white text-xl mt-4">Score: {score}</div> */}

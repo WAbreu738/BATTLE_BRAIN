@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { useStore } from "../../Options";
+import { useState } from "react";
+import { useStore } from "../../OptionsProvider";
 
 const difficultyBtn = [
   { difficulty: "EASY", value: "easy" },
   { difficulty: "MEDIUM", value: "medium" },
   { difficulty: "HARD", value: "hard" },
-  { difficulty: "RANDOM", value: "easy,medium,hard" },
+  // { difficulty: "RANDOM", value: "easy,medium,hard" },
 ];
 
 const Difficulty = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { setDifficulty } = useStore();
+  const [selectedDifficulty, setSelectedDifficulty] = useState("");
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -20,7 +21,8 @@ const Difficulty = () => {
     setIsOpen(false);
   };
 
-  const handleDifficultySelect = (selectedValue) => {
+  const handleDifficultySelect = (selectedValue, difficulty) => {
+    setSelectedDifficulty(difficulty); // Set the selected difficulty in state
     setDifficulty(selectedValue); // Set the selected difficulty value in global state
     closeMenu(); // Close the menu after selecting a difficulty
   };
@@ -29,9 +31,9 @@ const Difficulty = () => {
     <div className="relative">
       <button
         onClick={toggleMenu}
-        className="inline-flex mt-4 items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        className=" w-24 text-center items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
       >
-        Difficulty
+        {selectedDifficulty || "Difficulty"}
       </button>
       {isOpen && (
         <div
@@ -47,7 +49,9 @@ const Difficulty = () => {
                 className=" cursor-pointer block px-4 py-2 text-sm text-gray-800 hover:text-gray-50 hover:bg-gray-700"
                 role="menuitem"
                 tabIndex="-1"
-                onClick={() => handleDifficultySelect(item.value)} // Call handleDifficultySelect with the selected difficulty value
+                onClick={() =>
+                  handleDifficultySelect(item.value, item.difficulty)
+                } // Call handleDifficultySelect with the selected difficulty value
                 key={index}
                 // value={item.value}
               >

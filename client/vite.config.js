@@ -15,6 +15,19 @@ export default defineConfig({
         secure: false,
         ws: true,
       },
+      "/graphql": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+      },
+      // "/socket": {
+      //   target: "http://localhost:3000",
+      //   changeOrigin: true,
+      //   secure: false,
+      //   ws: true,
+      // },
+
     },
   },
 });

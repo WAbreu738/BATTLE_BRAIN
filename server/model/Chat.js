@@ -1,6 +1,7 @@
 const { model, Schema } = require('mongoose')
 
 const chatSchema = new Schema({
+
   text: {
     type: String,
     required: true

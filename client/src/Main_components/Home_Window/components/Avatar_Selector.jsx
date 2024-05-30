@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const AvatarSelector = () => {
   const [startIdx, setStartIdx] = useState(0);
@@ -19,8 +19,10 @@ const AvatarSelector = () => {
     setMiddleIndex(1);
   }, [startIdx]);
 
+  const avatarTransition = "transition-transform duration-200 ease-in-out";
+
   return (
-    <div className="mb-8 relative flex items-center justify-center">
+    <div className=" relative flex items-center justify-center scale-125">
       <button
         className="text-zinc-900 flex align-middle justify-center text-3xl font-bold absolute left-14 top-1/2 transform -translate-y-1/2"
         disabled={startIdx === 0}
@@ -34,11 +36,11 @@ const AvatarSelector = () => {
             key={avatar}
             src={`https://randomuser.me/api/portraits/lego/${avatar}.jpg`}
             alt={`Avatar ${avatar}`}
-            className={`w-12 h-12 md:w-16 md:h-16 rounded-full border border-zinc-800 transform shadow-lg scale-${
+            className={`w-12 h-12 md:w-16 md:h-16 rounded-full border border-zinc-800 shadow-lg scale-${
               index === middleIndex
-                ? "transition scale-110 ease-in-out hover:scale-125 shadow-3xl"
+                ? "transition scale-110 ease-in-out hover:scale-125 shadow-3xl hover:drop-shadow-lg"
                 : "transition scale-75"
-            }`}
+            }${avatarTransition}`}
           />
         ))}
       </div>
