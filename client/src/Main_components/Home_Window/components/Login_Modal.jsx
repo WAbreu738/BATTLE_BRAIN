@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios"; // Ensure Axios is imported for HTTP requests
+import { gql, useMutation } from "@apollo/client";
+import { REGISTER_USER, LOGIN_USER } from "../../../graphql/mutations";
+import { useStore } from "../../OptionsProvider";
 
 // Immutable structure for initial player data
 const PlayerStructure = {
@@ -10,11 +13,22 @@ const PlayerStructure = {
 function LoginModal(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [playerData, setPlayerData] = useState(PlayerStructure);
+  const { setState } = useStore();
 
   // Function to open the modal
   const openModal = () => setIsModalOpen(true);
   // Function to close the modal
   const closeModal = () => setIsModalOpen(false);
+
+  const [registerUser] = useMutation(REGISTER_USER, {
+    variables: playerData,
+    //refetch queries, maybe for chat messages?
+  });
+
+  const [loginUser] = useMutation(LOGIN_USER, {
+    variables: playerData,
+    //refetch queries, maybe for chat messages?
+  });
 
   // Function to handle input changes and update the state
   const handleInputChange = (e, field) => {
@@ -36,18 +50,31 @@ function LoginModal(props) {
     }
 
     try {
-      let url = "";
-      console.log(actionType);
+      let res;
       if (actionType === "login") {
-        url = "/api/login"; // Adjust the URL to match your backend login endpoint
+        res = await loginUser();
       } else if (actionType === "register") {
-        url = "/api/register"; // Adjust the URL to match your backend registration endpoint
+        res = await registerUser();
       }
-
-      const response = await axios.post(url, playerData);
-      console.log(response.data);
-      // Handle successful submission (e.g., close the modal, show a success message)
+      console.log(res);
+      //props.setUser(user);
+      setState((oldState) => ({
+        ...oldState,
+        user: res.data.loginUser || res.data.registerUser,
+      }));
       closeModal();
+      // let url = "";
+      // if (actionType === "login") {
+      //   url = "/api/login"; // Adjust the URL to match your backend login endpoint
+      // } else if (actionType === "register") {
+      //   url = "/api/register"; // Adjust the URL to match your backend registration endpoint
+      // }
+
+      // const response = await axios.post(url, playerData);
+      // console.log(response.data);
+      // // Handle successful submission (e.g., close the modal, show a success message)
+      // props.setUser(response.data);
+      // closeModal();
     } catch (error) {
       console.error(
         "Error:",

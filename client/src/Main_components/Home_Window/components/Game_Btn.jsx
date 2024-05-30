@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import singlePlayer from "../../../assets/images/single-player-red.png";
+import battleMode from "../../../assets/images/Battle-Mode-red.png";
+import { useStore } from "../../OptionsProvider";
 
 const GameBtn = () => {
+  const { state } = useStore();
+
   return (
-    <div className="flex justify-around mt-8">
+    <div className="flex justify-around space-x-5">
       <NavLink
-        to="/singleplayer"
-        className="bg-rose-700 border border-rose-700 text-white py-4 px-5 rounded-xl text-xl shadow-xl hover:bg-rose-600 transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
+        to={state.user ? "/singleplayer" : "/"}
+        className=" bg-cyan-800 rounded-xl shadow-md transition ease-in-out hover:scale-105 hover:drop-shadow-lg max-w-56"
       >
-        <span>←</span> Single Player
+        <img src={singlePlayer} alt="single player button" />
       </NavLink>
       <NavLink
-        to="/lobby"
-        className="bg-rose-700 border border-rose-700 text-white py-4 px-5 rounded-xl text-xl shadow-xl hover:bg-rose-600 transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
+        to={state.user ? "/lobby" : "/"}
+        className="bg-cyan-800 rounded-xl shadow-md transition ease-in-out hover:scale-105 hover:drop-shadow-lg max-w-52"
       >
-        Battle Mode <span>→</span>
+        <img src={battleMode} alt="single player button" />
       </NavLink>
     </div>
   );

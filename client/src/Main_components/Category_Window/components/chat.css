@@ -1,0 +1,9 @@
+.chat {
+  height: 469px;
+  max-width: 208;
+}
+
+.chat-output {
+  max-width: 168px;
+  height: 333px;
+}

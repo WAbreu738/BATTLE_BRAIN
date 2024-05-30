@@ -13,12 +13,12 @@ const userSchema = new Schema({
     required: true,
     minlength: 6,
   },
-  wins: {
-    type: Number,
-  },
-  losses: {
-    type: Number,
-  }
+  // wins: {
+  //   type: Number,
+  // },
+  // losses: {
+  //   type: Number,
+  // }
 })
 
 // hash password before saving
@@ -31,8 +31,6 @@ userSchema.pre('save', async function (next) {
   next()
 
 })
-
-
 
 //validate password method
 async function comparePasswords(password) {

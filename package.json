@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "concurrently \"cd ./server && npm run dev\" \"cd ./client && npm run dev\"",
+    "client:build": "cd ./client && npm run build",
+    "install:server": "cd ./server && npm i",
+    "install:client": "cd ./install && npm i",
+    "install": "npm run install:server",
+    "start": "cd ./server && npm start"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +18,7 @@
     "@babel/core": "^7.24.5"
   },
   "dependencies": {
+    "concurrently": "^8.2.2",
     "dotenv": "^16.4.5"
   }
 }

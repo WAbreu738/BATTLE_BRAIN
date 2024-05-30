@@ -40,7 +40,7 @@ const Question = ({
                 ${answerState && answer !== correctAnswer ? "bg-red-500" : ""}`}
               key={index}
               onClick={() => handleAnswer(answer)}
-              disabled={!!answerState} // Disable buttons once an answer is selected
+              disabled={!!answerState}
             >
               {answer}
             </button>

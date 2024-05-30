@@ -14,7 +14,7 @@ const HealthBar = ({ player, health }) => {
           style={{ height: `${(health / 3000) * 100}%`, width: "100%" }}
         ></div>
       </div>
-      <span className="mt-2 text-white">{health}</span>
+      <span className="mt-2 text-white text-xl font-bold">{health}</span>
     </div>
   );
 };
