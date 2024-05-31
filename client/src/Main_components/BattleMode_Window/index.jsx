@@ -11,22 +11,21 @@ import RoundScreen from "./components/RoundScreen";
 import playerOne from "./components/player1";
 import playerTwo from "./components/player2";
 import handleAnswer from "./components/AnswerSystem";
-// import fetchQuestions from "./components/API";
 import { generateRandomMultiplier } from "./components/pointsystem";
-import PointsDisplay from "./components/PointsDisplay";
+// import fetchQuestions from "./components/API";
+// import PointsDisplay from "./components/PointsDisplay";
 
-import { useLocation } from "react-router-dom";
 import { useStore } from "../OptionsProvider"; //GlobalState
 
 const BattleMode = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isAnswered, setIsAnswered] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const [answerState, setAnswerState] = useState(null);
   const [playerOneHealth, setPlayerOneHealth] = useState(3000);
   const [playerTwoHealth, setPlayerTwoHealth] = useState(3000);
-  const [winner, setWinner] = useState(null);
+  const [winner, setWinner] = useState("");
   const [round, setRound] = useState(0);
   const [showRoundScreen, setShowRoundScreen] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
@@ -35,6 +34,30 @@ const BattleMode = () => {
   // const [playerTwoPoints, setPlayerTwoPoints] = useState(0);
   // const [showPoints, setShowPoints] = useState(false);
   // const [bothPlayersAnswered, setBothPlayersAnswered] = useState(false);
+
+  const initialState = useStore();
+  const { difficulty, category } = initialState.state || {};
+
+  // const location = useLocation();
+  // const category = location.state.category;
+  // console.log(category);
+  // console.log(difficulty);
+
+  const fetchQuestions = async () => {
+    const url = `https://the-trivia-api.com/v2/questions?categories=${category}&limit=1&{difficulties=${difficulty}`;
+    const headers = {
+      "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
+    };
+
+    try {
+      const response = await fetch(url, { headers: headers });
+      const data = await response.json();
+
+      setCurrentQuestion(data[0]);
+    } catch (error) {
+      console.error("Error fetching trivia questions:", error);
+    }
+  };
 
   useEffect(() => {
     if (countdown > 0) {
@@ -69,49 +92,14 @@ const BattleMode = () => {
     }
   }, [showRoundScreen]);
 
-  const initialState = useStore();
-  const { difficulty, category } = initialState.state || {};
-
-  // const location = useLocation();
-  // const category = location.state.category;
-  console.log(category);
-  // console.log(difficulty);
-
-  const fetchQuestions = async () => {
-    const url = `https://the-trivia-api.com/v2/questions?categories=${category}&limit=1&{difficulties=${difficulty}`;
-    const headers = {
-      "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
-    };
-
-    try {
-      const response = await fetch(url, { headers: headers });
-      const data = await response.json();
-      setCurrentQuestion(data[0]);
-    } catch (error) {
-      console.error("Error fetching trivia questions:", error);
+  useEffect(() => {
+    if (playerOneHealth <= 0) {
+      setWinner("Player Two");
+    } else if (playerTwoHealth <= 0) {
+      setWinner("Player One");
     }
-  };
+  }, [playerOneHealth, playerTwoHealth]);
 
-  // const handleAnimationComplete = () => {
-  //   setShowPoints(false);
-  //   if (answerState === "correct") {
-  //     if (pointsEarned > 0) {
-  //       setPlayerTwoHealth((prevHealth) =>
-  //         Math.max(0, prevHealth - pointsEarned)
-  //       );
-  //     } else {
-  //       setPlayerOneHealth((prevHealth) =>
-  //         Math.max(0, prevHealth - pointsEarned)
-  //       );
-  //     }
-  //   }
-
-  //   if (playerOneHealth <= 0) {
-  //     setWinner(playerTwo);
-  //   } else if (playerTwoHealth <= 0) {
-  //     setWinner(playerOne);
-  //   }
-  // };
   return (
     <section className="flex flex-col items-center justify-center relative">
       {showRoundScreen && <RoundScreen round={round} multiplier={multiplier} />}
@@ -137,12 +125,12 @@ const BattleMode = () => {
               />
 
               <div className="flex-grow p-5 ">
-                <div className="relative flex justify-between items-center mb-5 p-3 bg-cyan-800 rounded-xl mx-16">
+                <div className="relative flex justify-between items-center mb-5 p-3 bg-cyan-950 rounded-xl mx-16">
                   <Round round={round} />
                   <Multiplier multiplier={multiplier} />
                 </div>
 
-                <div className="p-5 bg-cyan-800 rounded-xl flex justify-center mx-16 min-h-80">
+                <div className="p-5 bg-cyan-950 rounded-xl flex justify-center mx-16 min-h-80">
                   {currentQuestion && (
                     <Question
                       question={currentQuestion.question.text}
@@ -158,7 +146,8 @@ const BattleMode = () => {
                           setIsAnswered,
                           setAnswerState,
                           setPointsEarned,
-                          fetchQuestions(setCurrentQuestion),
+                          fetchQuestions,
+                          setCurrentQuestion,
                           setPlayerOneHealth,
                           setPlayerTwoHealth,
                           playerOneHealth,

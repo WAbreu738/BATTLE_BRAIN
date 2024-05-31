@@ -3,6 +3,7 @@ import axios from "axios"; // Ensure Axios is imported for HTTP requests
 import { gql, useMutation } from "@apollo/client";
 import { REGISTER_USER, LOGIN_USER } from "../../../graphql/mutations";
 import { useStore } from "../../OptionsProvider";
+import loginButton from "../../../assets/images/BattleBrainLogin.png";
 
 // Immutable structure for initial player data
 const PlayerStructure = {
@@ -13,7 +14,7 @@ const PlayerStructure = {
 function LoginModal(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [playerData, setPlayerData] = useState(PlayerStructure);
-  const { setState } = useStore();
+  const { setState, state } = useStore();
 
   // Function to open the modal
   const openModal = () => setIsModalOpen(true);
@@ -41,7 +42,7 @@ function LoginModal(props) {
   // Function to handle form submission
   const handleSubmit = async (actionType) => {
     // Debugging: Log the playerData to see if it's being updated correctly
-    console.log("Submitting with data:", playerData);
+    //console.log("Submitting with data:", playerData);
 
     // Simple frontend validation
     if (!playerData.username || !playerData.password) {
@@ -53,28 +54,29 @@ function LoginModal(props) {
       let res;
       if (actionType === "login") {
         res = await loginUser();
+        if (res.data.loginUser) {
+          console.log(res.data.loginUser);
+          localStorage.setItem("id_token", res.data.loginUser._id);
+          setState((oldState) => ({
+            ...oldState,
+            user: res.data.loginUser,
+          }));
+          closeModal();
+          return;
+        }
       } else if (actionType === "register") {
         res = await registerUser();
+        localStorage.setItem("id_token", res.data.registerUser._id);
+        setState((oldState) => ({
+          ...oldState,
+          user: res.data.registerUser,
+        }));
+        closeModal();
+        return;
       }
-      console.log(res);
-      //props.setUser(user);
-      setState((oldState) => ({
-        ...oldState,
-        user: res.data.loginUser || res.data.registerUser,
-      }));
-      closeModal();
-      // let url = "";
-      // if (actionType === "login") {
-      //   url = "/api/login"; // Adjust the URL to match your backend login endpoint
-      // } else if (actionType === "register") {
-      //   url = "/api/register"; // Adjust the URL to match your backend registration endpoint
-      // }
 
-      // const response = await axios.post(url, playerData);
-      // console.log(response.data);
-      // // Handle successful submission (e.g., close the modal, show a success message)
-      // props.setUser(response.data);
-      // closeModal();
+      alert("Incorrect Password");
+      return;
     } catch (error) {
       console.error(
         "Error:",
@@ -90,9 +92,11 @@ function LoginModal(props) {
       {/* Trigger button */}
       <button
         onClick={openModal}
-        className="bg-slate-600 border border-gray-600 text-white py-2 px-3 rounded-xl text-xl shadow-lg hover:bg-slate-500 transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
+        className={`${
+          !state.user ? "animate-wiggle animate-infinite animate-ease-out" : ""
+        } absolute -top-6 -left-6 border border-gray-600 bg-gray-900 text-slate-500 py-1 px-1 rounded-xl text-xl shadow-lg transition ease-in-out hover:scale-105 hover:drop-shadow-lg`}
       >
-        Login/Register
+        <img className="h-9" src={loginButton} alt="Login / Register" />
       </button>
 
       {isModalOpen && (
@@ -106,7 +110,7 @@ function LoginModal(props) {
                   Login
                 </h3>
                 <button
-                  onClick={closeModal}
+                  // onClick={closeModal}
                   className="bg-transparent text-zinc-900 opacity-5 hover:opacity-8"
                 >
                   &times;

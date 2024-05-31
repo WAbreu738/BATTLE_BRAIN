@@ -2,38 +2,47 @@ import React, { useState, useEffect } from "react";
 import Timer from "./components/timer";
 import Round from "./components/round";
 import Question from "./components/question_window";
-import Multiplier from "./components/multiplier";
 import HomeBtn from "../HomeBtn";
 import BackBtn from "../BackBtn";
-
-import { useLocation } from "react-router-dom";
+import { useStore } from "../OptionsProvider";
+import GameOver from "./components/GameOver";
 
 const calculatePoints = (timeLeft) => {
-  if (timeLeft >= 9) return 500;
-  if (timeLeft >= 8) return 450;
-  if (timeLeft >= 7) return 400;
-  if (timeLeft >= 6) return 350;
-  if (timeLeft >= 5) return 300;
-  if (timeLeft >= 4) return 250;
-  if (timeLeft >= 3) return 200;
-  if (timeLeft >= 2) return 150;
-  if (timeLeft >= 1) return 100;
-  return 50;
+  let points = 0;
+  if (timeLeft >= 14) points = 500;
+  else if (timeLeft >= 13) points = 470;
+  else if (timeLeft >= 12) points = 440;
+  else if (timeLeft >= 11) points = 410;
+  else if (timeLeft >= 10) points = 380;
+  else if (timeLeft >= 9) points = 350;
+  else if (timeLeft >= 8) points = 320;
+  else if (timeLeft >= 7) points = 290;
+  else if (timeLeft >= 6) points = 260;
+  else if (timeLeft >= 5) points = 230;
+  else if (timeLeft >= 4) points = 200;
+  else if (timeLeft >= 3) points = 170;
+  else if (timeLeft >= 2) points = 140;
+  else if (timeLeft >= 1) points = 100;
+  else points = 50;
+  return points;
 };
 
 const SPPlay = () => {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLeft, setTimeLeft] = useState(15);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [countdown, setCountdown] = useState(3); // 3-second countdown state
-  const [answerState, setAnswerState] = useState(null); // State to handle correct/incorrect answer
+  const [countdown, setCountdown] = useState(3);
+  const [answerState, setAnswerState] = useState(null);
+  const [round, setRound] = useState(1);
+  const [gameover, setGameOver] = useState(null);
+  const [strikes, setStrikes] = useState(0);
 
-  const location = useLocation();
-  const category = location.state.category;
+  const initialState = useStore();
+  const { difficulty, category } = initialState.state || {};
 
   const fetchQuestions = async () => {
-    const url = `https://the-trivia-api.com/v2/questions?limit=1&categories=${category}`;
+    const url = `https://the-trivia-api.com/v2/questions?categories=${category}&limit=1&{difficulties=${difficulty}`;
     const headers = {
       "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
     };
@@ -64,16 +73,34 @@ const SPPlay = () => {
       const points = calculatePoints(timeLeft);
       setScore(score + points);
       setAnswerState("correct");
+
+      setTimeout(() => {
+        setIsAnswered(false);
+        setAnswerState(null);
+        fetchQuestions();
+        setRound((prevRound) => prevRound + 1);
+        setTimeLeft(15);
+      }, 2000);
     } else {
       setAnswerState("incorrect");
+      setStrikes((prevStrikes) => {
+        const newStrikes = prevStrikes + 1;
+        if (newStrikes === 3) {
+          setTimeout(() => {
+            setGameOver({ score });
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            setIsAnswered(false);
+            setAnswerState(null);
+            fetchQuestions();
+            setRound((prevRound) => prevRound + 1);
+            setTimeLeft(15);
+          }, 2000);
+        }
+        return newStrikes;
+      });
     }
-
-    setTimeout(() => {
-      setIsAnswered(false);
-      setTimeLeft(15);
-      setAnswerState(null);
-      fetchQuestions();
-    }, 2000);
   };
 
   return (
@@ -82,6 +109,8 @@ const SPPlay = () => {
         <div className="text-6xl text-white">
           <h1>Game starting in {countdown}...</h1>
         </div>
+      ) : gameover ? (
+        <GameOver score={score} />
       ) : (
         <div className="relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-10 max-w-4xl w-full">
           <Timer
@@ -91,12 +120,18 @@ const SPPlay = () => {
           />
 
           <div className="flex justify-between items-center mb-5 p-3 bg-cyan-800 rounded-xl">
-            <Round />
-            <Multiplier />
+            <Round round={round} />
+            <div className="ml-auto flex items-center">
+              {Array.from({ length: strikes }).map((_, index) => (
+                <div key={index} className="text-3xl text-red-600 mx-1">
+                  X
+                </div>
+              ))}
+              <div className="text-white font-bold text-3xl text-center ml-4">
+                Score: {score}
+              </div>
+            </div>
           </div>
-
-          {/* Make sure API call is made before referencing the object */}
-          {/* {currentQuestion && <p>{currentQuestion.difficulty}</p>} */}
 
           <div className="p-5 bg-cyan-800 rounded-xl flex justify-center min-h-80">
             {currentQuestion && (
@@ -115,8 +150,6 @@ const SPPlay = () => {
           <div className=" absolute -top-5 -left-5">
             <BackBtn />
           </div>
-
-          {/* <div className="text-white text-xl mt-4">Score: {score}</div> */}
         </div>
       )}
     </section>

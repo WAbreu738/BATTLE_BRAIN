@@ -9,15 +9,30 @@ export const AUTHENTICATE = gql`
   }
 `;
 
+export const GET_AVATAR = gql`
+  query GetAvatar {
+    getAvatar {
+      profile
+    }
+  }
+`;
+
 export const GET_MESSAGES = gql`
   query GetMessages {
     getMessages {
       id
       text
-      user {
-        _id
-        username
-      }
+      username
+    }
+  }
+`;
+
+export const GET_STATS = gql`
+  query GetStats {
+    getStats {
+      highScore
+      gamesWon
+      gamesLost
     }
   }
 `;
