@@ -21,6 +21,10 @@ const RoundScreen = ({ round, multiplier }) => {
     }
   }, [isVisible, roundTimer]);
 
+  // className={`absolute z-20 top-1/4 translate-y-1 bg-rose-700 border border-rose-900 p-32 rounded-xl flex flex-col items-center justify-center text-white text-6xl font-bold shadow-2xl ${
+  //   isVisible ? "" : "hidden"
+  // }`}
+
   return (
     <div
       className={`absolute z-20 top-1/4 translate-y-1 bg-rose-700 border border-rose-900 p-32 rounded-xl flex flex-col items-center justify-center text-white text-6xl font-bold shadow-2xl ${

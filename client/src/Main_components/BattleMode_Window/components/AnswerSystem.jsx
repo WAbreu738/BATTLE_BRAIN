@@ -10,11 +10,8 @@ const handleAnswer = (
   setAnswerState,
   setPointsEarned,
   fetchQuestions,
-  setPlayerOneHealth, //get good wesley
-  setPlayerTwoHealth,
-  playerOneHealth,
-  playerTwoHealth,
-  setWinner
+  setPlayerOneHealth,
+  setPlayerTwoHealth
   // setTimeLeft
 ) => {
   setIsAnswered(true);

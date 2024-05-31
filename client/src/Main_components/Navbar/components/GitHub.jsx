@@ -39,6 +39,14 @@ export default function GitHub() {
         <img src={GitHubIcon} className="h-6 w-6 m-2 text-white-900" />
         <h2 className="text-lg">Alice Ayres</h2>
       </a>
+      <a
+        href="https://donate.stripe.com/test_bIY8zygLg0E2a6Q7ss"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="animate-wiggle animate-infinite animate-ease-out absolute -top-5 -right-9 bg-gray-900 text-white border border-white p-3 rounded-xl text-3xl shadow-lg transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
+      >
+        Donate
+      </a>
     </div>
   );
 }

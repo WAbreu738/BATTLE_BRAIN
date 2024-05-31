@@ -65,6 +65,28 @@ const SPPlay = () => {
     }
   }, [countdown]);
 
+  useEffect(() => {
+    if (strikes === 3) {
+      setTimeout(() => {
+        setGameOver({ score });
+      }, 2000);
+    }
+  }, [strikes]);
+
+  useEffect(() => {
+    if (timeLeft < 0) {
+      setAnswerState("incorrect");
+      setStrikes((prevStrikes) => prevStrikes + 1);
+      setTimeout(() => {
+        setIsAnswered(false);
+        setAnswerState(null);
+        fetchQuestions();
+        setRound((prevRound) => prevRound + 1);
+        setTimeLeft(15);
+      }, 2000);
+    }
+  }, [timeLeft]);
+
   const handleAnswer = (answer) => {
     if (isAnswered) return;
     setIsAnswered(true);
@@ -83,23 +105,14 @@ const SPPlay = () => {
       }, 2000);
     } else {
       setAnswerState("incorrect");
-      setStrikes((prevStrikes) => {
-        const newStrikes = prevStrikes + 1;
-        if (newStrikes === 3) {
-          setTimeout(() => {
-            setGameOver({ score });
-          }, 2000);
-        } else {
-          setTimeout(() => {
-            setIsAnswered(false);
-            setAnswerState(null);
-            fetchQuestions();
-            setRound((prevRound) => prevRound + 1);
-            setTimeLeft(15);
-          }, 2000);
-        }
-        return newStrikes;
-      });
+      setStrikes((prevStrikes) => prevStrikes + 1);
+      setTimeout(() => {
+        setIsAnswered(false);
+        setAnswerState(null);
+        fetchQuestions();
+        setRound((prevRound) => prevRound + 1);
+        setTimeLeft(15);
+      }, 2000);
     }
   };
 

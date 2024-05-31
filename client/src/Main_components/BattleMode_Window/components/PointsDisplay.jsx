@@ -14,7 +14,7 @@ const PointsDisplay = ({ pointsEarned, onComplete }) => {
       const timer = setTimeout(() => {
         setDisplayText(difference.toString());
         onComplete();
-      }, 3000); // Adjust based on your animation timing
+      }, 3000);
 
       return () => clearTimeout(timer);
     }

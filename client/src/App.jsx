@@ -1,5 +1,11 @@
-import { Route, Routes } from "react-router-dom";
-import { useState, useContext, createContext, useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import {
+  useState,
+  useContext,
+  createContext,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import HomeWindow from "./Main_components/Home_Window";
 import BattleMode from "./Main_components/BattleMode_Window";
 import LobbyWindow from "./Main_components/Lobby_Window";
@@ -18,7 +24,27 @@ import Settings from "./Main_components/Navbar";
 // import { createClient } from "graphql-ws";
 
 function App() {
-  const { state } = useStore();
+  const { state, setPage } = useStore();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === "/lobby") {
+      setPage("/");
+    } else if (path === "/singleplayer") {
+      setPage("/");
+    } else if (path === "/spplay") {
+      setPage("/singleplayer");
+    } else if (path === "/category") {
+      setPage("/lobby");
+    } else if (path === "/battle") {
+      setPage("/category");
+    } else if (path === "/settings") {
+      setPage("/");
+    }
+  }, [location]);
+
   // console.log(state.user);
 
   // const httpLink = new HttpLink({

@@ -5,7 +5,9 @@ import { GET_AVATAR, GET_STATS } from "../../../graphql/queries";
 const PlayerSec = () => {
   const { state } = useStore();
 
-  const { loading: statsLoading, data: statsData } = useQuery(GET_STATS);
+  const { loading: statsLoading, data: statsData } = useQuery(GET_STATS, {
+    pollInterval: 5000,
+  });
   const { loading: avatarLoading, data: avatarData } = useQuery(GET_AVATAR);
 
   console.log("avatar data:", avatarData);
@@ -42,19 +44,6 @@ const PlayerSec = () => {
           High Score: {!statsLoading ? statsData?.getStats?.highScore : "N/A"}
         </p>
       </div>
-
-      {/* Options for Game Modes if we want to implement, otherwise delete this */}
-      {/* <h2 className="text-2xl font-bold text-white mb-4 text-center">
-        Game Mode
-      </h2>
-      <div className="flex justify-around">
-        <button className="bg-purple-500 text-white py-4 px-8 rounded-xl text-xl shadow-lg hover:bg-purple-700 transition ease-in-out hover:scale-105 hover:drop-shadow-lg">
-          High Score
-        </button>
-        <button className="bg-purple-500 text-white py-4 px-8 rounded-xl text-xl shadow-lg hover:bg-purple-700 transition ease-in-out hover:scale-105 hover:drop-shadow-lg">
-          Time Trial
-        </button>
-      </div> */}
     </div>
   );
 };

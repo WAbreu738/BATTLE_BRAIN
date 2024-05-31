@@ -17,6 +17,7 @@ export const GlobalStateProvider = ({ children }) => {
     difficulty: "easy,medium,hard",
     region: "",
     user: null,
+    page: "",
   };
 
   const [state, setState] = useState(initialState);
@@ -47,9 +48,20 @@ export const GlobalStateProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, category: newCategory }));
   };
 
+  const setPage = (page) => {
+    setState((prevState) => ({ ...prevState, page: page }));
+  };
+
   return (
     <Context.Provider
-      value={{ state, setDifficulty, setRegion, setCategory, setState }}
+      value={{
+        state,
+        setDifficulty,
+        setRegion,
+        setCategory,
+        setState,
+        setPage,
+      }}
     >
       {children}
     </Context.Provider>

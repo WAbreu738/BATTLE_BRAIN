@@ -42,7 +42,6 @@ const app = express()
 const Chat = require('./model/Chat')
 const User = require('./model/User')
 
-const httpServer = createServer(app)
 
 //middlewares
 //app.use(cors(corsOptions));
@@ -74,6 +73,7 @@ const httpServer = createServer(app)
 
 //app.use(bodyParser.json());
 
+const httpServer = createServer(app)
 app.use('/api', routes)
 
 //Testing for socket
@@ -137,12 +137,12 @@ async function startServer() {
       schema,
       context: async (ctx, msg, args) => {
         // This will be run every time the client sends a subscription request
-        // console.log('context', ctx)
+        console.log('context', ctx)
         return getDynamicContext(ctx, msg, args);
       },
       onConnect: async (ctx) => {
         // Check authentication every time a client connects.
-        // console.log('onconnect', ctx)
+        console.log('onconnect', ctx)
         // if (tokenIsNotValid(ctx.connectionParams)) {
         //   // You can return false to close the connection  or throw an explicit error
         //   throw new Error('Auth token missing!');

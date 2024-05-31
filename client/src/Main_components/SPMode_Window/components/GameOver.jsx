@@ -5,10 +5,13 @@ import { NavLink } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { UPDATE_SCORE } from "../../../graphql/mutations";
-import { GET_STATS } from "../../../graphql/queries";
+import { GET_STATS, GET_AVATAR } from "../../../graphql/queries";
+import { useStore } from "../../OptionsProvider";
 
 const GameOver = ({ score }) => {
+  const { state } = useStore();
   const { data, loading, error } = useQuery(GET_STATS);
+  const { loading: avatarLoading, data: avatarData } = useQuery(GET_AVATAR);
   const oldScore = data?.getStats?.highScore;
 
   const [highScore, setHighScore] = useState(oldScore); // get highscore form graphql and append it here
@@ -47,8 +50,9 @@ const GameOver = ({ score }) => {
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
       <Confetti width={window.innerWidth} height={window.innerHeight} />
       <div className="text-center text-white">
+        <h1 className="font-bold text-xl">{state.user.username}</h1>
         <img
-          // src={winner.avatar}
+          src={avatarLoading ? "" : avatarData?.getAvatar?.profile}
           // alt={winner.name}
           className="w-32 h-32 rounded-full mb-4 border-4 border-yellow-500 mx-auto"
         />

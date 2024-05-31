@@ -13,7 +13,7 @@ const AvatarSelector = () => {
   const [startIdx, setStartIdx] = useState(0);
   const [middleIndex, setMiddleIndex] = useState(1); // Track middle image index
   const [avatarUrl, setAvatarUrl] = useState({
-    profile: "",
+    profile: `https://randomuser.me/api/portraits/lego/0.jpg`,
   });
 
   const [addAvatar] = useMutation(ADD_AVATAR, {
@@ -31,24 +31,29 @@ const AvatarSelector = () => {
     setStartIdx(startIdx + 1);
   };
 
+  //waits until data is not loading to set the url so that it is the value stored in mongodb
   useEffect(() => {
-    addAvatar({
-      variables: avatarUrl,
-    });
-  }, [avatarUrl]);
+    if (!loading) {
+      //if logged out set avatar to 0
+      if (typeof data === "undefined") {
+        setAvatarUrl({
+          profile: `https://randomuser.me/api/portraits/lego/0.jpg`,
+        });
+        setMiddleIndex(0);
+      } else {
+        setAvatarUrl({ profile: data.getAvatar.profile });
+        setMiddleIndex(parseInt(data.getAvatar.profile.slice(41, 42))); //dependant on the url, just snipping the number
+      }
+    }
+  }, [loading]);
 
-  // useEffect(() => {
-  //   if (loading) {
-  //     setAvatarUrl({
-  //       profile: `https://randomuser.me/api/portraits/lego/0.jpg`,
-  //     });
-  //     setMiddleIndex(0);
-  //   } else {
-  //     setAvatarUrl(data.addAvatar);
-  //     setMiddleIndex(3);
-  //   }
-  //   console.log(avatarUrl);
-  // }, [loading]);
+  useEffect(() => {
+    if (!loading) {
+      addAvatar({
+        variables: avatarUrl,
+      });
+    }
+  }, [avatarUrl]);
 
   const avatarTransition = "transition-transform duration-700 ease-out";
   const hoverTransition =
