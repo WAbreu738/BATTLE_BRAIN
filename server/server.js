@@ -3,6 +3,8 @@ const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/dra
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { WebSocketServer } = require('ws');
 const { useServer } = require('graphql-ws/lib/use/ws');
+const cors = require('cors')
+
 
 const express = require('express')
 
@@ -131,36 +133,58 @@ async function startServer() {
   };
 
   // ...
-  useServer(
-    {
-      // Our GraphQL schema.
-      schema,
-      context: async (ctx, msg, args) => {
-        // This will be run every time the client sends a subscription request
-        // console.log('context', ctx)
-        return getDynamicContext(ctx, msg, args);
-      },
-      onConnect: async (ctx) => {
-        // Check authentication every time a client connects.
-        // console.log('onconnect', ctx)
-        // if (tokenIsNotValid(ctx.connectionParams)) {
-        //   // You can return false to close the connection  or throw an explicit error
-        //   throw new Error('Auth token missing!');
-        // } else {
-        //   console.log('Your connected!')
-        // }
-        return {}
-      },
-      onDisconnect(ctx, code, reason) {
-        console.log('Disconnected!');
-      },
-    },
-    wsServer,
-  );
+  // useServer(
+  //   {
+  //     // Our GraphQL schema.
+  //     schema,
+  //     context: async (ctx, msg, args) => {
+  //       // This will be run every time the client sends a subscription request
+  //       console.log('context', ctx)
+  //       return getDynamicContext(ctx, msg, args);
+  //     },
+  //     onConnect: async (ctx) => {
+  //       // Check authentication every time a client connects.
+  //       console.log('onconnect', ctx)
+  //       // if (tokenIsNotValid(ctx.connectionParams)) {
+  //       //   // You can return false to close the connection  or throw an explicit error
+  //       //   throw new Error('Auth token missing!');
+  //       // } else {
+  //       //   console.log('Your connected!')
+  //       // }
+  //       return {}
+  //     },
+  //     onDisconnect(ctx, code, reason) {
+  //       console.log('Disconnected!');
+  //     },
+  //   },
+  //   wsServer,
+  // );
+
 
   // Hand in the schema we just created and have the
   // WebSocketServer start listening.
-  const serverCleanup = useServer({ schema }, wsServer);
+  const serverCleanup = useServer({
+    schema,
+    context: async (ctx, msg, args) => {
+      // This will be run every time the client sends a subscription request
+      console.log('context', ctx)
+      return getDynamicContext(ctx, msg, args);
+    },
+    onConnect: async (ctx) => {
+      // Check authentication every time a client connects.
+      console.log('onconnect', ctx)
+      // if (tokenIsNotValid(ctx.connectionParams)) {
+      //   // You can return false to close the connection  or throw an explicit error
+      //   throw new Error('Auth token missing!');
+      // } else {
+      //   console.log('Your connected!')
+      // }
+      return {}
+    },
+    onDisconnect(ctx, code, reason) {
+      console.log('Disconnected!');
+    },
+  }, wsServer);
 
   await apolloServer.start()
 
@@ -169,6 +193,11 @@ async function startServer() {
     // cors({
     //   origin: 'http://localhost:5173'
     // }),
+
+    cors({
+      origin: 'http://localhost:5173',
+      credentials: true,
+    }),
     express.json(),
     cookieParser(),
     expressMiddleware(apolloServer, {
