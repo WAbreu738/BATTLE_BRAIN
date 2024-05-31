@@ -10,12 +10,12 @@ const handleAnswer = (
   setAnswerState,
   setPointsEarned,
   fetchQuestions,
-  setPlayerOneHealth,
+  setPlayerOneHealth, //get good wesley
   setPlayerTwoHealth,
   playerOneHealth,
   playerTwoHealth,
-  setWinner,
-  setTimeLeft
+  setWinner
+  // setTimeLeft
 ) => {
   setIsAnswered(true);
 
@@ -28,14 +28,6 @@ const handleAnswer = (
   }
 
   setPointsEarned(points);
-
-  setTimeout(() => {
-    setIsAnswered(false);
-    setTimeLeft(10);
-    setAnswerState(null);
-    fetchQuestions();
-  }, 5000);
-  //Timer to set animation ^
 
   if (answer === currentQuestion.correctAnswer) {
     if (player === "playerOne") {
@@ -50,13 +42,12 @@ const handleAnswer = (
       );
     }
   }
-  //Timer set for health bar
 
-  if (playerOneHealth <= 0) {
-    setWinner("Player Two");
-  } else if (playerTwoHealth <= 0) {
-    setWinner("Player One");
-  }
+  setTimeout(() => {
+    setIsAnswered(false);
+    setAnswerState(null);
+    fetchQuestions();
+  }, 5000);
 };
 
 export default handleAnswer;

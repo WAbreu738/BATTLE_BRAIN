@@ -14,12 +14,15 @@ import BattleBtn from "./components/BattleBtn";
 const CategoryWindow = () => {
   return (
     <div className=" flex items-center justify-center h-screen p-4">
-      <div className="relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-10 max-w-lg w-full">
+      <div className="relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-8 max-w-lg w-full">
         <PlayersSec />
         {/* <h2 className="text-4xl font-bold text-white mb-6 text-center">
           Categories
         </h2> */}
-        <img className=" w-9/12 mx-auto -m-4 mb-5" src={Category} />
+        <img
+          className=" w-8/12 mx-auto -m-4 mb-5 bg-cyan-950 rounded-xl shadow-lg"
+          src={Category}
+        />
         <div className="grid grid-cols-3 gap-4">
           <CategoryBtns />
         </div>
@@ -35,7 +38,7 @@ const CategoryWindow = () => {
           <BackBtn />
         </div>
         {/* <Chat /> */}
-        <div className="absolute w-2/5 left-1/2 -translate-x-1/2 bottom-5">
+        <div className="absolute w-2/5 left-1/2 -translate-x-1/2 bottom-3">
           <BattleBtn />
         </div>
       </div>

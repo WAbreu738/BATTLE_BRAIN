@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { useQuery, useMutation, gql, useSubscription } from "@apollo/client";
 import { GET_MESSAGES } from "../../../graphql/queries";
 import { POST_MESSAGE } from "../../../graphql/mutations";
 import { useStore } from "../../OptionsProvider";
+import { MESSAGE_ADDED } from "../../../graphql/subscriptions";
 import "./chat.css";
 
 // import { gql } from "@apollo/client";
@@ -17,7 +18,13 @@ make it refetch better somehow
 export default function ChatWindow() {
   const [formData, setFormData] = useState({ text: "", username: "" });
   const { loading, error, data } = useQuery(GET_MESSAGES);
+  const { loading: messageLoading, data: messageData } =
+    useSubscription(MESSAGE_ADDED);
   const { state } = useStore();
+
+  useEffect(() => {
+    console.log(messageLoading, messageData);
+  }, [messageLoading, messageData]);
 
   const [postMessage] = useMutation(POST_MESSAGE, {
     variables: formData,
@@ -41,12 +48,12 @@ export default function ChatWindow() {
     // console.log("state correct value? ", state.user.username);
 
     const username = state.user.username; //add authentica and refer userid from it
-    console.log(username);
+    // console.log(username);
     setFormData({ text, username });
 
-    console.log("userId", username);
+    // console.log("userId", username);
     try {
-      const data = await postMessage();
+      const data = await postMessage({ variables: { text, username } });
       console.log("data", data);
       // console.error(
       //   "Uncaught TypeError: Cannot read property getMessage of undefined. Validation Error: 201456"
@@ -75,8 +82,10 @@ export default function ChatWindow() {
             </button>
           </form>
           <ul className="mt-3 p-1 bg-gray-100 rounded text-sm overflow-y-auto chat-output ">
-            {data?.getMessages.map(({ text, id }) => (
-              <li key={id}>{text}</li>
+            {data?.getMessages.map(({ text, username, id }) => (
+              <li key={id}>
+                {username}: {text}
+              </li>
             ))}
           </ul>
         </>

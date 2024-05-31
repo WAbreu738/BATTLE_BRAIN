@@ -24,14 +24,26 @@ export const LOGOUT_USER = gql`
   }
 `;
 
+export const ADD_AVATAR = gql`
+  mutation AddAvatar($profile: String!) {
+    addAvatar(profile: $profile)
+  }
+`;
+
 export const POST_MESSAGE = gql`
   mutation postMessage($text: String!, $username: String!) {
     postMessage(text: $text, username: $username) {
       id
       text
-      user {
-        username
-      }
+      username
+    }
+  }
+`;
+
+export const UPDATE_SCORE = gql`
+  mutation updateHighScore($highScore: Int!) {
+    updateHighScore(highScore: $highScore) {
+      highScore
     }
   }
 `;

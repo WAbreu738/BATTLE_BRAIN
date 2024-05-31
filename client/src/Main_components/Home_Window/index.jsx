@@ -4,6 +4,7 @@ import AvatarSelector from "./components/Avatar_Selector";
 import GameBtn from "./components/Game_Btn";
 import LoginModal from "./components/Login_Modal";
 import LogoutButton from "./Logout_button";
+import SettingsBtn from "./components/SettingsBtn";
 import { useStore } from "../OptionsProvider";
 
 const HomeWindow = (props) => {
@@ -14,19 +15,24 @@ const HomeWindow = (props) => {
         <Logo />
       </div>
 
-      <div className=" bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-8 max-w-lg w-full">
-        {/* USER INFO (avatar is placeholder atm) */}
-        <AvatarSelector />
-        {/* Checks if user is logged in, if true show logout, if not show login */}
-        {state.user ? (
-          <div className="flex mt-10">
-            <LogoutButton />
-          </div>
-        ) : (
-          <div className="flex mt-10">
-            <LoginModal />
+      <div className=" mb-8 bg-cyan-600 relative border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-8 max-w-lg w-full">
+        <div className="absolute -top-5 -right-5">
+          <SettingsBtn />
+        </div>
+        {state.user && <LogoutButton />}
+        {state.user && (
+          <div className="flex absolute top-4 left-1/2 -translate-x-1/2 bg-cyan-950 text-lg text-gray-100 font-bold rounded-xl py-1 px-2">
+            <p className="mr-2">Welcome:</p>
+            <p>{state.user?.username}</p>
           </div>
         )}
+
+        {/* USER INFO (avatar is placeholder atm) */}
+        <AvatarSelector />
+
+        {!state.user && <LoginModal />}
+
+        {/* Checks if user is logged in, if true show logout, if not show login */}
 
         {/* USER INFO END LINE */}
 

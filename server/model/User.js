@@ -13,12 +13,21 @@ const userSchema = new Schema({
     required: true,
     minlength: 6,
   },
-  // wins: {
-  //   type: Number,
-  // },
-  // losses: {
-  //   type: Number,
-  // }
+  profile: {
+    type: String
+  },
+  highScore: {
+    type: Number
+  },
+  gamesWon: {
+    type: Number
+
+  },
+  gamesLost: {
+    type: Number
+
+  },
+
 })
 
 // hash password before saving
@@ -34,8 +43,6 @@ userSchema.pre('save', async function (next) {
 
 //validate password method
 async function comparePasswords(password) {
-  console.log('password', password)
-  console.log('this.password', this.password)
 
   return bcrypt.compareSync(password, this.password)
 

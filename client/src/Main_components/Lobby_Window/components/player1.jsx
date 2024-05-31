@@ -7,7 +7,7 @@ const PlayerOne = () => {
         <img
           src="https://randomuser.me/api/portraits/lego/1.jpg"
           alt="Player Avatar"
-          className="w-10 h-10 rounded-full"
+          className="w-14 h-14 rounded-full"
         />
       </div>
       <p className="text-lg font-bold ml-4">Player 1</p>

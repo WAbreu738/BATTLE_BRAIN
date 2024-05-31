@@ -10,30 +10,41 @@ const typeDefs = gql`
   type User {
     _id: ID
     username: String
-    stats: Stats
+    profile: String
+    highScore: Int
+    gamesWon: Int
+    gamesLost: Int
   }
 
   type Message {
     id: ID!
     text: String!
-    user: User
+    username: String!
   }
-
+  
   type Query {
     authenticate: User
     getMessages: [Message]
     getUser: User
-    getStats: Stats
+    getStats: User
     getUserId: ID
     getUsername: String
+    getAvatar: User
   }
 
   type Mutation {
+    addAvatar(profile: String!): Boolean
     postMessage(text: String!, username: String): Message!
     registerUser(username: String!, password: String!): User
     loginUser(username: String!, password: String!): User
     logoutUser: Boolean
+    updateHighScore(highScore: Int!) : User
+    
   }
+
+  type Subscription {
+  messageAdded: Message
+}
 `;
 
 module.exports = typeDefs
