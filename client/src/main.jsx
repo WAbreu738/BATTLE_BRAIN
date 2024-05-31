@@ -11,12 +11,12 @@ import client from "../ApolloClient.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <React.StrictMode>
-      <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+      <React.StrictMode>
         <GlobalStateProvider>
           <App />
         </GlobalStateProvider>
-      </ApolloProvider>
-    </React.StrictMode>
+      </React.StrictMode>
+    </ApolloProvider>
   </BrowserRouter>
 );
