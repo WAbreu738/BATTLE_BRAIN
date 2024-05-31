@@ -5,6 +5,7 @@ const pubsub = new PubSub();
 
 const Message = require('../model/Chat') // pull the model (message)
 const User = require('../model/User')
+const Game = require('../model/Game')
 const { sign, verify } = require('jsonwebtoken');
 
 function createToken(user) {
@@ -44,6 +45,16 @@ const resolvers = {
     getStats: async (_, args, context) => {
       const user = await User.findById(context.req?.user.id)
       return user
+    },
+
+    pollGame: async (_, { gameId }, context) => {
+      const id = context.req?.user.id;
+
+      if (!id) throw new Error('Not Authorized');
+
+      const game = await Game.findById(gameId)
+
+      return game
     }
   },
 
@@ -78,34 +89,93 @@ const resolvers = {
       return true
     },
 
-    postMessage: async (_, { text, username }) => { // postMessage takes in the text and userId from the client
-      const message = await Message.create({ text, username }) // create a new message with the text and userId
-      pubsub.publish('MESSAGE_ADDED', { postCreated: message })
-
-      return message
-    },
-
     updateHighScore: async (_, { highScore }, context) => {
       const user = await User.findOneAndUpdate({ _id: context.req?.user.id }, { $set: { highScore: highScore } })
       return user
-    }
-  },
-
-  Subscription: {
-    messageAdded: {
-      subscribe: withFilter(
-        () => pubsub.asyncIterator('MESSAGE_ADDED'),
-        (payload, variables, context) => {
-          // Only push an update if the comment is on
-          // the correct repository for this operation
-          return (
-            // payload.commentAdded.repository_name === variables.repoFullName
-            true
-          );
-        },
-      ),
     },
-  },
+
+    createGame: async (_, args, context) => {
+      const id = context.req?.user.id
+      if (!id) throw new Error('You cannot perform this action.')
+
+      const user = await User.findById(id)
+
+      const game = await Game.create({
+        playerOne: {
+          player: user._id
+        }
+      })
+
+      return game
+    },
+
+    joinGame: async (_, { gameId }, context) => {
+      const id = context.req?.user.id;
+
+      if (!id) throw new Error('Not Authorized');
+
+      const game = await Game.findById(gameId)
+
+      if (game.playerTwo?.player) throw new Error('Cannot join. Game in progress.')
+
+      game.playerTwo.player = id
+
+      game.save()
+
+      return {
+        message: 'Joined game successfully!'
+      }
+    },
+
+    postChat: async (_, { text, gameId }, context) => {
+      const id = context.req?.user.id;
+
+      if (!id) throw new Error('Not Authorized');
+
+      const game = await Game.findById(gameId);
+      const user = await User.findById(id)
+
+      game.chats.push({ text, username: user.username });
+
+      await game.save();
+
+      return {
+        message: 'Chat posted successfully!'
+      }
+    },
+
+    attack: async (_, { gameId, isCorrect, amount, winner }, context) => {
+      const id = context.req?.user.id;
+
+      if (!id) throw new Error('Not Authorized');
+
+      if (!isCorrect) return {
+        message: 'No changes made.'
+      }
+
+      const game = await Game.findById(gameId)
+
+      const isPlayerOne = game.playerOne.player = id
+
+      if (isPlayerOne) {
+        const score = game.playerTwo.score;
+        game.playerTwo.score = score - amount;
+      } else {
+        const score = game.playerOne.score;
+        game.playerOne.score = score - amount;
+      }
+
+      if (winner) {
+        game.winner = id
+      }
+
+      await game.save()
+
+      return {
+        message: 'Attack completed successfully!'
+      }
+    }
+  }
 }
 
 module.exports = resolvers
