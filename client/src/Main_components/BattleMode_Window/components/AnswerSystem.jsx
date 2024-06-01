@@ -12,7 +12,6 @@ const handleAnswer = (
   fetchQuestions,
   setPlayerOneHealth,
   setPlayerTwoHealth
-  // setTimeLeft
 ) => {
   setIsAnswered(true);
 

@@ -15,16 +15,16 @@ const WinnerDisplay = ({ winner }) => {
         <h2 className="text-6xl font-bold mb-4">{winner.name} Wins!</h2>
         <div className="text-4xl">🏆 👑 🏆</div>
         <button
-          className="mt-8 px-4 py-2 bg-purple-700 text-white rounded-md"
+          className="mt-8 mr-4 px-4 py-3 bg-purple-700 text-white rounded-md"
           onClick={() => window.location.reload()}
         >
           Play Again
         </button>
         <NavLink
-          className="mt-4 px-4 py-2 bg-purple-700 text-white rounded-md"
+          className="mt-4 px-4 py-3 bg-purple-700 text-white rounded-md"
           to="/category"
         >
-          Continue to Categories
+          Back to Categories
         </NavLink>
       </div>
     </div>

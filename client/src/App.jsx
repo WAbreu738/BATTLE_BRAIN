@@ -16,6 +16,7 @@ import Background from "./Main_components/Background";
 import axios from "axios";
 import { useStore } from "./Main_components/OptionsProvider";
 import Settings from "./Main_components/Navbar";
+import JoinCreate from "./Main_components/Create_Join.jsx";
 //import { socket } from "./socket.js";
 
 // import { split, HttpLink } from "@apollo/client";
@@ -30,8 +31,10 @@ function App() {
 
   useEffect(() => {
     const path = location.pathname;
-    if (path === "/lobby") {
+    if (path === "/join-create") {
       setPage("/");
+    } else if (path === "/lobby") {
+      setPage("/join-create");
     } else if (path === "/singleplayer") {
       setPage("/");
     } else if (path === "/spplay") {
@@ -91,6 +94,7 @@ function App() {
             {/* Conditionally render protected routes based on authentication status */}
             {state.user ? (
               <>
+                <Route path="/join-create" element={<JoinCreate />} />
                 <Route path="/lobby" element={<LobbyWindow />} />
                 <Route path="/singleplayer" element={<SPCategoryWindow />} />
                 <Route path="/spplay" element={<SPPlay />} />

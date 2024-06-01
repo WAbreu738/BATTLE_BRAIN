@@ -100,10 +100,18 @@ const BattleMode = () => {
     }
   }, [playerOneHealth, playerTwoHealth]);
 
-  return (
-    <section className="flex flex-col items-center justify-center relative">
-      {showRoundScreen && <RoundScreen round={round} multiplier={multiplier} />}
+  useEffect(() => {
+    if (timeLeft < 0) {
+      setAnswerState("incorrect");
+      setTimeout(() => {
+        setAnswerState(null);
+        fetchQuestions();
+      }, 5000);
+    }
+  }, [timeLeft]);
 
+  return (
+    <section className="flex flex-col items-center justify-center h-screen relative">
       {winner ? (
         <WinnerDisplay winner={winner} />
       ) : (
@@ -113,7 +121,7 @@ const BattleMode = () => {
               <h1>Game starting in {countdown}...</h1>
             </div>
           ) : (
-            <div className="bg-cyan-600 border border-cyan-800 relative bg-opacity-90 shadow-xl rounded-xl max-w-4xl w-full flex flex-col md:flex-row items-start mt-40">
+            <div className="bg-cyan-600 border border-cyan-800 relative bg-opacity-90 shadow-xl rounded-xl max-w-4xl w-full flex flex-col md:flex-row items-start">
               <div className="flex flex-col items-center justify-center absolute left-3 top-1/2 -translate-y-1/2 z-10">
                 <HealthBar player={playerOne} health={playerOneHealth} />
               </div>
@@ -131,7 +139,10 @@ const BattleMode = () => {
                 </div>
 
                 <div className="p-5 bg-cyan-950 rounded-xl flex justify-center mx-16 min-h-80">
-                  {currentQuestion && (
+                  {showRoundScreen && (
+                    <RoundScreen round={round} multiplier={multiplier} />
+                  )}
+                  {!showRoundScreen && currentQuestion && (
                     <Question
                       question={currentQuestion.question.text}
                       options={currentQuestion.incorrectAnswers}
@@ -164,7 +175,7 @@ const BattleMode = () => {
                 <div className="text-white text-xl mt-3 flex justify-between">
                   <div className="text-3xl font-bold">P1: {pointsEarned}</div>
 
-                  {/* {bothPlayersAnswered && <div>{difference}</div>} */}
+                  {/* <div>{difference}</div>} */}
 
                   <div className="text-3xl font-bold">{pointsEarned} :P2</div>
                 </div>

@@ -3,7 +3,6 @@ const { withFilter, PubSub } = require('graphql-subscriptions');
 
 const pubsub = new PubSub();
 
-const Message = require('../model/Chat') // pull the model (message)
 const User = require('../model/User')
 const Game = require('../model/Game')
 const { sign, verify } = require('jsonwebtoken');
@@ -29,9 +28,9 @@ const resolvers = {
       return user
     },
 
-    getMessages: async (_, args, context) => {
-      return await Message.find()
-    },
+    // getMessages: async (_, args, context) => {
+    //   return await Message.find()
+    // },
 
     // getUserId: async (_, args, context) => {
     //   return context.req?.user.id
@@ -63,7 +62,6 @@ const resolvers = {
       const newUser = await User.create({ username: args.username, password: args.password, profile: "" })
       const token = createToken(newUser)
       context.res.cookie('token', token, { httpOnly: true })
-      //console.log(newUser)
       return newUser
     },
 
@@ -96,6 +94,7 @@ const resolvers = {
 
     createGame: async (_, args, context) => {
       const id = context.req?.user.id
+      console.log("current user", id)
       if (!id) throw new Error('You cannot perform this action.')
 
       const user = await User.findById(id)
@@ -110,11 +109,20 @@ const resolvers = {
     },
 
     joinGame: async (_, { gameId }, context) => {
+      console.log("recieved gameId", gameId)
       const id = context.req?.user.id;
+
+      console.log("userId", id)
 
       if (!id) throw new Error('Not Authorized');
 
       const game = await Game.findById(gameId)
+
+      console.log("game", game)
+
+      if (!game) {
+        throw new Error('Game not found.');
+      }
 
       if (game.playerTwo?.player) throw new Error('Cannot join. Game in progress.')
 
@@ -122,9 +130,7 @@ const resolvers = {
 
       game.save()
 
-      return {
-        message: 'Joined game successfully!'
-      }
+      return true
     },
 
     postChat: async (_, { text, gameId }, context) => {
@@ -170,6 +176,8 @@ const resolvers = {
       }
 
       await game.save()
+
+      // take current game ,, assign it to a const , return it to the front end , so it know the game status
 
       return {
         message: 'Attack completed successfully!'

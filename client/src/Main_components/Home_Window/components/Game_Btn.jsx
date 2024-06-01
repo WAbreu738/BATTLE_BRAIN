@@ -16,7 +16,7 @@ const GameBtn = () => {
         <img src={singlePlayer} alt="single player button" />
       </NavLink>
       <NavLink
-        to={state.user ? "/lobby" : "/"}
+        to={state.user ? "/join-create" : "/"}
         className="bg-cyan-950 rounded-xl shadow-md transition ease-in-out hover:scale-105 hover:drop-shadow-lg max-w-52 hover:animate-pulse"
       >
         <img src={battleMode} alt="single player button" />

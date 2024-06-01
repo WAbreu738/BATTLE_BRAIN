@@ -15,7 +15,7 @@ export const calculatePoints = (timeLeft, multiplier) => {
   // else if (timeLeft >= 3) points = 170;
   // else if (timeLeft >= 2) points = 140;
   // else if (timeLeft >= 1) points = 100;
-  // else points = 50;0
+  // else points = 50;
 
   return points * multiplier;
 };

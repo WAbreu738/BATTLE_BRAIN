@@ -27,7 +27,7 @@ const RoundScreen = ({ round, multiplier }) => {
 
   return (
     <div
-      className={`absolute z-20 top-1/4 translate-y-1 bg-rose-700 border border-rose-900 p-32 rounded-xl flex flex-col items-center justify-center text-white text-6xl font-bold shadow-2xl ${
+      className={`absolute z-20 h-64 translate-y-1 bg-cyan-800 border p-20 rounded-xl flex flex-col items-center justify-center text-white text-6xl font-bold shadow-2xl ${
         isVisible ? "" : "hidden"
       }`}
     >
@@ -37,5 +37,9 @@ const RoundScreen = ({ round, multiplier }) => {
     </div>
   );
 };
+
+// className={`absolute z-20 top-1/4 translate-y-1 bg-rose-700 border border-rose-900 p-32 rounded-xl flex flex-col items-center justify-center text-white text-6xl font-bold shadow-2xl ${
+//   isVisible ? "" : "hidden"
+// }`}
 
 export default RoundScreen;

@@ -17,15 +17,15 @@ export const GET_AVATAR = gql`
   }
 `;
 
-export const GET_MESSAGES = gql`
-  query GetMessages {
-    getMessages {
-      id
-      text
-      username
-    }
-  }
-`;
+// export const GET_MESSAGES = gql`
+//   query GetMessages {
+//     getMessages {
+//       id
+//       text
+//       username
+//     }
+//   }
+// `;
 
 export const GET_STATS = gql`
   query GetStats {
@@ -33,6 +33,18 @@ export const GET_STATS = gql`
       highScore
       gamesWon
       gamesLost
+    }
+  }
+`;
+
+export const POLL_GAME = gql`
+  query pollGame {
+    pollGame {
+      _id
+      playerOne
+      playerTwo
+      chats
+      winner
     }
   }
 `;

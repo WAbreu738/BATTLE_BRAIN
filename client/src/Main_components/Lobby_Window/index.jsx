@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import RoomCode from "./components/roomcode";
 import StartBtn from "./components/start_btn";
 import PlayerOne from "./components/player1";
 import PlayerTwo from "./components/player2";
@@ -15,8 +14,6 @@ const LobbyWindow = () => {
       </div>
 
       <div className=" relative bg-cyan-600 bg-opacity-90 shadow-lg rounded-xl p-8 max-w-lg w-full">
-        <RoomCode />
-
         <div className="mb-12 text-center">
           <div className="flex justify-center space-x-7">
             <PlayerOne />

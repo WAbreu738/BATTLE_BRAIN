@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./animation.css";
 
-const PointsDisplay = ({ pointsEarned, onComplete }) => {
+const PointsDifference = ({ pointsEarned, onComplete }) => {
   const [displayText, setDisplayText] = useState("");
   const [difference, setDifference] = useState(0);
 
   useEffect(() => {
-    if (pointsEarned) {
+    if (pointsEarned > pointsEarned) {
+      //if player 1 points greater than player 2
       setDisplayText(`${pointsEarned} - ${pointsEarned}`);
       const diff = Math.abs(pointsEarned - pointsEarned);
       setDifference(diff);
@@ -15,16 +15,24 @@ const PointsDisplay = ({ pointsEarned, onComplete }) => {
         setDisplayText(difference.toString());
         onComplete();
       }, 3000);
+    } else {
+      //if player 2 is greater than player 1
+      setDisplayText(`${pointsEarned} - ${pointsEarned}`);
+      const diff = Math.abs(pointsEarned - pointsEarned);
+      setDifference(diff);
 
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => {
+        setDisplayText(difference.toString());
+        onComplete();
+      }, 3000);
     }
-  }, [pointsEarned, difference, onComplete]);
+  }, [pointsEarned, difference]);
 
   return (
-    <div className="points-display">
-      <div>{displayText}</div>
+    <div>
+      <div>{difference}</div>
     </div>
   );
 };
 
-export default PointsDisplay;
+export default PointsDifference;

@@ -43,8 +43,8 @@ const typeDefs = gql`
     authenticate: User
     getUser: User
     getStats: User
-    getUserId: ID
-    getUsername: String
+    # getUserId: ID
+    # getUsername: String
     getAvatar: User
     pollGame(gameId: ID): Game
   }
@@ -56,9 +56,9 @@ const typeDefs = gql`
     logoutUser: Boolean
     updateHighScore(highScore: Int!) : User
     createGame: Game
-    joinGame(gameId: ID): Response
+    joinGame(gameId: ID): Game
     postChat(text: String!, gameId: ID): Response
-    attack: (gameId: ID, isCorrect: Boolean, amount: Int, winner: Boolean): Response
+    attack(gameId: ID, isCorrect: Boolean, amount: Int, winner: Boolean): Response
   }
 `;
 

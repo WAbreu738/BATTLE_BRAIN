@@ -1,10 +1,10 @@
 const { createServer } = require('http');
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
-const { WebSocketServer } = require('ws');
-const { useServer } = require('graphql-ws/lib/use/ws');
+// const { WebSocketServer } = require('ws');
+// const { useServer } = require('graphql-ws/lib/use/ws');
 const cors = require('cors')
-
+const client = require('./config/client')
 
 const express = require('express')
 
@@ -27,8 +27,6 @@ const { isAuth } = require('./config/auth')
 const routes = require('./routes')
 
 const app = express()
-
-const httpServer = createServer(app)
 
 const httpServer = createServer(app)
 app.use('/api', routes)
