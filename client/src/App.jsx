@@ -33,16 +33,16 @@ function App() {
     const path = location.pathname;
     if (path === "/join-create") {
       setPage("/");
-    } else if (path === "/lobby") {
+    } else if (path === `/lobby/${state.roomcode}`) {
       setPage("/join-create");
     } else if (path === "/singleplayer") {
       setPage("/");
     } else if (path === "/spplay") {
       setPage("/singleplayer");
-    } else if (path === "/category") {
-      setPage("/lobby");
-    } else if (path === "/battle") {
-      setPage("/category");
+    } else if (path === `/category/${state.roomcode}`) {
+      setPage(`/lobby/${state.roomcode}`);
+    } else if (path === `/battle/${state.roomcode}`) {
+      setPage(`/category/${state.roomcode}`);
     } else if (path === "/settings") {
       setPage("/");
     }
