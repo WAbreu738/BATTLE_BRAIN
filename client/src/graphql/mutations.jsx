@@ -63,6 +63,18 @@ export const JOIN_GAME = gql`
   }
 `;
 
+export const START_GAME = gql`
+  mutation startGame($gameId: ID, $startGame: Boolean) {
+    startGame(gameId: $gameId, startGame: $startGame)
+  }
+`;
+
+export const START_BATTLE = gql`
+  mutation startBattle($gameId: ID, $startBattle: Boolean) {
+    startBattle(gameId: $gameId, startBattle: $startBattle)
+  }
+`;
+
 export const POST_CHAT = gql`
   mutation postChat($text: String!, $gameId: String!) {
     postChat(text: $text, gameId: $gameId) {
@@ -70,6 +82,25 @@ export const POST_CHAT = gql`
       text
       username
     }
+  }
+`;
+
+export const GAME_SETTINGS = gql`
+  mutation gameSettings($gameId: ID, $category: String, $difficulty: String) {
+    gameSettings(
+      gameId: $gameId
+      category: $category
+      difficulty: $difficulty
+    ) {
+      category
+      difficulty
+    }
+  }
+`;
+
+export const CURRENT_QUESTION = gql`
+  mutation currentQuestion($gameId: ID) {
+    currentQuestion(gameId: $gameId)
   }
 `;
 

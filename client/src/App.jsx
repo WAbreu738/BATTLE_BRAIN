@@ -1,11 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import {
-  useState,
-  useContext,
-  createContext,
-  useEffect,
-  useLayoutEffect,
-} from "react";
+import { useEffect } from "react";
 import HomeWindow from "./Main_components/Home_Window";
 import BattleMode from "./Main_components/BattleMode_Window";
 import LobbyWindow from "./Main_components/Lobby_Window";
@@ -17,12 +11,7 @@ import axios from "axios";
 import { useStore } from "./Main_components/OptionsProvider";
 import Settings from "./Main_components/Navbar";
 import JoinCreate from "./Main_components/Create_Join.jsx";
-//import { socket } from "./socket.js";
-
-// import { split, HttpLink } from "@apollo/client";
-// import { getMainDefinition } from "@apollo/client/utilities";
-// import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-// import { createClient } from "graphql-ws";
+import Leaderboard from "./Main_components/Leaderboard_Window";
 
 function App() {
   const { state, setPage } = useStore();
@@ -64,6 +53,7 @@ function App() {
                 <Route path="/lobby/:id" element={<LobbyWindow />} />
                 <Route path="/singleplayer" element={<SPCategoryWindow />} />
                 <Route path="/spplay" element={<SPPlay />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
                 <Route
                   path={`/category/${state.roomcode}`}
                   element={<CategoryWindow />}

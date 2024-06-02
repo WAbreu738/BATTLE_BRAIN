@@ -8,6 +8,10 @@ function createToken(user) {
   return sign({ id: user._id }, process.env.JWT_SECRET)// Create a JWT token by signing the user's ID with the secret key
 }
 
+//we create a function that fetches the question from the api 
+// then we pull it into one of our mutation , query 
+// and then we pull that query/mutation into our front end
+
 const resolvers = {
   Query: {
     // Auth resolver
@@ -53,12 +57,17 @@ const resolvers = {
 
       if (!id) throw new Error('Not Authorized');
 
-      const game = await Game.findById(gameId).populate('playerOne.player').populate('playerTwo.player')
+      const game = await Game.findById(gameId).populate('playerOne.player').populate('playerTwo.player').populate('question')
 
       //console.log(game)
 
       return game
-    }
+    },
+
+    getLeaderboard: async (_, args, context) => {
+      const users = await User.find()
+      return users
+    },
   },
 
   Mutation: {
@@ -125,26 +134,29 @@ const resolvers = {
     },
 
     joinGame: async (_, { gameId }, context) => {
-      //console.log("recieved gameId", gameId)
+      // console.log("recieved gameId", gameId)
       const id = context.req?.user.id;
       const user = await User.findById(id)
 
       if (!id) throw new Error('Not Authorized');
 
       const game = await Game.findById(gameId).populate('playerOne.player').populate('playerTwo.player')
+      //console.log(game)
 
       if (!game) {
         throw new Error('Game not found.');
       }
 
       if (game.playerTwo.player._id.equals(game.playerOne.player._id)) {
-        game.playerTwo.player._id = user._id
-        game.playerTwo.player.username = user.username
-        game.playerTwo.player.profile = user.profile
 
-        game.save()
+        const updatedGame = await Game.findByIdAndUpdate(gameId, { 'playerTwo.player': user._id }).populate('playerOne.player').populate('playerTwo.player')
+        // game.playerTwo.player._id = user._id
+        // game.playerTwo.player.username = user.username
+        // game.playerTwo.player.profile = user.profile
+        //console.log(updatedGame)
+        updatedGame.save()
 
-        console.log("New Game:", game)
+        console.log("New Game:", updatedGame)
       } else {
         throw new Error('Cannot join. Game in progress.')
       }
@@ -152,6 +164,23 @@ const resolvers = {
       return ({
         message: "Game join success!"
       })
+    },
+
+    startGame: async (_, { gameId, startGame }, context) => {
+      const game = await Game.findByIdAndUpdate(gameId, { $set: { startGame: startGame } })
+      game.save()
+      return game.startGame
+    },
+
+    startBattle: async (_, { gameId, startBattle }, context) => {
+      const game = await Game.findByIdAndUpdate(gameId, { $set: { startBattle: startBattle } })
+      game.save()
+      return game.startBatt
+    },
+
+    gameSettings: async (_, { gameId, category, difficulty }, context) => {
+      const game = await Game.findByIdAndUpdate(gameId, { $set: { category: category, difficulty: difficulty } })
+      return game
     },
 
     postChat: async (_, { text, gameId }, context) => {
@@ -169,6 +198,35 @@ const resolvers = {
       return {
         message: 'Chat posted successfully!'
       }
+    },
+
+    currentQuestion: async (_, { gameId }, context) => {
+      console.log(gameId)
+      const gameOptions = await Game.findById(gameId)
+      const category = gameOptions.category
+      const difficulty = gameOptions.difficulty
+      const url = `https://the-trivia-api.com/v2/questions?categories=${category}&limit=1&{difficulties=${difficulty}`;
+      const headers = {
+        "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
+      };
+
+      let question;
+      let correctAnswer;
+      let incorrectAnswers;
+
+      try {
+        const response = await fetch(url, { headers: headers });
+        const data = await response.json();
+        console.log(data[0]);
+        question = data[0].question.text
+        correctAnswer = data[0].correctAnswer
+        incorrectAnswers = data[0].incorrectAnswers
+      } catch (error) {
+        console.error("Error fetching trivia questions:", error);
+      }
+
+      const game = await Game.findByIdAndUpdate(gameId, { 'question.question': question, 'question.correctAnswer': correctAnswer, 'question.incorrectAnswers': incorrectAnswers }).populate('question')
+      return true
     },
 
     attack: async (_, { gameId, isCorrect, amount, winner }, context) => {

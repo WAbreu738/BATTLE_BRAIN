@@ -14,11 +14,12 @@ export const GlobalStateProvider = ({ children }) => {
 
   const initialState = {
     category: "",
-    difficulty: "easy,medium,hard",
+    difficulty: "",
     region: "",
     user: null,
     page: "",
     roomcode: "",
+    isConnected: "false",
   };
 
   const [state, setState] = useState(initialState);
@@ -57,6 +58,10 @@ export const GlobalStateProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, roomcode: roomcode }));
   };
 
+  const setIsConnected = (isConnected) => {
+    setState((prevState) => ({ ...prevState, isConnected: isConnected }));
+  };
+
   return (
     <Context.Provider
       value={{
@@ -67,6 +72,7 @@ export const GlobalStateProvider = ({ children }) => {
         setState,
         setPage,
         setRoomcode,
+        setIsConnected,
       }}
     >
       {children}

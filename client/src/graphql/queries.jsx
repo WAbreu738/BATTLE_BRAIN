@@ -37,6 +37,16 @@ export const GET_STATS = gql`
   }
 `;
 
+export const GET_LEADERBOARD = gql`
+  query GetLeaderboard {
+    getLeaderboard {
+      username
+      profile
+      highScore
+    }
+  }
+`;
+
 export const GET_GAME = gql`
   query GetGame($gameId: ID) {
     getGame(gameId: $gameId) {
@@ -63,6 +73,10 @@ export const POLL_GAME = gql`
           profile
         }
       }
+      startGame
+      startBattle
+      category
+      difficulty
       chats {
         _id
         text
@@ -72,6 +86,11 @@ export const POLL_GAME = gql`
         _id
         username
         profile
+      }
+      question {
+        question
+        correctAnswer
+        incorrectAnswers
       }
     }
   }

@@ -27,10 +27,21 @@ const typeDefs = gql`
     score: Int
   }
 
+  type Question {
+    question: String
+    correctAnswer: String
+    incorrectAnswers: [String]
+  }
+
   type Game {
     _id: ID
     playerOne: GamePlayer
     playerTwo: GamePlayer
+    startGame: Boolean
+    startBattle: Boolean
+    category: String
+    difficulty: String
+    question: Question
     chats: [Chat]
     winner: User
   }
@@ -48,6 +59,7 @@ const typeDefs = gql`
     getAvatar: User
     getGame(gameId: ID): Game
     pollGame(gameId: ID): Game
+    getLeaderboard: [User]
   }
 
   type Mutation {
@@ -58,9 +70,13 @@ const typeDefs = gql`
     updateHighScore(highScore: Int!) : User
     createGame: Game
     joinGame(gameId: ID): Game
+    startGame( gameId: ID, startGame: Boolean): Boolean
+    startBattle( gameId: ID, startBattle: Boolean): Boolean
+    gameSettings(gameId: ID, category: String, difficulty: String): Game
+    currentQuestion(gameId: ID): Boolean
     postChat(text: String!, gameId: ID): Response
     attack(gameId: ID, isCorrect: Boolean, amount: Int, winner: Boolean): Response
-  }
+  },
 `;
 
 module.exports = typeDefs

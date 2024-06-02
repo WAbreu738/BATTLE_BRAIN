@@ -1,7 +1,7 @@
 import catagories from "../../Buttons.config";
 import { useStore } from "../../OptionsProvider";
 
-const CategoryBtns = () => {
+const CategoryBtns = (props) => {
   const { state, setCategory } = useStore();
   const selectedCategory = state.category;
 
@@ -11,6 +11,7 @@ const CategoryBtns = () => {
     <>
       {catagories.map((item, index) => (
         <button
+          disabled={props.isPlayerTwo}
           key={index}
           // state={{ category: item.category }}
           onClick={() => handleCategoryClick(item.category)}

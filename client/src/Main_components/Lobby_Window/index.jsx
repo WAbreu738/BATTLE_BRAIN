@@ -6,9 +6,26 @@ import HomeBtn from "../HomeBtn";
 import BackBtn from "../BackBtn";
 import lobby from "../../assets/images/LOBBY.png";
 import { useStore } from "../OptionsProvider";
+import { useQuery, useMutation } from "@apollo/client";
+import { POLL_GAME } from "../../graphql/queries";
+import { redirect, useNavigate } from "react-router-dom";
 
 const LobbyWindow = () => {
   const { state } = useStore();
+  const navigate = useNavigate();
+
+  const { loading, error, data } = useQuery(POLL_GAME, {
+    variables: { gameId: state.roomcode },
+    pollInterval: 1000,
+  });
+
+  useEffect(() => {
+    if (!loading) {
+      if (data.pollGame.startGame) {
+        navigate(`/category/${state.roomcode}`);
+      }
+    }
+  }, [data]);
 
   const copyRoomCode = () => {
     console.log("Copied! ", state.roomcode);
@@ -36,7 +53,9 @@ const LobbyWindow = () => {
           </div>
         </div>
 
-        <StartBtn />
+        {!loading &&
+          state.isConnected &&
+          data.pollGame.playerOne.player._id === state.user._id && <StartBtn />}
         <div className="absolute -top-5 -right-5">
           <HomeBtn />
         </div>

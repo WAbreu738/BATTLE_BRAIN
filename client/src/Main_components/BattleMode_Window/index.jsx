@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import HomeBtn from "../HomeBtn";
 import BackBtn from "../BackBtn";
 import Timer from "./components/timer";
@@ -12,13 +12,20 @@ import playerOne from "./components/player1";
 import playerTwo from "./components/player2";
 import handleAnswer from "./components/AnswerSystem";
 import { generateRandomMultiplier } from "./components/pointsystem";
+import { CURRENT_QUESTION } from "../../graphql/mutations";
+import { POLL_GAME } from "../../graphql/queries";
+import { useQuery, useMutation } from "@apollo/client";
 // import fetchQuestions from "./components/API";
 // import PointsDisplay from "./components/PointsDisplay";
 
 import { useStore } from "../OptionsProvider"; //GlobalState
 
 const BattleMode = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [currentQuestionFE, setCurrentQuestionFE] = useState({
+    question: "",
+    correctAnswer: "",
+    incorrectAnswers: [],
+  });
   const [timeLeft, setTimeLeft] = useState(0);
   const [isAnswered, setIsAnswered] = useState(false);
   const [countdown, setCountdown] = useState(3);
@@ -30,50 +37,76 @@ const BattleMode = () => {
   const [showRoundScreen, setShowRoundScreen] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
   const [pointsEarned, setPointsEarned] = useState(null);
-  // const [playerOnePoints, setPlayerOnePoints] = useState(0);
-  // const [playerTwoPoints, setPlayerTwoPoints] = useState(0);
-  // const [showPoints, setShowPoints] = useState(false);
-  // const [bothPlayersAnswered, setBothPlayersAnswered] = useState(false);
 
-  const initialState = useStore();
-  const { difficulty, category } = initialState.state || {};
+  const { state } = useStore();
+  // const { difficulty, category } = initialState.state || {};
 
-  // const location = useLocation();
-  // const category = location.state.category;
-  // console.log(category);
-  // console.log(difficulty);
+  const [currentQuestion] = useMutation(CURRENT_QUESTION, {
+    variables: {
+      gameId: state.roomcode,
+    },
+  });
+
+  const { loading, error, data } = useQuery(POLL_GAME, {
+    variables: { gameId: state.roomcode },
+    pollInterval: 1000,
+  });
 
   const fetchQuestions = async () => {
-    const url = `https://the-trivia-api.com/v2/questions?categories=${category}&limit=1&{difficulties=${difficulty}`;
-    const headers = {
-      "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
-    };
+    currentQuestion();
 
-    try {
-      const response = await fetch(url, { headers: headers });
-      const data = await response.json();
+    // const url = `https://the-trivia-api.com/v2/questions?categories=${state.category}&limit=1&{difficulties=${state.difficulty}`;
+    // const headers = {
+    //   "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
+    // };
 
-      setCurrentQuestion(data[0]);
-    } catch (error) {
-      console.error("Error fetching trivia questions:", error);
-    }
+    // try {
+    //   const response = await fetch(url, { headers: headers });
+    //   const data = await response.json();
+    //   console.log(data[0].incorrectAnswers);
+    //   currentQuestion({
+    //     gameId: state.roomcode,
+    //     question: data[0].question.text,
+    //     correctAnswer: data[0].correctAnswer,
+    //     incorrectAnswers: data[0].incorrectAnswers,
+    //   });
+    //   // setCurrentQuestion(data[0]);
+    // } catch (error) {
+    //   console.error("Error fetching trivia questions:", error);
+    // }
   };
+
+  console.log("data:", data);
+
+  useEffect(() => {
+    if (!loading) {
+      console.log("pollgame:", data.pollGame);
+      if (data.pollGame.question != null) {
+        //make sure poll game has info before setting the current question
+        setCurrentQuestionFE({
+          question: data.pollGame.question.question,
+          correctAnswer: data.pollGame.question.correctAnswer,
+          incorrectAnswers: data.pollGame.question.incorrectAnswers,
+        });
+      }
+    }
+  }, [data.pollGame]);
 
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
     } else {
-      fetchQuestions(setCurrentQuestion);
+      fetchQuestions();
     }
   }, [countdown]);
 
   useEffect(() => {
-    if (currentQuestion) {
+    if (currentQuestionFE) {
       setRound((prevRound) => prevRound + 1);
       setShowRoundScreen(true);
     }
-  }, [currentQuestion]);
+  }, [currentQuestionFE]);
 
   useEffect(() => {
     if (showRoundScreen) {
@@ -142,23 +175,23 @@ const BattleMode = () => {
                   {showRoundScreen && (
                     <RoundScreen round={round} multiplier={multiplier} />
                   )}
-                  {!showRoundScreen && currentQuestion && (
+                  {!showRoundScreen && currentQuestionFE && (
                     <Question
-                      question={currentQuestion.question.text}
-                      options={currentQuestion.incorrectAnswers}
-                      correctAnswer={currentQuestion.correctAnswer}
+                      question={currentQuestionFE.question}
+                      options={currentQuestionFE.incorrectAnswers}
+                      correctAnswer={currentQuestionFE.correctAnswer}
                       handleAnswer={(answer) =>
                         handleAnswer(
                           answer,
                           "playerOne",
-                          currentQuestion,
+                          currentQuestionFE,
                           timeLeft,
                           multiplier,
                           setIsAnswered,
                           setAnswerState,
                           setPointsEarned,
                           fetchQuestions,
-                          setCurrentQuestion,
+                          setCurrentQuestionFE,
                           setPlayerOneHealth,
                           setPlayerTwoHealth,
                           playerOneHealth,
