@@ -18,6 +18,7 @@ export const GlobalStateProvider = ({ children }) => {
     region: "",
     user: null,
     page: "",
+    roomcode: "",
   };
 
   const [state, setState] = useState(initialState);
@@ -52,6 +53,10 @@ export const GlobalStateProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, page: page }));
   };
 
+  const setRoomcode = (roomcode) => {
+    setState((prevState) => ({ ...prevState, roomcode: roomcode }));
+  };
+
   return (
     <Context.Provider
       value={{
@@ -61,6 +66,7 @@ export const GlobalStateProvider = ({ children }) => {
         setCategory,
         setState,
         setPage,
+        setRoomcode,
       }}
     >
       {children}

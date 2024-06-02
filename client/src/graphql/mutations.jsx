@@ -45,6 +45,7 @@ export const UPDATE_SCORE = gql`
 export const CREATE_GAME = gql`
   mutation createGame {
     createGame {
+      _id
       playerOne {
         player {
           _id

@@ -1,7 +1,4 @@
 // pull the model (user)
-const { withFilter, PubSub } = require('graphql-subscriptions');
-
-const pubsub = new PubSub();
 
 const User = require('../model/User')
 const Game = require('../model/Game')
@@ -46,12 +43,19 @@ const resolvers = {
       return user
     },
 
+    getGame: async (_, { gameId }, context) => {
+      const game = await Game.findById(gameId)
+      return game
+    },
+
     pollGame: async (_, { gameId }, context) => {
       const id = context.req?.user.id;
 
       if (!id) throw new Error('Not Authorized');
 
-      const game = await Game.findById(gameId)
+      const game = await Game.findById(gameId).populate('playerOne.player').populate('playerTwo.player')
+
+      //console.log(game)
 
       return game
     }
@@ -101,7 +105,19 @@ const resolvers = {
 
       const game = await Game.create({
         playerOne: {
-          player: user._id
+          player: {
+            _id: user._id,
+            username: user.username,
+            profile: user.profile
+          }
+        },
+        //find a better way to do this that isnt setting dummy id?
+        playerTwo: {
+          player: {
+            _id: user._id,
+            username: user.username,
+            profile: user.profile
+          }
         }
       })
 
@@ -109,28 +125,33 @@ const resolvers = {
     },
 
     joinGame: async (_, { gameId }, context) => {
-      console.log("recieved gameId", gameId)
+      //console.log("recieved gameId", gameId)
       const id = context.req?.user.id;
-
-      console.log("userId", id)
+      const user = await User.findById(id)
 
       if (!id) throw new Error('Not Authorized');
 
-      const game = await Game.findById(gameId)
-
-      console.log("game", game)
+      const game = await Game.findById(gameId).populate('playerOne.player').populate('playerTwo.player')
 
       if (!game) {
         throw new Error('Game not found.');
       }
 
-      if (game.playerTwo?.player) throw new Error('Cannot join. Game in progress.')
+      if (game.playerTwo.player._id.equals(game.playerOne.player._id)) {
+        game.playerTwo.player._id = user._id
+        game.playerTwo.player.username = user.username
+        game.playerTwo.player.profile = user.profile
 
-      game.playerTwo.player = id
+        game.save()
 
-      game.save()
+        console.log("New Game:", game)
+      } else {
+        throw new Error('Cannot join. Game in progress.')
+      }
 
-      return true
+      return ({
+        message: "Game join success!"
+      })
     },
 
     postChat: async (_, { text, gameId }, context) => {

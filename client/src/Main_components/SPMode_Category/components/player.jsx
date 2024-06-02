@@ -31,7 +31,7 @@ const PlayerSec = () => {
           </h1>
 
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-cyan-950 rounded-full flex items-center justify-center">
               <img
                 src={avatarLoading ? "" : avatarData?.getAvatar?.profile}
                 alt="Player Avatar"

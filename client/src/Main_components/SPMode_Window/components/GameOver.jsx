@@ -58,7 +58,7 @@ const GameOver = ({ score }) => {
         />
         <h2 className="text-6xl font-bold mb-9">GAME OVER</h2>
         {/* <div className="text-4xl">🏆 👑 🏆</div> */}
-        <div className="text-3xl font-bold mb-4 mt-8">HIGHSCORE: {score}</div>
+        <div className="text-3xl font-bold mb-4 mt-8">SCORE: {score}</div>
         <button
           className="mt-8 mr-4 px-4 py-3 bg-purple-700 text-white rounded-md"
           onClick={() => window.location.reload()} // Reload the page to restart the game

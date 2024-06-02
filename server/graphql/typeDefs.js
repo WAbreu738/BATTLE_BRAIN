@@ -46,6 +46,7 @@ const typeDefs = gql`
     # getUserId: ID
     # getUsername: String
     getAvatar: User
+    getGame(gameId: ID): Game
     pollGame(gameId: ID): Game
   }
 

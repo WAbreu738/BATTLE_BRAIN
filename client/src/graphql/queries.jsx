@@ -37,14 +37,42 @@ export const GET_STATS = gql`
   }
 `;
 
-export const POLL_GAME = gql`
-  query pollGame {
-    pollGame {
+export const GET_GAME = gql`
+  query GetGame($gameId: ID) {
+    getGame(gameId: $gameId) {
       _id
-      playerOne
-      playerTwo
-      chats
-      winner
+    }
+  }
+`;
+
+export const POLL_GAME = gql`
+  query pollGame($gameId: ID) {
+    pollGame(gameId: $gameId) {
+      _id
+      playerOne {
+        player {
+          _id
+          username
+          profile
+        }
+      }
+      playerTwo {
+        player {
+          _id
+          username
+          profile
+        }
+      }
+      chats {
+        _id
+        text
+        username
+      }
+      winner {
+        _id
+        username
+        profile
+      }
     }
   }
 `;

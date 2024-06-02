@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useStore } from "../../OptionsProvider";
 
-import battleImg from "../../../assets/images/battle-green.png";
+import battleImg from "../../../assets/images/BATTLE.png";
 
 export default function BattleBtn() {
   const { state } = useStore();
@@ -18,7 +18,7 @@ export default function BattleBtn() {
     <>
       {isBothSelected && (
         <NavLink
-          to="/battle"
+          to={`/battle/${state.roomcode}`}
           className="transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
         >
           <img

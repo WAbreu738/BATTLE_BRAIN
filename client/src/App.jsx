@@ -48,40 +48,6 @@ function App() {
     }
   }, [location]);
 
-  // console.log(state.user);
-
-  // const httpLink = new HttpLink({
-  //   uri: "http://localhost:3000/graphql",
-  // });
-
-  // // const { state } = useStore();
-
-  // const wsLink = new GraphQLWsLink(
-  //   createClient({
-  //     url: "ws://localhost:3000/subscriptions",
-  //     connectionParams: {
-  //       authentication: state.user?.authToken,
-  //     },
-  //   })
-  // );
-
-  // // The split function takes three parameters:
-  // //
-  // // * A function that's called for each operation to execute
-  // // * The Link to use for an operation if the function returns a "truthy" value
-  // // * The Link to use for an operation if the function returns a "falsy" value
-  // const splitLink = split(
-  //   ({ query }) => {
-  //     const definition = getMainDefinition(query);
-  //     return (
-  //       definition.kind === "OperationDefinition" &&
-  //       definition.operation === "subscription"
-  //     );
-  //   },
-  //   wsLink,
-  //   httpLink
-  // );
-
   return (
     <>
       <Background />
@@ -95,11 +61,17 @@ function App() {
             {state.user ? (
               <>
                 <Route path="/join-create" element={<JoinCreate />} />
-                <Route path="/lobby" element={<LobbyWindow />} />
+                <Route path="/lobby/:id" element={<LobbyWindow />} />
                 <Route path="/singleplayer" element={<SPCategoryWindow />} />
                 <Route path="/spplay" element={<SPPlay />} />
-                <Route path="/category" element={<CategoryWindow />} />
-                <Route path="/battle" element={<BattleMode />} />
+                <Route
+                  path={`/category/${state.roomcode}`}
+                  element={<CategoryWindow />}
+                />
+                <Route
+                  path={`/battle/${state.roomcode}`}
+                  element={<BattleMode />}
+                />
               </>
             ) : (
               <Route path="*" element={<HomeWindow />} />

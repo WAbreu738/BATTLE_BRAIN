@@ -1,13 +1,17 @@
 import { NavLink } from "react-router-dom";
+import { useStore } from "../../OptionsProvider";
+import start from "../../../assets/images/START.png";
 
 const StartBtn = () => {
+  const { state } = useStore();
+
   return (
-    <div className="flex justify-center transition ease-in-out hover:scale-105 hover:drop-shadow-lg">
+    <div className="flex justify-center transition ease-in-out hover:scale-105 hover:drop-shadow-lg w-fit mx-auto">
       <NavLink
-        to="/category"
-        className="bg-green-600 text-white py-4 px-5 rounded-xl text-2xl shadow-xl hover:bg-green-500"
+        to={`/category/${state.roomcode}`}
+        className="bg-cyan-950 rounded-xl shadow-md transition ease-in-out hover:scale-105 hover:drop-shadow-lg max-w-52 hover:animate-pulse"
       >
-        START
+        <img src={start} />
       </NavLink>
     </div>
   );
