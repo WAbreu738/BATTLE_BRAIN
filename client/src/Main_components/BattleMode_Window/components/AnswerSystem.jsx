@@ -1,49 +1,65 @@
 import { calculatePoints } from "./pointsystem";
+import { useStore } from "../../OptionsProvider";
+import { useMutation } from "@apollo/client";
+import { ATTACK } from "../../../graphql/mutations";
 
-const handleAnswer = (
-  answer,
-  player,
-  currentQuestion,
-  timeLeft,
-  multiplier,
-  setIsAnswered,
-  setAnswerState,
-  setPointsEarned,
-  fetchQuestions,
-  setPlayerOneHealth,
-  setPlayerTwoHealth
-) => {
-  setIsAnswered(true);
+// const handleAnswer = async (
+//   answer,
+//   correctAnswer,
+//   // currentQuestion,
+//   timeLeft,
+//   multiplier,
+//   setIsAnswered,
+//   setAnswerState,
+//   setPointsEarned,
+//   fetchQuestions,
+//   setPlayerOneHealth,
+//   setPlayerTwoHealth
+// ) => {
+//   const { state, setMessage } = useStore();
 
-  let points = 0;
-  if (answer === currentQuestion.correctAnswer) {
-    points = calculatePoints(timeLeft, multiplier);
-    setAnswerState("correct");
-  } else {
-    setAnswerState("incorrect");
-  }
+//   const { attack } = useMutation(ATTACK);
 
-  setPointsEarned(points);
+//   setIsAnswered(true);
 
-  if (answer === currentQuestion.correctAnswer) {
-    if (player === "playerOne") {
-      setPlayerTwoHealth(
-        (prevHealth) => Math.max(0, prevHealth - points),
-        5000
-      );
-    } else {
-      setPlayerOneHealth(
-        (prevHealth) => Math.max(0, prevHealth - points),
-        5000
-      );
-    }
-  }
+//   let points = calculatePoints(timeLeft, multiplier);
+//   const isCorrect = answer === correctAnswer;
 
-  setTimeout(() => {
-    setIsAnswered(false);
-    setAnswerState(null);
-    fetchQuestions();
-  }, 5000);
-};
+//   const { data } = await attack({
+//     variables: { gameId: state.roomcode, isCorrect, amount: points },
+//   });
 
-export default handleAnswer;
+//   setMessage(data.attack.message);
+
+//   // if (answer === correctAnswer) {
+//   //   points = calculatePoints(timeLeft, multiplier);
+//   //   setAnswerState("correct");
+//   // } else {
+//   //   setAnswerState("incorrect");
+//   // }
+
+//   setPointsEarned(points);
+
+//   // if (answer === currentQuestion.correctAnswer) {
+//   //   if (player === "playerOne") {
+//   //     setPlayerTwoHealth(
+//   //       (prevHealth) => Math.max(0, prevHealth - points),
+//   //       5000
+//   //     );
+//   //   } else {
+//   //     setPlayerOneHealth(
+//   //       (prevHealth) => Math.max(0, prevHealth - points),
+//   //       5000
+//   //     );
+//   //   }
+//   // }
+
+//   setTimeout(() => {
+//     setIsAnswered(false);
+//     setAnswerState(null);
+//     fetchQuestions();
+//   }, 5000);
+
+// };
+
+// export default handleAnswer;

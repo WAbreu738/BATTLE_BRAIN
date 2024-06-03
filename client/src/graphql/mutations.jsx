@@ -105,22 +105,11 @@ export const CURRENT_QUESTION = gql`
 `;
 
 export const ATTACK = gql`
-  mutation attack(
-    $gameId: String!
-    $isCorrect: Boolean
-    $amount: Int
-    $winner: Boolean
-  ) {
-    attack(
-      gameId: $gameId
-      isCorrect: $isCorrect
-      amount: $amount
-      winner: $winner
-    ) {
-      _id
-      isCorrect
-      amount
-      winner
+  mutation attack($gameId: ID, $isCorrect: Boolean, $amount: Int) {
+    attack(gameId: $gameId, isCorrect: $isCorrect, amount: $amount) {
+      winner {
+        _id
+      }
     }
   }
 `;

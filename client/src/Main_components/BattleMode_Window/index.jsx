@@ -8,16 +8,12 @@ import Multiplier from "./components/multiplier";
 import HealthBar from "./components/healthbar";
 import WinnerDisplay from "./components/WinnerDisplay";
 import RoundScreen from "./components/RoundScreen";
-import playerOne from "./components/player1";
-import playerTwo from "./components/player2";
-import handleAnswer from "./components/AnswerSystem";
+import { calculatePoints } from "./components/pointsystem";
 import { generateRandomMultiplier } from "./components/pointsystem";
 import { CURRENT_QUESTION } from "../../graphql/mutations";
 import { POLL_GAME } from "../../graphql/queries";
 import { useQuery, useMutation } from "@apollo/client";
-// import fetchQuestions from "./components/API";
-// import PointsDisplay from "./components/PointsDisplay";
-
+import { ATTACK } from "../../graphql/mutations";
 import { useStore } from "../OptionsProvider"; //GlobalState
 
 const BattleMode = () => {
@@ -36,9 +32,8 @@ const BattleMode = () => {
   const [round, setRound] = useState(0);
   const [showRoundScreen, setShowRoundScreen] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
-  const [pointsEarned, setPointsEarned] = useState(null);
 
-  const { state } = useStore();
+  const { state, setMessage } = useStore();
   // const { difficulty, category } = initialState.state || {};
 
   const [currentQuestion] = useMutation(CURRENT_QUESTION, {
@@ -49,38 +44,26 @@ const BattleMode = () => {
 
   const { loading, error, data } = useQuery(POLL_GAME, {
     variables: { gameId: state.roomcode },
-    pollInterval: 1000,
+    pollInterval: 500,
   });
 
+  // const playerOneUsername = data.pollgame.playerOne.player.username;
+  // const playerOneProfile = data.pollgame.playerOne.player.profile;
+  // const playerTwoUsername = data.pollgame.playerTwo.player.username;
+  // const playerTwoProfile = data.pollgame.playerTwo.player.profile;
+
   const fetchQuestions = async () => {
-    currentQuestion();
-
-    // const url = `https://the-trivia-api.com/v2/questions?categories=${state.category}&limit=1&{difficulties=${state.difficulty}`;
-    // const headers = {
-    //   "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
-    // };
-
-    // try {
-    //   const response = await fetch(url, { headers: headers });
-    //   const data = await response.json();
-    //   console.log(data[0].incorrectAnswers);
-    //   currentQuestion({
-    //     gameId: state.roomcode,
-    //     question: data[0].question.text,
-    //     correctAnswer: data[0].correctAnswer,
-    //     incorrectAnswers: data[0].incorrectAnswers,
-    //   });
-    //   // setCurrentQuestion(data[0]);
-    // } catch (error) {
-    //   console.error("Error fetching trivia questions:", error);
-    // }
+    if (!loading) {
+      if (data.pollGame.playerTwo.player._id === state.user._id) {
+        //only player 1 queries API in backend
+        currentQuestion();
+      }
+    }
   };
-
-  console.log("data:", data);
 
   useEffect(() => {
     if (!loading) {
-      console.log("pollgame:", data.pollGame);
+      // console.log("pollgame:", data.pollGame);
       if (data.pollGame.question != null) {
         //make sure poll game has info before setting the current question
         setCurrentQuestionFE({
@@ -102,7 +85,7 @@ const BattleMode = () => {
   }, [countdown]);
 
   useEffect(() => {
-    if (currentQuestionFE) {
+    if (currentQuestionFE.question !== "") {
       setRound((prevRound) => prevRound + 1);
       setShowRoundScreen(true);
     }
@@ -126,12 +109,21 @@ const BattleMode = () => {
   }, [showRoundScreen]);
 
   useEffect(() => {
-    if (playerOneHealth <= 0) {
-      setWinner("Player Two");
-    } else if (playerTwoHealth <= 0) {
-      setWinner("Player One");
+    if (!loading) {
+      const playerOneScore = data.pollGame.playerOne.score;
+      const playerTwoScore = data.pollGame.playerTwo.score;
+      setPlayerOneHealth(playerTwoScore);
+      setPlayerTwoHealth(playerOneScore);
     }
-  }, [playerOneHealth, playerTwoHealth]);
+  }, [data.pollGame.playerOne.score, data.pollGame.playerTwo.score]);
+
+  // useEffect(() => {
+  //   if (playerOneHealth <= 0) {
+  //     setWinner("Player Two");
+  //   } else if (playerTwoHealth <= 0) {
+  //     setWinner("Player One");
+  //   }
+  // }, [playerOneHealth, playerTwoHealth]);
 
   useEffect(() => {
     if (timeLeft < 0) {
@@ -142,6 +134,40 @@ const BattleMode = () => {
       }, 5000);
     }
   }, [timeLeft]);
+
+  const [attack] = useMutation(ATTACK);
+
+  // HANDLE ANSWER SECTION==============================================
+  const handleAnswer = async (
+    answer,
+    correctAnswer,
+    // currentQuestion,
+    timeLeft,
+    multiplier,
+    setIsAnswered,
+    setAnswerState,
+    setPointsEarned,
+    fetchQuestions,
+    setPlayerOneHealth,
+    setPlayerTwoHealth
+  ) => {
+    setIsAnswered(true);
+
+    let points = calculatePoints(timeLeft, multiplier);
+    const isCorrect = answer === correctAnswer;
+
+    await attack({
+      variables: { gameId: state.roomcode, isCorrect, amount: points },
+    });
+
+    setTimeout(() => {
+      setIsAnswered(false);
+      setAnswerState(null);
+      fetchQuestions();
+    }, 5000);
+  };
+
+  // HANDLE ANSWER END=========================================
 
   return (
     <section className="flex flex-col items-center justify-center h-screen relative">
@@ -156,7 +182,13 @@ const BattleMode = () => {
           ) : (
             <div className="bg-cyan-600 border border-cyan-800 relative bg-opacity-90 shadow-xl rounded-xl max-w-4xl w-full flex flex-col md:flex-row items-start">
               <div className="flex flex-col items-center justify-center absolute left-3 top-1/2 -translate-y-1/2 z-10">
-                <HealthBar player={playerOne} health={playerOneHealth} />
+                {!loading && (
+                  <HealthBar
+                    player={data.pollGame.playerOne.player.username}
+                    avatar={data.pollGame.playerOne.player.profile}
+                    health={playerOneHealth}
+                  />
+                )}
               </div>
               <Timer
                 timeLeft={timeLeft}
@@ -183,21 +215,15 @@ const BattleMode = () => {
                       handleAnswer={(answer) =>
                         handleAnswer(
                           answer,
-                          "playerOne",
-                          currentQuestionFE,
+                          currentQuestionFE.correctAnswer,
                           timeLeft,
                           multiplier,
                           setIsAnswered,
                           setAnswerState,
                           setPointsEarned,
                           fetchQuestions,
-                          setCurrentQuestionFE,
                           setPlayerOneHealth,
-                          setPlayerTwoHealth,
-                          playerOneHealth,
-                          playerTwoHealth,
-                          setWinner,
-                          setTimeLeft
+                          setPlayerTwoHealth
                         )
                       }
                       answerState={answerState}
@@ -206,16 +232,22 @@ const BattleMode = () => {
                 </div>
 
                 <div className="text-white text-xl mt-3 flex justify-between">
-                  <div className="text-3xl font-bold">P1: {pointsEarned}</div>
+                  <div className="text-3xl font-bold">P1: {}</div>
 
                   {/* <div>{difference}</div>} */}
 
-                  <div className="text-3xl font-bold">{pointsEarned} :P2</div>
+                  <div className="text-3xl font-bold">{} :P2</div>
                 </div>
               </div>
 
               <div className="flex flex-col items-center justify-center absolute right-3 top-1/2 -translate-y-1/2">
-                <HealthBar player={playerTwo} health={playerTwoHealth} />
+                {!loading && (
+                  <HealthBar
+                    player={data.pollGame.playerTwo.player.username}
+                    avatar={data.pollGame.playerTwo.player.profile}
+                    health={playerTwoHealth}
+                  />
+                )}
               </div>
               <div className=" absolute -top-5 -right-5">
                 <HomeBtn />

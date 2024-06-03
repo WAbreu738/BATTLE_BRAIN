@@ -60,6 +60,7 @@ export const POLL_GAME = gql`
     pollGame(gameId: $gameId) {
       _id
       playerOne {
+        score
         player {
           _id
           username
@@ -67,6 +68,7 @@ export const POLL_GAME = gql`
         }
       }
       playerTwo {
+        score
         player {
           _id
           username

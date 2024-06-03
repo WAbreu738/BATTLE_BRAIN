@@ -34,6 +34,8 @@ function App() {
       setPage(`/category/${state.roomcode}`);
     } else if (path === "/settings") {
       setPage("/");
+    } else if (path === "/leaderboard") {
+      setPage("/singleplayer");
     }
   }, [location]);
 

@@ -20,6 +20,7 @@ export const GlobalStateProvider = ({ children }) => {
     page: "",
     roomcode: "",
     isConnected: "false",
+    message: "",
   };
 
   const [state, setState] = useState(initialState);
@@ -62,6 +63,10 @@ export const GlobalStateProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, isConnected: isConnected }));
   };
 
+  const setMessage = (message) => {
+    setState((prevState) => ({ ...prevState, message: message }));
+  };
+
   return (
     <Context.Provider
       value={{
@@ -73,6 +78,7 @@ export const GlobalStateProvider = ({ children }) => {
         setPage,
         setRoomcode,
         setIsConnected,
+        setMessage,
       }}
     >
       {children}

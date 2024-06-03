@@ -1,8 +1,11 @@
 import React from "react";
 import Confetti from "react-confetti";
 import { NavLink } from "react-router-dom";
+import { useStore } from "../../OptionsProvider";
 
 const WinnerDisplay = ({ winner }) => {
+  const { state } = useStore(); // trevor says const state EQUALS usestore
+
   return (
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
       <Confetti width={window.innerWidth} height={window.innerHeight} />
@@ -22,7 +25,7 @@ const WinnerDisplay = ({ winner }) => {
         </button>
         <NavLink
           className="mt-4 px-4 py-3 bg-purple-700 text-white rounded-md"
-          to="/category"
+          to={`/category/${state.roomcode}`}
         >
           Back to Categories
         </NavLink>

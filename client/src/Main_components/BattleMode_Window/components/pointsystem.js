@@ -1,6 +1,5 @@
-
 export const calculatePoints = (timeLeft, multiplier) => {
-  let points = 3000;
+  let points = 1000;
   // if (timeLeft >= 14) points = 500;
   // else if (timeLeft >= 13) points = 470;
   // else if (timeLeft >= 12) points = 440;

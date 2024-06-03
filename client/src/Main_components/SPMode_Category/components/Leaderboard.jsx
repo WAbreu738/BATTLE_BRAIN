@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 
 const Leaderboard = () => {
   const { loading, error, data } = useQuery(GET_LEADERBOARD, {
-    polling: 3000,
+    pollInterval: 3000,
   });
 
   if (loading) return <p>Loading...</p>;

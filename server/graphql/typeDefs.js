@@ -75,7 +75,7 @@ const typeDefs = gql`
     gameSettings(gameId: ID, category: String, difficulty: String): Game
     currentQuestion(gameId: ID): Boolean
     postChat(text: String!, gameId: ID): Response
-    attack(gameId: ID, isCorrect: Boolean, amount: Int, winner: Boolean): Response
+    attack(gameId: ID, isCorrect: Boolean, amount: Int, winner: Boolean): Game
   },
 `;
 

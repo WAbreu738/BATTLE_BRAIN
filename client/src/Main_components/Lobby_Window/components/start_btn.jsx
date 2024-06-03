@@ -14,7 +14,7 @@ const StartBtn = () => {
   });
 
   useEffect(() => {
-    console.log("start front end:", start);
+    //console.log("start front end:", start);
     startGame();
   }, [start]);
 

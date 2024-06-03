@@ -12,17 +12,8 @@ const PlayerSec = () => {
   });
   const { loading: avatarLoading, data: avatarData } = useQuery(GET_AVATAR);
 
-  console.log("avatar data:", avatarData);
-  console.log("stats data:", statsData);
-  // //console.log(data.getAvatar);
-  // let src;
-  // function setSrc() {
-  //   if (typeof data === "undefined") {
-  //     src = `https://randomuser.me/api/portraits/lego/0.jpg`;
-  //     return;
-  //   }
-  //   src = data.getAvatar.profile;
-  // }
+  // console.log("avatar data:", avatarData);
+  // console.log("stats data:", statsData);
 
   return (
     <div className="bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-3 max-w-lg w-fit">
@@ -48,11 +39,6 @@ const PlayerSec = () => {
       </div>
       <ul className="mt-3 p-1 bg-cyan-950 rounded text-sm overflow-y-auto leaderboard-output ">
         <Leaderboard />
-        {/* {data?.getMessages.map(({ text, username, id }) => (
-          <li key={id}>
-            {username}: {text}
-          </li>
-        ))} */}
       </ul>
     </div>
   );
