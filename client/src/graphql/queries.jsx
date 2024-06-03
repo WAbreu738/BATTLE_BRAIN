@@ -77,6 +77,8 @@ export const POLL_GAME = gql`
       }
       startGame
       startBattle
+      isPlayerOneAnswered
+      isPlayerTwoAnswered
       category
       difficulty
       chats {

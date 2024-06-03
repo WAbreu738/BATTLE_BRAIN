@@ -232,7 +232,8 @@ const resolvers = {
       const difficulty = gameOptions.difficulty;
       const url = `https://the-trivia-api.com/v2/questions?categories=${category}&limit=1&{difficulties=${difficulty}`;
       const headers = {
-        "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
+        // "X-API-Key": "Q6qDHeKAdmG77q5Eg7dSWAQT4",
+        "X-API-Key": process.env.API_KEY,
       };
 
       let question;
@@ -242,7 +243,6 @@ const resolvers = {
       try {
         const response = await fetch(url, { headers: headers });
         const data = await response.json();
-        console.log(data[0]);
         question = data[0].question.text;
         correctAnswer = data[0].correctAnswer;
         incorrectAnswers = data[0].incorrectAnswers;
@@ -258,10 +258,33 @@ const resolvers = {
       return true;
     },
 
+    resetIsAnswered: async (_, { gameId }, context) => {
+      const game = await Game.findById(gameId);
+      game.isPlayerOneAnswered = false
+      game.isPlayerTwoAnswered = false
+      await game.save();
+      return true
+    },
+
+    bothAnswered: async (_, { gameId }, context) => {
+      const id = context.req?.user.id;
+      const game = await Game.findById(gameId);
+
+      const isPlayerOne = (game.playerOne.player._id.equals(id));
+
+      if (isPlayerOne) {
+        game.isPlayerOneAnswered = true
+      } else {
+        game.isPlayerTwoAnswered = true
+      }
+
+      await game.save();
+
+      return true
+    },
+
     attack: async (_, { gameId, isCorrect, amount }, context) => {
       const id = context.req?.user.id;
-
-
 
       if (!id) throw new Error("Not Authorized");
 
@@ -272,17 +295,19 @@ const resolvers = {
 
       const game = await Game.findById(gameId);
 
-      const isPlayerOne = (game.playerOne.player === id);
+      const isPlayerOne = (game.playerOne.player._id.equals(id));
 
       let winner;
 
       if (isPlayerOne) {
+        game.isPlayerOneAnswered = true
         const previousScore = game.playerTwo.score;
         const newScore = previousScore - amount;
         game.playerTwo.score = newScore < 0 ? 0 : newScore;
 
         winner = game.playerTwo.score === 0;
       } else {
+        game.isPlayerTwoAnswered = true
         const previousScore = game.playerOne.score;
         const newScore = previousScore - amount;
         game.playerOne.score = newScore < 0 ? 0 : newScore;

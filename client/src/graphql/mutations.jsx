@@ -104,6 +104,18 @@ export const CURRENT_QUESTION = gql`
   }
 `;
 
+export const RESET_IS_ANSWERED = gql`
+  mutation resetIsAnswered($gameId: ID) {
+    resetIsAnswered(gameId: $gameId)
+  }
+`;
+
+export const BOTH_ANSWERED = gql`
+  mutation bothAnswered($gameId: ID) {
+    bothAnswered(gameId: $gameId)
+  }
+`;
+
 export const ATTACK = gql`
   mutation attack($gameId: ID, $isCorrect: Boolean, $amount: Int) {
     attack(gameId: $gameId, isCorrect: $isCorrect, amount: $amount) {

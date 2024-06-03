@@ -62,6 +62,14 @@ const gameSchema = new Schema({
     type: Boolean,
     default: false
   },
+  isPlayerOneAnswered: {
+    type: Boolean,
+    default: false
+  },
+  isPlayerTwoAnswered: {
+    type: Boolean,
+    default: false
+  },
   question: currentQuestionSchema,
   chats: [chatSchema],
   winner: {

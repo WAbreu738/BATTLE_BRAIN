@@ -10,7 +10,11 @@ import WinnerDisplay from "./components/WinnerDisplay";
 import RoundScreen from "./components/RoundScreen";
 import { calculatePoints } from "./components/pointsystem";
 import { generateRandomMultiplier } from "./components/pointsystem";
-import { CURRENT_QUESTION } from "../../graphql/mutations";
+import {
+  CURRENT_QUESTION,
+  RESET_IS_ANSWERED,
+  BOTH_ANSWERED,
+} from "../../graphql/mutations";
 import { POLL_GAME } from "../../graphql/queries";
 import { useQuery, useMutation } from "@apollo/client";
 import { ATTACK } from "../../graphql/mutations";
@@ -30,8 +34,12 @@ const BattleMode = () => {
   const [playerTwoHealth, setPlayerTwoHealth] = useState(3000);
   const [winner, setWinner] = useState("");
   const [round, setRound] = useState(0);
+
   const [showRoundScreen, setShowRoundScreen] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
+  const [pointsEarned, setPointsEarned] = useState(null);
+  const [prevP1Points, setPrevP1Points] = useState(0);
+  const [prevP2Points, setPrevP2Points] = useState(0);
 
   const { state, setMessage } = useStore();
   // const { difficulty, category } = initialState.state || {};
@@ -42,15 +50,22 @@ const BattleMode = () => {
     },
   });
 
+  const [resetIsAnswered] = useMutation(RESET_IS_ANSWERED, {
+    variables: {
+      gameId: state.roomcode,
+    },
+  });
+
+  const [bothAnswered] = useMutation(BOTH_ANSWERED, {
+    variables: {
+      gameId: state.roomcode,
+    },
+  });
+
   const { loading, error, data } = useQuery(POLL_GAME, {
     variables: { gameId: state.roomcode },
     pollInterval: 500,
   });
-
-  // const playerOneUsername = data.pollgame.playerOne.player.username;
-  // const playerOneProfile = data.pollgame.playerOne.player.profile;
-  // const playerTwoUsername = data.pollgame.playerTwo.player.username;
-  // const playerTwoProfile = data.pollgame.playerTwo.player.profile;
 
   const fetchQuestions = async () => {
     if (!loading) {
@@ -63,7 +78,6 @@ const BattleMode = () => {
 
   useEffect(() => {
     if (!loading) {
-      // console.log("pollgame:", data.pollGame);
       if (data.pollGame.question != null) {
         //make sure poll game has info before setting the current question
         setCurrentQuestionFE({
@@ -76,6 +90,14 @@ const BattleMode = () => {
   }, [data.pollGame]);
 
   useEffect(() => {
+    if (!loading) {
+      if (data.pollGame.winner !== null) {
+        setWinner(data.pollGame.winner);
+      }
+    }
+  }, [data.pollGame.winner]);
+
+  useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
@@ -85,7 +107,8 @@ const BattleMode = () => {
   }, [countdown]);
 
   useEffect(() => {
-    if (currentQuestionFE.question !== "") {
+    //shows round on first entry
+    if (currentQuestionFE.question === "") {
       setRound((prevRound) => prevRound + 1);
       setShowRoundScreen(true);
     }
@@ -95,7 +118,7 @@ const BattleMode = () => {
     if (showRoundScreen) {
       const timer = setTimeout(() => {
         setShowRoundScreen(false);
-        setTimeLeft(15);
+        //setTimeLeft(15);
         setPointsEarned(0);
       }, 5000);
       return () => clearTimeout(timer);
@@ -110,8 +133,8 @@ const BattleMode = () => {
 
   useEffect(() => {
     if (!loading) {
-      const playerOneScore = data.pollGame.playerOne.score;
-      const playerTwoScore = data.pollGame.playerTwo.score;
+      const playerOneScore = data.pollGame.playerTwo.score;
+      const playerTwoScore = data.pollGame.playerOne.score;
       setPlayerOneHealth(playerTwoScore);
       setPlayerTwoHealth(playerOneScore);
     }
@@ -125,15 +148,31 @@ const BattleMode = () => {
   //   }
   // }, [playerOneHealth, playerTwoHealth]);
 
+  //handling when timer runs out
+  // useEffect(() => {
+  //   if (timeLeft < 0) {
+  //     setAnswerState("incorrect");
+  //     bothAnswered();
+  //   }
+  // }, [timeLeft]);
+
   useEffect(() => {
-    if (timeLeft < 0) {
-      setAnswerState("incorrect");
-      setTimeout(() => {
-        setAnswerState(null);
+    if (!loading) {
+      if (
+        data.pollGame.isPlayerOneAnswered &&
+        data.pollGame.isPlayerTwoAnswered
+      ) {
         fetchQuestions();
-      }, 5000);
+        setIsAnswered(false); //should reset timer
+        setAnswerState(null); //if there is truthy value in answer state it triggers colors to pop up
+        resetIsAnswered();
+        const timer = setTimeout(() => {
+          setRound((prevRound) => prevRound + 1);
+          setShowRoundScreen(true);
+        }, 2000);
+      }
     }
-  }, [timeLeft]);
+  }, [data.pollGame.isPlayerOneAnswered, data.pollGame.isPlayerTwoAnswered]);
 
   const [attack] = useMutation(ATTACK);
 
@@ -151,20 +190,26 @@ const BattleMode = () => {
     setPlayerOneHealth,
     setPlayerTwoHealth
   ) => {
-    setIsAnswered(true);
+    setIsAnswered(true); //pauses timer
+    setAnswerState("answered"); // toggles colors when answered
 
     let points = calculatePoints(timeLeft, multiplier);
     const isCorrect = answer === correctAnswer;
 
     await attack({
+      //Sets points earned damage to other player
       variables: { gameId: state.roomcode, isCorrect, amount: points },
     });
 
-    setTimeout(() => {
-      setIsAnswered(false);
-      setAnswerState(null);
-      fetchQuestions();
-    }, 5000);
+    await bothAnswered(); //checks which player has answered and sets whether they have or not
+
+    setPointsEarned(points); //leave this here we were getting error
+
+    // setTimeout(() => {
+    //   setIsAnswered(false);
+    //   setAnswerState(null);
+    //   fetchQuestions();
+    // }, 5000);
   };
 
   // HANDLE ANSWER END=========================================
@@ -190,12 +235,12 @@ const BattleMode = () => {
                   />
                 )}
               </div>
-              <Timer
+              {/* <Timer
                 timeLeft={timeLeft}
                 setTimeLeft={setTimeLeft}
                 isAnswered={isAnswered}
                 showRoundScreen={showRoundScreen}
-              />
+              /> */}
 
               <div className="flex-grow p-5 ">
                 <div className="relative flex justify-between items-center mb-5 p-3 bg-cyan-950 rounded-xl mx-16">

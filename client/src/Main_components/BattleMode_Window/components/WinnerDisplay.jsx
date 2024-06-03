@@ -11,13 +11,13 @@ const WinnerDisplay = ({ winner }) => {
       <Confetti width={window.innerWidth} height={window.innerHeight} />
       <div className="text-center text-white">
         <img
-          src={winner.avatar}
-          alt={winner.name}
+          src={winner.profile}
+          alt={winner.username}
           className="w-32 h-32 rounded-full mb-4 border-4 border-yellow-500 mx-auto"
         />
-        <h2 className="text-6xl font-bold mb-4">{winner.name} Wins!</h2>
+        <h2 className="text-6xl font-bold mb-4">{winner.username} Wins!</h2>
         <div className="text-4xl">🏆 👑 🏆</div>
-        <button
+        {/* <button
           className="mt-8 mr-4 px-4 py-3 bg-purple-700 text-white rounded-md"
           onClick={() => window.location.reload()}
         >
@@ -28,7 +28,7 @@ const WinnerDisplay = ({ winner }) => {
           to={`/category/${state.roomcode}`}
         >
           Back to Categories
-        </NavLink>
+        </NavLink> */}
       </div>
     </div>
   );
