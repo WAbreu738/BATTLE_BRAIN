@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useStore } from "../../OptionsProvider";
 
-import playBtn from "../../../assets/images/PLAY-5-30-2024.png";
+import playBtn from "../../../assets/images/PLAY.png";
 
 export default function PlayBtn() {
   const { state } = useStore();

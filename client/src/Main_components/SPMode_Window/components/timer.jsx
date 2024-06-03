@@ -12,7 +12,6 @@ const Timer = ({ timeLeft, setTimeLeft, isAnswered }) => {
   }, [isAnswered, timeLeft, setTimeLeft]);
 
   const formatTime = (time) => {
-    // const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     const milliseconds = Math.floor((time - Math.floor(time)) * 100); // Convert milliseconds to two decimal places
 

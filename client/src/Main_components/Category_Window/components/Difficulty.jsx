@@ -5,10 +5,10 @@ const difficultyBtn = [
   { difficulty: "EASY", value: "easy" },
   { difficulty: "MEDIUM", value: "medium" },
   { difficulty: "HARD", value: "hard" },
-  // { difficulty: "RANDOM", value: "easy,medium,hard" },
+  { difficulty: "RANDOM", value: "easy,medium,hard" },
 ];
 
-const Difficulty = () => {
+const Difficulty = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const { setDifficulty } = useStore();
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
@@ -30,6 +30,7 @@ const Difficulty = () => {
   return (
     <div className="relative">
       <button
+        disabled={props.isPlayerTwo}
         onClick={toggleMenu}
         className=" w-24 text-center items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
       >

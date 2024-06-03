@@ -1,14 +1,35 @@
 import { NavLink } from "react-router-dom";
+import { useStore } from "../../OptionsProvider";
+import startBtn from "../../../assets/images/START.png";
+import { useMutation } from "@apollo/client";
+import { START_GAME } from "../../../graphql/mutations";
+import { useState, useEffect } from "react";
 
 const StartBtn = () => {
+  const { state } = useStore();
+  const [start, setStart] = useState(false);
+
+  const [startGame] = useMutation(START_GAME, {
+    variables: { gameId: state.roomcode, startGame: start },
+  });
+
+  useEffect(() => {
+    //console.log("start front end:", start);
+    startGame();
+  }, [start]);
+
+  const handleSetStart = () => {
+    setStart(true);
+  };
+
   return (
-    <div className="flex justify-center transition ease-in-out hover:scale-105 hover:drop-shadow-lg">
-      <NavLink
-        to="/category"
-        className="bg-green-600 text-white py-4 px-5 rounded-xl text-2xl shadow-xl hover:bg-green-500"
+    <div className="flex justify-center transition ease-in-out hover:scale-105 hover:drop-shadow-lg w-fit mx-auto">
+      <button
+        onClick={handleSetStart}
+        className="bg-cyan-950 rounded-xl shadow-md transition ease-in-out hover:scale-105 hover:drop-shadow-lg max-w-52 hover:animate-pulse"
       >
-        START
-      </NavLink>
+        <img src={startBtn} />
+      </button>
     </div>
   );
 };

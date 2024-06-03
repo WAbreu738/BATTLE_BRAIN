@@ -30,15 +30,7 @@ export const ADD_AVATAR = gql`
   }
 `;
 
-export const POST_MESSAGE = gql`
-  mutation postMessage($text: String!, $username: String!) {
-    postMessage(text: $text, username: $username) {
-      id
-      text
-      username
-    }
-  }
-`;
+//
 
 export const UPDATE_SCORE = gql`
   mutation updateHighScore($highScore: Int!) {
@@ -48,12 +40,98 @@ export const UPDATE_SCORE = gql`
   }
 `;
 
-/*
-mutation POST_MESSAGE($text: String!, $username: String!) {
-  postMessage(text: $text, username: $username) {
-    id
-    content
-    author
+//join_game , postChat, attack,
+
+export const CREATE_GAME = gql`
+  mutation createGame {
+    createGame {
+      _id
+      playerOne {
+        player {
+          _id
+        }
+      }
+    }
   }
-}
-*/
+`;
+
+export const JOIN_GAME = gql`
+  mutation joinGame($gameId: ID) {
+    joinGame(gameId: $gameId) {
+      _id
+    }
+  }
+`;
+
+export const START_GAME = gql`
+  mutation startGame($gameId: ID, $startGame: Boolean) {
+    startGame(gameId: $gameId, startGame: $startGame)
+  }
+`;
+
+export const START_BATTLE = gql`
+  mutation startBattle($gameId: ID, $startBattle: Boolean) {
+    startBattle(gameId: $gameId, startBattle: $startBattle)
+  }
+`;
+
+export const POST_CHAT = gql`
+  mutation postChat($text: String!, $gameId: String!) {
+    postChat(text: $text, gameId: $gameId) {
+      _id
+      text
+      username
+    }
+  }
+`;
+
+export const GAME_SETTINGS = gql`
+  mutation gameSettings($gameId: ID, $category: String, $difficulty: String) {
+    gameSettings(
+      gameId: $gameId
+      category: $category
+      difficulty: $difficulty
+    ) {
+      category
+      difficulty
+    }
+  }
+`;
+
+export const CURRENT_QUESTION = gql`
+  mutation currentQuestion($gameId: ID) {
+    currentQuestion(gameId: $gameId)
+  }
+`;
+
+export const RESET_IS_ANSWERED = gql`
+  mutation resetIsAnswered($gameId: ID) {
+    resetIsAnswered(gameId: $gameId)
+  }
+`;
+
+export const BOTH_ANSWERED = gql`
+  mutation bothAnswered($gameId: ID) {
+    bothAnswered(gameId: $gameId)
+  }
+`;
+
+export const ATTACK = gql`
+  mutation attack($gameId: ID, $isCorrect: Boolean, $amount: Int) {
+    attack(gameId: $gameId, isCorrect: $isCorrect, amount: $amount) {
+      winner {
+        _id
+      }
+    }
+  }
+`;
+
+//  export const POST_MESSAGE = gql`
+//    mutation postMessage($text: String!, $username: String!) {
+//     postMessage(text: $text, username: $username) {
+//        id
+//        text
+//       username
+//     }
+//   }
+// `;

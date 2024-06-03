@@ -14,9 +14,13 @@ export const GlobalStateProvider = ({ children }) => {
 
   const initialState = {
     category: "",
-    difficulty: "easy,medium,hard",
+    difficulty: "",
     region: "",
     user: null,
+    page: "",
+    roomcode: "",
+    isConnected: "false",
+    message: "",
   };
 
   const [state, setState] = useState(initialState);
@@ -47,9 +51,35 @@ export const GlobalStateProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, category: newCategory }));
   };
 
+  const setPage = (page) => {
+    setState((prevState) => ({ ...prevState, page: page }));
+  };
+
+  const setRoomcode = (roomcode) => {
+    setState((prevState) => ({ ...prevState, roomcode: roomcode }));
+  };
+
+  const setIsConnected = (isConnected) => {
+    setState((prevState) => ({ ...prevState, isConnected: isConnected }));
+  };
+
+  const setMessage = (message) => {
+    setState((prevState) => ({ ...prevState, message: message }));
+  };
+
   return (
     <Context.Provider
-      value={{ state, setDifficulty, setRegion, setCategory, setState }}
+      value={{
+        state,
+        setDifficulty,
+        setRegion,
+        setCategory,
+        setState,
+        setPage,
+        setRoomcode,
+        setIsConnected,
+        setMessage,
+      }}
     >
       {children}
     </Context.Provider>

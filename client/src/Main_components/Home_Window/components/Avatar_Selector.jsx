@@ -6,6 +6,24 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { ADD_AVATAR } from "../../../graphql/mutations";
 import { GET_AVATAR } from "../../../graphql/queries";
 
+const seedName = [
+  "Garfield",
+  "Bella",
+  "Angel&rotate=200&backgroundColor=546e7a&backgroundRotation=0,360,320,300&translateX=5&translateY=10&randomizeIds=true&eyes=bulging&mouth=smile02,grill03",
+  "Bear",
+  "Misty",
+  "Trouble",
+  "Missy",
+  "Lucky",
+  "Precious",
+  "Sugar",
+  "Baby",
+  "Jasmine",
+  "Cookie",
+  "Zoey",
+];
+const baseUrl = "https://api.dicebear.com/8.x/bottts-neutral/svg?seed=";
+
 const AvatarSelector = () => {
   const { loading, data } = useQuery(GET_AVATAR);
 
@@ -13,7 +31,7 @@ const AvatarSelector = () => {
   const [startIdx, setStartIdx] = useState(0);
   const [middleIndex, setMiddleIndex] = useState(1); // Track middle image index
   const [avatarUrl, setAvatarUrl] = useState({
-    profile: "",
+    profile: `${baseUrl}Bear`,
   });
 
   const [addAvatar] = useMutation(ADD_AVATAR, {
@@ -31,24 +49,30 @@ const AvatarSelector = () => {
     setStartIdx(startIdx + 1);
   };
 
+  //waits until data is not loading to set the url so that it is the value stored in mongodb
   useEffect(() => {
-    addAvatar({
-      variables: avatarUrl,
-    });
-  }, [avatarUrl]);
+    if (!loading) {
+      //if logged out set avatar to default
+      if (typeof data === "undefined") {
+        setAvatarUrl({
+          profile: `${baseUrl}Harley`,
+        });
+        setMiddleIndex(0);
+      } else {
+        const currentSeed = data.getAvatar.profile.split("=")[1];
+        setAvatarUrl({ profile: data.getAvatar.profile });
+        setMiddleIndex(seedName.indexOf(currentSeed));
+      }
+    }
+  }, [loading, data]);
 
-  // useEffect(() => {
-  //   if (loading) {
-  //     setAvatarUrl({
-  //       profile: `https://randomuser.me/api/portraits/lego/0.jpg`,
-  //     });
-  //     setMiddleIndex(0);
-  //   } else {
-  //     setAvatarUrl(data.addAvatar);
-  //     setMiddleIndex(3);
-  //   }
-  //   console.log(avatarUrl);
-  // }, [loading]);
+  useEffect(() => {
+    if (!loading) {
+      addAvatar({
+        variables: avatarUrl,
+      });
+    }
+  }, [avatarUrl]);
 
   const avatarTransition = "transition-transform duration-700 ease-out";
   const hoverTransition =
@@ -68,28 +92,28 @@ const AvatarSelector = () => {
         <img className="h-12 w-12" src={leftArrow} alt="Left Arrow" />
       </button>
       <div className="flex overflow-y-visible space-x-4 bg-cyan-950 p-1 rounded-full">
-        {[startIdx, startIdx + 1, startIdx + 2].map((avatar, index) => (
+        {[startIdx, startIdx + 1, startIdx + 2].map((index) => (
           <img
-            key={avatar}
-            src={`https://randomuser.me/api/portraits/lego/${avatar}.jpg`}
-            alt={`Avatar ${avatar}`}
-            className={`w-12 h-12 md:w-16 md:h-16 rounded-full cursor-pointer border border-zinc-800 shadow-lg hover:${
-              avatar !== middleIndex ? hoverTransition : " "
-            }${
-              avatar === middleIndex ? " scale-125 " : " "
-            }${avatarTransition}`}
+            key={index}
+            src={`${baseUrl}${seedName[index]}`}
+            alt={`Avatar ${seedName[index]}`}
+            className={`w-14 h-14 md:w-18 md:h-18 rounded-full cursor-pointer border-4 ${
+              index === middleIndex
+                ? "border-sky-500 scale-125"
+                : `border-transparent ${hoverTransition}`
+            } ${avatarTransition}`}
             onClick={() => {
               setAvatarUrl({
-                profile: `https://randomuser.me/api/portraits/lego/${avatar}.jpg`,
+                profile: `${baseUrl}${seedName[index]}`,
               });
-              setMiddleIndex(avatar);
+              setMiddleIndex(index);
             }}
           />
         ))}
       </div>
       <button
         className="text-zinc-900 flex align-middle justify-center text-3xl font-bold absolute right-14 top-1/2 transform -translate-y-1/2 hover:animate-pulse"
-        disabled={startIdx >= 3} // Adjust the condition based on total avatars
+        disabled={startIdx >= seedName.length - 3} // Adjust the condition based on total avatars
         onClick={handleRightClick}
       >
         <img className="h-12 w-12" src={rightArrow} alt="Right Arrow" />

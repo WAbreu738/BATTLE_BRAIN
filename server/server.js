@@ -1,10 +1,10 @@
 const { createServer } = require('http');
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
-const { WebSocketServer } = require('ws');
-const { useServer } = require('graphql-ws/lib/use/ws');
+// const { WebSocketServer } = require('ws');
+// const { useServer } = require('graphql-ws/lib/use/ws');
 const cors = require('cors')
-
+const client = require('./config/client')
 
 const express = require('express')
 
@@ -29,7 +29,6 @@ const routes = require('./routes')
 const app = express()
 
 const httpServer = createServer(app)
-
 app.use('/api', routes)
 
 
@@ -54,6 +53,9 @@ async function startServer() {
         },
       },
     ],
+    uri: client.uri,
+    headers: client.headers,
+    context: isAuth
     // typeDefs,
     // resolvers
   })
@@ -62,9 +64,6 @@ async function startServer() {
 
   app.use(
     '/graphql',
-    // cors({
-    //   origin: 'http://localhost:5173'
-    // }),
 
     cors({
       origin: 'http://localhost:5173',
@@ -80,7 +79,6 @@ async function startServer() {
   httpServer.listen({ port: PORT }, () => {
     // console.log(apolloServer)
     console.log(`🚀 Server ready at http://localhost:${PORT}`)
-    console.log(`Subscription endpoit ready at ws://localhost:${PORT}${apolloServer.subscriptionsPath}`);
     console.log(`GraphQL at http://localhost:${PORT}${apolloServer.graphqlPath}`);
   })
 }
