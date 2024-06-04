@@ -37,8 +37,10 @@ const HomeWindow = (props) => {
         {/* USER INFO END LINE */}
 
         {/* if logged in, refresh the page and show the gamebtn */}
+
+        <p className=" text-xs absolute bottom-1 right-2">Alpha V1.8</p>
       </div>
-      <div className="bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-8 max-w-lg w-full mt-5">
+      <div className="bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-5 max-w-lg w-full">
         <GameBtn />
       </div>
     </main>

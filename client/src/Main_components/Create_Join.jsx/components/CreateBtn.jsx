@@ -28,21 +28,22 @@ const CreateBtn = () => {
 
   return (
     <div className="flex justify-center transition ease-in-out hover:scale-105 hover:drop-shadow-lg w-fit mx-auto">
-      {!gameCreated ? (
-        <button
-          onClick={handleCreateGame}
-          className="bg-cyan-950 rounded-xl shadow-md transition ease-in-out hover:scale-105 hover:drop-shadow-lg max-w-52 h-20 hover:animate-pulse"
-        >
-          <img src={createGameBtn} />
-        </button>
-      ) : (
-        <NavLink
-          to={`/lobby/${state.roomcode}`} // THIS WILL CHANGE TO 'hostRoom'
-          className="bg-cyan-950 rounded-xl shadow-md transition ease-in-out hover:scale-105 hover:drop-shadow-lg max-w-52 hover:animate-pulse"
-        >
-          <img src={battleBtn} />
-        </NavLink>
-      )}
+      {state.isRoomcode &&
+        (!gameCreated ? (
+          <button
+            onClick={handleCreateGame}
+            className="bg-cyan-950 rounded-xl shadow-md transition ease-in-out hover:scale-105 hover:drop-shadow-lg max-w-52 h-20 hover:animate-pulse"
+          >
+            <img src={createGameBtn} />
+          </button>
+        ) : (
+          <NavLink
+            to={`/lobby/${state.roomcode}`} // THIS WILL CHANGE TO 'hostRoom'
+            className="bg-cyan-950 rounded-xl shadow-md transition ease-in-out hover:scale-105 hover:drop-shadow-lg max-w-52 hover:animate-pulse"
+          >
+            <img src={battleBtn} />
+          </NavLink>
+        ))}
     </div>
   );
 };

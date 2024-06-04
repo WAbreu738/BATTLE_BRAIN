@@ -5,8 +5,11 @@ import CreateBtn from "./components/CreateBtn";
 import BackBtn from "../BackBtn";
 import { NavLink } from "react-router-dom";
 import battleRoom from "../../assets/images/BATTLE-ROOM.png";
+import { useStore } from "../OptionsProvider";
 
 export default function JoinCreate() {
+  const { state } = useStore();
+
   return (
     <div className=" flex flex-col items-center justify-center h-screen p-4">
       <div className="mb-3">
@@ -17,7 +20,7 @@ export default function JoinCreate() {
         <div className="flex flex-col items-center">
           <p className="font-bold mb-3">Join a room</p>
           <RoomCode />
-          <p className="font-bold mb-3">or</p>
+          {state.isRoomcode && <p className="font-bold mb-3">or</p>}
           <CreateBtn />
         </div>
 

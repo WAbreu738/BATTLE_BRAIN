@@ -5,6 +5,7 @@ import { useMutation } from "@apollo/client";
 import { START_BATTLE } from "../../../graphql/mutations";
 
 import battleImg from "../../../assets/images/BATTLE.png";
+import devImg from "../../../assets/images/multiplayer-in-Dev.png";
 
 export default function BattleBtn(props) {
   const { state } = useStore();
@@ -35,15 +36,26 @@ export default function BattleBtn(props) {
       {isBothSelected && (
         <button
           disabled={props.isPlayerTwo}
-          onClick={handleSetStart}
           className="transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
         >
           <img
-            src={battleImg}
+            src={devImg}
             alt="battle button"
             className=" w-fit transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
           />
         </button>
+
+        // <button
+        //   disabled={props.isPlayerTwo}
+        //   onClick={handleSetStart}
+        //   className="transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
+        // >
+        //   <img
+        //     src={battleImg}
+        //     alt="battle button"
+        //     className=" w-fit transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
+        //   />
+        // </button>
       )}
     </>
   );

@@ -112,6 +112,7 @@ const resolvers = {
     },
 
     updateHighScore: async (_, { highScore }, context) => {
+      console.log("you got here")
       const user = await User.findOneAndUpdate(
         { _id: context.req?.user.id },
         { $set: { highScore: highScore } }

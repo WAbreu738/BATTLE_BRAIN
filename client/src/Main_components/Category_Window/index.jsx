@@ -76,7 +76,7 @@ const CategoryWindow = () => {
           <BackBtn />
         </div>
         {/* <Chat /> */}
-        <div className="absolute w-2/5 left-1/2 -translate-x-1/2 bottom-3">
+        <div className="absolute w-2/5 left-1/2 -translate-x-1/2 bottom-1">
           <BattleBtn isPlayerTwo={isPlayerTwo} />
         </div>
       </div>
