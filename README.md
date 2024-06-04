@@ -50,8 +50,8 @@ Support
 
 ## Deployment
 
-Battle Brain Project 03 - [Repo](https://github.com/WAbreu738/trivia_battle)  
-[Deployed Project](https://nameless-inlet-80123-f3bf2fedf73b.herokuapp.com)
+- Battle Brain Deployment - [Repo](https://nameless-inlet-80123-f3bf2fedf73b.herokuapp.com/singleplayer)
+- Battle Brain - [Repo](https://github.com/WAbreu738/trivia_battle)
 
 ## Contributers
 
