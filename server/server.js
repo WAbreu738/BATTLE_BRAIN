@@ -1,3 +1,4 @@
+
 const { createServer } = require('http');
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
@@ -7,6 +8,7 @@ const cors = require('cors')
 const client = require('./config/client')
 
 const express = require('express')
+const path = require('path')
 
 const PORT = process.env.PORT || 3000
 
@@ -75,6 +77,13 @@ async function startServer() {
       context: isAuth
     })
   )
+
+  if (process.env.PORT) {
+    app.use(express.static('../client/dist'))
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'))
+    })
+  }
 
   httpServer.listen({ port: PORT }, () => {
     // console.log(apolloServer)

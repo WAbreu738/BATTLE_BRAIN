@@ -80,8 +80,8 @@ const CategoryWindow = () => {
           <BattleBtn isPlayerTwo={isPlayerTwo} />
         </div>
       </div>
-      <ChatWindow />
-      {/* Players Joined Section */}
+      {/* <ChatWindow />
+      Players Joined Section */}
     </div>
   );
 };
