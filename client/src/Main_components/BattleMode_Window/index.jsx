@@ -27,22 +27,17 @@ const BattleMode = () => {
     incorrectAnswers: [],
   });
   const [timeLeft, setTimeLeft] = useState(0);
-  const [isAnswered, setIsAnswered] = useState(false);
+  //const [isAnswered, setIsAnswered] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const [answerState, setAnswerState] = useState(null);
   const [playerOneHealth, setPlayerOneHealth] = useState(3000);
   const [playerTwoHealth, setPlayerTwoHealth] = useState(3000);
   const [winner, setWinner] = useState("");
   const [round, setRound] = useState(0);
-
   const [showRoundScreen, setShowRoundScreen] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
-  const [pointsEarned, setPointsEarned] = useState(null);
-  const [prevP1Points, setPrevP1Points] = useState(0);
-  const [prevP2Points, setPrevP2Points] = useState(0);
 
   const { state, setMessage } = useStore();
-  // const { difficulty, category } = initialState.state || {};
 
   const [currentQuestion] = useMutation(CURRENT_QUESTION, {
     variables: {
@@ -67,6 +62,9 @@ const BattleMode = () => {
     pollInterval: 500,
   });
 
+  const [attack] = useMutation(ATTACK);
+
+  //player 1 queries questions
   const fetchQuestions = async () => {
     if (!loading) {
       if (data.pollGame.playerTwo.player._id === state.user._id) {
@@ -89,6 +87,7 @@ const BattleMode = () => {
     }
   }, [data.pollGame]);
 
+  //sets winner when it changes
   useEffect(() => {
     if (!loading) {
       if (data.pollGame.winner !== null) {
@@ -97,40 +96,32 @@ const BattleMode = () => {
     }
   }, [data.pollGame.winner]);
 
+  //after intital countdown fetch question and reset everything
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
     } else {
+      setShowRoundScreen(true);
+      setRound(1)
+      resetIsAnswered();
+      setAnswerState(null);
       fetchQuestions();
     }
   }, [countdown]);
 
-  useEffect(() => {
-    //shows round on first entry
-    if (currentQuestionFE.question === "") {
-      setRound((prevRound) => prevRound + 1);
-      setShowRoundScreen(true);
-    }
-  }, [currentQuestionFE]);
-
+  //after 5 sec hide the round screen
   useEffect(() => {
     if (showRoundScreen) {
+      setMultiplier(generateRandomMultiplier());
       const timer = setTimeout(() => {
         setShowRoundScreen(false);
-        //setTimeLeft(15);
-        setPointsEarned(0);
       }, 5000);
       return () => clearTimeout(timer);
     }
   }, [showRoundScreen]);
 
-  useEffect(() => {
-    if (showRoundScreen) {
-      setMultiplier(generateRandomMultiplier());
-    }
-  }, [showRoundScreen]);
-
+  //sees if any changes to the score and updates UI accordingly
   useEffect(() => {
     if (!loading) {
       const playerOneScore = data.pollGame.playerTwo.score;
@@ -140,57 +131,36 @@ const BattleMode = () => {
     }
   }, [data.pollGame.playerOne.score, data.pollGame.playerTwo.score]);
 
-  // useEffect(() => {
-  //   if (playerOneHealth <= 0) {
-  //     setWinner("Player Two");
-  //   } else if (playerTwoHealth <= 0) {
-  //     setWinner("Player One");
-  //   }
-  // }, [playerOneHealth, playerTwoHealth]);
-
-  //handling when timer runs out
-  // useEffect(() => {
-  //   if (timeLeft < 0) {
-  //     setAnswerState("incorrect");
-  //     bothAnswered();
-  //   }
-  // }, [timeLeft]);
-
+  //if both players have answered move on to the next question and reset everything
   useEffect(() => {
     if (!loading) {
       if (
         data.pollGame.isPlayerOneAnswered &&
         data.pollGame.isPlayerTwoAnswered
       ) {
-        fetchQuestions();
-        setIsAnswered(false); //should reset timer
-        setAnswerState(null); //if there is truthy value in answer state it triggers colors to pop up
-        resetIsAnswered();
-        const timer = setTimeout(() => {
+         setTimeout(() => {
+          setAnswerState(null); //if there is truthy value in answer state it triggers colors to pop up
+          resetIsAnswered();
+          fetchQuestions();
           setRound((prevRound) => prevRound + 1);
           setShowRoundScreen(true);
-        }, 2000);
+        }, 4000);
       }
     }
   }, [data.pollGame.isPlayerOneAnswered, data.pollGame.isPlayerTwoAnswered]);
-
-  const [attack] = useMutation(ATTACK);
 
   // HANDLE ANSWER SECTION==============================================
   const handleAnswer = async (
     answer,
     correctAnswer,
-    // currentQuestion,
     timeLeft,
     multiplier,
-    setIsAnswered,
     setAnswerState,
-    setPointsEarned,
     fetchQuestions,
     setPlayerOneHealth,
     setPlayerTwoHealth
   ) => {
-    setIsAnswered(true); //pauses timer
+    //setIsAnswered(true); //pauses timer
     setAnswerState("answered"); // toggles colors when answered
 
     let points = calculatePoints(timeLeft, multiplier);
@@ -202,14 +172,6 @@ const BattleMode = () => {
     });
 
     await bothAnswered(); //checks which player has answered and sets whether they have or not
-
-    setPointsEarned(points); //leave this here we were getting error
-
-    // setTimeout(() => {
-    //   setIsAnswered(false);
-    //   setAnswerState(null);
-    //   fetchQuestions();
-    // }, 5000);
   };
 
   // HANDLE ANSWER END=========================================
@@ -263,9 +225,9 @@ const BattleMode = () => {
                           currentQuestionFE.correctAnswer,
                           timeLeft,
                           multiplier,
-                          setIsAnswered,
+                          //setIsAnswered,
                           setAnswerState,
-                          setPointsEarned,
+                          //setPointsEarned,
                           fetchQuestions,
                           setPlayerOneHealth,
                           setPlayerTwoHealth
