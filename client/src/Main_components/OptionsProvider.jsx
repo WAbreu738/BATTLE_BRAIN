@@ -22,6 +22,7 @@ export const GlobalStateProvider = ({ children }) => {
     isConnected: "false",
     message: "",
     isRoomcode: true,
+    isStart: false,
   };
 
   const [state, setState] = useState(initialState);
@@ -72,6 +73,10 @@ export const GlobalStateProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, isRoomcode: isRoomcode }));
   };
 
+  const setIsStart = (isStart) => {
+    setState((prevState) => ({ ...prevState, isStart: isStart }));
+  };
+
   return (
     <Context.Provider
       value={{
@@ -85,6 +90,7 @@ export const GlobalStateProvider = ({ children }) => {
         setIsConnected,
         setMessage,
         setIsRoomcode,
+        setIsStart,
       }}
     >
       {children}

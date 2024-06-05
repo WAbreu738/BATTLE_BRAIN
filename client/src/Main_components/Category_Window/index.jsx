@@ -35,6 +35,14 @@ const CategoryWindow = () => {
 
   useEffect(() => {
     if (!loading) {
+      if (data.pollGame.startGame === false) {
+        navigate(`/`);
+      }
+    }
+  }, [data.pollGame.startGame]);
+
+  useEffect(() => {
+    if (!loading) {
       if (data.pollGame.playerTwo.player._id === state.user._id) {
         setIsPlayerTwo(true);
         setDifficulty(data.pollGame.difficulty);

@@ -6,20 +6,19 @@ import { START_GAME } from "../../../graphql/mutations";
 import { useState, useEffect } from "react";
 
 const StartBtn = () => {
-  const { state } = useStore();
-  const [start, setStart] = useState(false);
+  const { state, setIsStart } = useStore();
 
   const [startGame] = useMutation(START_GAME, {
-    variables: { gameId: state.roomcode, startGame: start },
+    variables: { gameId: state.roomcode, startGame: state.isStart },
   });
 
   useEffect(() => {
     //console.log("start front end:", start);
     startGame();
-  }, [start]);
+  }, [state.isStart]);
 
   const handleSetStart = () => {
-    setStart(true);
+    setIsStart(true);
   };
 
   return (
