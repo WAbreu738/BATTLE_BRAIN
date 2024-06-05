@@ -9,7 +9,7 @@ export default function PlayBtn() {
 
   // Check if both category and difficulty are selected
   const isCategorySelected = category !== "";
-  const isDifficultySelected = difficulty !== "easy,medium,hard";
+  const isDifficultySelected = difficulty !== "";
   const isBothSelected = isCategorySelected && isDifficultySelected;
 
   // Render the BattleBtn only if both category and difficulty are selected

@@ -11,7 +11,7 @@ const SPCategoryWindow = () => {
   return (
     <div className="flex justify-center h-screen">
       <div className="flex flex-col items-center justify-center p-4">
-        <div className=" relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-8 max-w-lg w-full mb-8">
+        <div className=" relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-8 max-w-lg w-full">
           <img src={categories} className="bg-cyan-950 rounded-xl mb-3" />
           <div className="grid grid-cols-3 gap-4">
             <SPCategoryBtns />

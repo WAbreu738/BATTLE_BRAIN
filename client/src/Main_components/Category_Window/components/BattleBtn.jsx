@@ -5,6 +5,7 @@ import { useMutation } from "@apollo/client";
 import { START_BATTLE } from "../../../graphql/mutations";
 
 import battleImg from "../../../assets/images/BATTLE.png";
+// import devImg from "../../../assets/images/multiplayer-in-Dev.png";
 
 export default function BattleBtn(props) {
   const { state } = useStore();

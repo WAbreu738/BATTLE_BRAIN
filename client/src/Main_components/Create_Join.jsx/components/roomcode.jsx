@@ -7,7 +7,7 @@ import { GET_GAME } from "../../../graphql/queries";
 import { useStore } from "../../OptionsProvider";
 
 const RoomCode = () => {
-  const { state, setRoomcode } = useStore();
+  const { state, setRoomcode, setIsRoomcode } = useStore();
   const [formData, setFormData] = useState({ gameId: "" });
   const [input, setInput] = useState({ gameId: "" });
   const [joined, setJoined] = useState(true);
@@ -26,8 +26,14 @@ const RoomCode = () => {
 
   const handleChange = (e) => {
     const currentInput = e.target.value;
-    setRoomcode(currentInput);
-    setInput({ gameId: currentInput });
+
+    if (currentInput.trim() === "") {
+      setIsRoomcode(true);
+    } else {
+      setRoomcode(currentInput);
+      setInput({ gameId: currentInput });
+      setIsRoomcode(false);
+    }
   };
 
   const [joinGame] = useMutation(JOIN_GAME, {

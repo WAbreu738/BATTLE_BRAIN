@@ -104,6 +104,12 @@ export const CURRENT_QUESTION = gql`
   }
 `;
 
+export const MULTIPLIER = gql`
+  mutation multiplier($gameId: ID, $multiplier: Float!) {
+    multiplier(gameId: $gameId, multiplier: $multiplier)
+  }
+`;
+
 export const RESET_IS_ANSWERED = gql`
   mutation resetIsAnswered($gameId: ID) {
     resetIsAnswered(gameId: $gameId)
@@ -123,6 +129,12 @@ export const ATTACK = gql`
         _id
       }
     }
+  }
+`;
+
+export const RESET_GAME = gql`
+  mutation resetGame($gameId: ID) {
+    resetGame(gameId: $gameId)
   }
 `;
 

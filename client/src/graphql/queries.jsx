@@ -81,6 +81,7 @@ export const POLL_GAME = gql`
       isPlayerTwoAnswered
       category
       difficulty
+      multiplier
       chats {
         _id
         text

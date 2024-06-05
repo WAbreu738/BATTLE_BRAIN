@@ -112,6 +112,7 @@ const resolvers = {
     },
 
     updateHighScore: async (_, { highScore }, context) => {
+      console.log("you got here")
       const user = await User.findOneAndUpdate(
         { _id: context.req?.user.id },
         { $set: { highScore: highScore } }
@@ -148,7 +149,6 @@ const resolvers = {
     },
 
     joinGame: async (_, { gameId }, context) => {
-      // console.log("recieved gameId", gameId)
       const id = context.req?.user.id;
       const user = await User.findById(id);
 
@@ -157,7 +157,6 @@ const resolvers = {
       const game = await Game.findById(gameId)
         .populate("playerOne.player")
         .populate("playerTwo.player");
-      //console.log(game)
 
       if (!game) {
         throw new Error("Game not found.");
@@ -169,10 +168,6 @@ const resolvers = {
         })
           .populate("playerOne.player")
           .populate("playerTwo.player");
-        // game.playerTwo.player._id = user._id
-        // game.playerTwo.player.username = user.username
-        // game.playerTwo.player.profile = user.profile
-        //console.log(updatedGame)
         updatedGame.save();
 
         console.log("New Game:", updatedGame);
@@ -198,7 +193,7 @@ const resolvers = {
         $set: { startBattle: startBattle },
       });
       game.save();
-      return game.startBatt;
+      return game.startBattle;
     },
 
     gameSettings: async (_, { gameId, category, difficulty }, context) => {
@@ -226,7 +221,7 @@ const resolvers = {
     },
 
     currentQuestion: async (_, { gameId }, context) => {
-      console.log(gameId);
+      // console.log(gameId);
       const gameOptions = await Game.findById(gameId);
       const category = gameOptions.category;
       const difficulty = gameOptions.difficulty;
@@ -256,6 +251,12 @@ const resolvers = {
         "question.incorrectAnswers": incorrectAnswers,
       }).populate("question");
       return true;
+    },
+
+    multiplier: async (_, { gameId, multiplier }, context) => {
+      // console.log("Multiplier:", multiplier)
+      const game = await Game.findByIdAndUpdate(gameId, { multiplier: multiplier })
+      return true
     },
 
     resetIsAnswered: async (_, { gameId }, context) => {
@@ -324,6 +325,13 @@ const resolvers = {
       // take current game ,, assign it to a const , return it to the front end , so it know the game status
 
       return game.winner
+    },
+
+    resetGame: async (_, { gameId }, context) => {
+      const game = await Game.findByIdAndUpdate(gameId, {
+        $set: { winner: null, isPlayerOneAnswered: false, isPlayerTwoAnswered: false, category: "", difficulty: "", "question.question": "", "question.correctAnswer": "", "question.incorrectAnswers": [], "playerTwo.score": 3000, "playerOne.score": 3000 },
+      });
+      return true
     },
   },
 };

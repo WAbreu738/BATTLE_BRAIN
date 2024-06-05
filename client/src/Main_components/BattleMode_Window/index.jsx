@@ -19,6 +19,7 @@ import { POLL_GAME } from "../../graphql/queries";
 import { useQuery, useMutation } from "@apollo/client";
 import { ATTACK } from "../../graphql/mutations";
 import { useStore } from "../OptionsProvider"; //GlobalState
+import { useNavigate } from "react-router-dom";
 
 const BattleMode = () => {
   const [currentQuestionFE, setCurrentQuestionFE] = useState({
@@ -36,8 +37,8 @@ const BattleMode = () => {
   const [round, setRound] = useState(0);
   const [showRoundScreen, setShowRoundScreen] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
-
   const { state, setMessage } = useStore();
+  const navigate = useNavigate();
 
   const [currentQuestion] = useMutation(CURRENT_QUESTION, {
     variables: {
@@ -67,12 +68,23 @@ const BattleMode = () => {
   //player 1 queries questions
   const fetchQuestions = async () => {
     if (!loading) {
-      if (data.pollGame.playerTwo.player._id === state.user._id) {
+      // console.log(data.pollGame.playerTwo.player._id);
+      // console.log(state.user._id);
+      if (data.pollGame.playerOne.player._id === state.user._id) {
         //only player 1 queries API in backend
+        // console.log("fetching questions BE");
         currentQuestion();
       }
     }
   };
+
+  useEffect(() => {
+    if (!loading) {
+      if (data.pollGame.startGame === false) {
+        navigate(`/`);
+      }
+    }
+  }, [data.pollGame.startGame]);
 
   useEffect(() => {
     if (!loading) {
@@ -85,7 +97,7 @@ const BattleMode = () => {
         });
       }
     }
-  }, [data.pollGame]);
+  }, [data.pollGame.question]);
 
   //sets winner when it changes
   useEffect(() => {
@@ -102,11 +114,13 @@ const BattleMode = () => {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
     } else {
+      // console.log("countdown done");
       setShowRoundScreen(true);
-      setRound(1)
-      resetIsAnswered();
+      setRound(1);
       setAnswerState(null);
+
       fetchQuestions();
+      // console.log("hi there");
     }
   }, [countdown]);
 
@@ -138,7 +152,7 @@ const BattleMode = () => {
         data.pollGame.isPlayerOneAnswered &&
         data.pollGame.isPlayerTwoAnswered
       ) {
-         setTimeout(() => {
+        setTimeout(() => {
           setAnswerState(null); //if there is truthy value in answer state it triggers colors to pop up
           resetIsAnswered();
           fetchQuestions();
@@ -148,6 +162,15 @@ const BattleMode = () => {
       }
     }
   }, [data.pollGame.isPlayerOneAnswered, data.pollGame.isPlayerTwoAnswered]);
+
+  //redirect to category screen and reset all backend values
+  useEffect(() => {
+    if (!loading) {
+      if (data.pollGame.startBattle === false) {
+        navigate(`/category/${state.roomcode}`);
+      }
+    }
+  }, [data.pollGame.startBattle]);
 
   // HANDLE ANSWER SECTION==============================================
   const handleAnswer = async (

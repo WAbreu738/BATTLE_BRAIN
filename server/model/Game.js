@@ -1,3 +1,4 @@
+const { Double } = require('mongodb')
 const { model, Schema } = require('mongoose')
 
 const currentQuestionSchema = new Schema({
@@ -57,6 +58,10 @@ const gameSchema = new Schema({
   difficulty: {
     type: String,
     default: ""
+  },
+  multiplier: {
+    type: Number,
+    default: 1
   },
   startBattle: {
     type: Boolean,

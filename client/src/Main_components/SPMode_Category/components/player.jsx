@@ -34,7 +34,7 @@ const PlayerSec = () => {
           </h1>
         </div>
         <p className="text-xl font-bold">
-          High Score: {!statsLoading ? statsData?.getStats?.highScore : "N/A"}
+          High Score: {!statsLoading ? statsData?.getStats?.highScore : ""}
         </p>
       </div>
       <ul className="mt-3 p-1 bg-cyan-950 rounded text-sm overflow-y-auto leaderboard-output ">

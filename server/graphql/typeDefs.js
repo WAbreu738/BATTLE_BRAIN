@@ -43,6 +43,7 @@ const typeDefs = gql`
     isPlayerTwoAnswered: Boolean 
     category: String
     difficulty: String
+    multiplier: Float
     question: Question
     chats: [Chat]
     winner: User
@@ -76,10 +77,12 @@ const typeDefs = gql`
     startBattle( gameId: ID, startBattle: Boolean): Boolean
     gameSettings(gameId: ID, category: String, difficulty: String): Game
     currentQuestion(gameId: ID): Boolean
+    multiplier(gameId: ID, multiplier: Float!): Boolean
     postChat(text: String!, gameId: ID): Response
     attack(gameId: ID, isCorrect: Boolean, amount: Int, winner: Boolean): Game
     resetIsAnswered(gameId: ID): Boolean
     bothAnswered(gameId: ID): Boolean
+    resetGame(gameId: ID): Boolean
   },
 `;
 

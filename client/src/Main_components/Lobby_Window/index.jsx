@@ -11,7 +11,7 @@ import { POLL_GAME } from "../../graphql/queries";
 import { redirect, useNavigate } from "react-router-dom";
 
 const LobbyWindow = () => {
-  const { state } = useStore();
+  const { state, setIsStart } = useStore();
   const navigate = useNavigate();
 
   const { loading, error, data } = useQuery(POLL_GAME, {
@@ -22,10 +22,21 @@ const LobbyWindow = () => {
   useEffect(() => {
     if (!loading) {
       if (data.pollGame.startGame) {
+        if (state.isStart === false) {
+          setIsStart(true);
+        }
         navigate(`/category/${state.roomcode}`);
       }
     }
-  }, [data]);
+  }, [data?.pollGame?.startGame]);
+
+  // useEffect(() => {
+  //   if (!loading) {
+  //     if (data.pollGame.startGame === false) {
+  //       navigate(`/`);
+  //     }
+  //   }
+  // }, [data?.pollGame?.startGame]);
 
   const copyRoomCode = () => {
     console.log("Copied! ", state.roomcode);

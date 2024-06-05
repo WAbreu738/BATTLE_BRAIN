@@ -35,6 +35,14 @@ const CategoryWindow = () => {
 
   useEffect(() => {
     if (!loading) {
+      if (data.pollGame.startGame === false) {
+        navigate(`/`);
+      }
+    }
+  }, [data.pollGame.startGame]);
+
+  useEffect(() => {
+    if (!loading) {
       if (data.pollGame.playerTwo.player._id === state.user._id) {
         setIsPlayerTwo(true);
         setDifficulty(data.pollGame.difficulty);
@@ -76,7 +84,7 @@ const CategoryWindow = () => {
           <BackBtn />
         </div>
         {/* <Chat /> */}
-        <div className="absolute w-2/5 left-1/2 -translate-x-1/2 bottom-3">
+        <div className="absolute w-2/5 left-1/2 -translate-x-1/2 bottom-1">
           <BattleBtn isPlayerTwo={isPlayerTwo} />
         </div>
       </div>
