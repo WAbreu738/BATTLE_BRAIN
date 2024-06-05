@@ -1,4 +1,4 @@
-# Project 3 - Brain Battle (Trivia)
+# Battle Brain
 
 ![License](https://img.shields.io/badge/License-MIT-brightgreen)
 
