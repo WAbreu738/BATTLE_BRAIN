@@ -11,12 +11,12 @@ export default function JoinCreate() {
   const { state } = useStore();
 
   return (
-    <div className=" flex flex-col items-center justify-center h-screen p-4">
+    <div className=" flex flex-col items-center justify-center h-screen p-4 scale-90 md:scale-100">
       <div className="mb-3">
-        <img className="h-28" src={battleRoom} alt="BattleRoom" />
+        <img className="md:h-28 h-24" src={battleRoom} alt="BattleRoom" />
       </div>
 
-      <div className=" relative bg-cyan-600 bg-opacity-90 shadow-lg rounded-xl p-8 max-w-lg w-full">
+      <div className=" relative bg-cyan-600 bg-opacity-90 shadow-lg rounded-xl md:p-8 p-5 max-w-lg w-full">
         <div className="flex flex-col items-center">
           <p className="font-bold mb-3">Join a room</p>
           <RoomCode />

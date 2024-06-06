@@ -82,10 +82,10 @@ const AvatarSelector = () => {
     <div
       className={`${
         state.user ? "mt-10" : ""
-      } relative flex items-center justify-center scale-125`}
+      } relative flex items-center justify-center md:scale-125 scale-100`}
     >
       <button
-        className="text-zinc-900 flex align-middle justify-center text-3xl font-bold absolute left-14 top-1/2 transform -translate-y-1/2 hover:animate-pulse"
+        className="text-zinc-900 flex align-middle justify-center text-3xl font-bold absolute md:left-14 -left-5 top-1/2 transform -translate-y-1/2 hover:animate-pulse"
         disabled={startIdx === 0}
         onClick={handleLeftClick}
       >
@@ -112,7 +112,7 @@ const AvatarSelector = () => {
         ))}
       </div>
       <button
-        className="text-zinc-900 flex align-middle justify-center text-3xl font-bold absolute right-14 top-1/2 transform -translate-y-1/2 hover:animate-pulse"
+        className="text-zinc-900 flex align-middle justify-center text-3xl font-bold absolute md:right-14 -right-5 top-1/2 transform -translate-y-1/2 hover:animate-pulse"
         disabled={startIdx >= seedName.length - 3} // Adjust the condition based on total avatars
         onClick={handleRightClick}
       >

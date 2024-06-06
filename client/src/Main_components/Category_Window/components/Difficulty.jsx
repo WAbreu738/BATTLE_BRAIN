@@ -37,11 +37,11 @@ const Difficulty = (props) => {
   return (
     <>
       {!loading && (
-        <div className="relative">
+        <div className="relative md:scale-100 scale-90">
           <button
             disabled={props.isPlayerTwo}
             onClick={toggleMenu}
-            className=" w-24 text-center items-center px-3 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            className=" md:w-24 w-fit text-center items-center px-3 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           >
             {props.isPlayerTwo
               ? (data.pollGame.difficulty === "easy,medium,hard"

@@ -31,7 +31,7 @@ export default function Leaderboards() {
   return (
     <div className=" flex flex-col items-center justify-center h-screen p-4">
       <div className="mb-3">
-        <img className="h-28" src={leaderboard} alt="Leaderboard" />
+        <img className="md:h-28 h-18" src={leaderboard} alt="Leaderboard" />
       </div>
 
       <div className=" relative bg-cyan-600 bg-opacity-90 shadow-lg rounded-xl p-8 max-w-lg w-fit">

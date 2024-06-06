@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const Multiplier = () => {
   return (
     <div>
-      <h2 className="text-3xl font-bold text-center">1.5X</h2>
+      <h2 className="md:text-3xl text-xl font-bold text-center">1.5X</h2>
     </div>
   );
 };

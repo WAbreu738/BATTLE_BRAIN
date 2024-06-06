@@ -9,9 +9,9 @@ import categories from "../../assets/images/categories-blue.png";
 
 const SPCategoryWindow = () => {
   return (
-    <div className="flex justify-center h-screen">
+    <div className="flex md:flex-row flex-col md:justify-center items-center h-screen lg:scale-100 scale-90">
       <div className="flex flex-col items-center justify-center p-4">
-        <div className=" relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-8 max-w-lg w-full">
+        <div className=" relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl md:p-8 p-5 max-w-lg w-full">
           <img src={categories} className="bg-cyan-950 rounded-xl mb-3" />
           <div className="grid grid-cols-3 gap-4">
             <SPCategoryBtns />
@@ -26,7 +26,7 @@ const SPCategoryWindow = () => {
           <div className=" absolute -top-5 -left-5">
             <BackBtn />
           </div>
-          <div className="absolute w-4/12 left-1/2 -translate-x-1/2 bottom-2">
+          <div className="absolute w-4/12 left-1/2 -translate-x-1/2 md:bottom-2 bottom-2.5">
             <PlayBtn />
           </div>
         </div>

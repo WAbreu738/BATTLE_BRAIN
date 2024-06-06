@@ -21,7 +21,7 @@ const Timer = ({ timeLeft, setTimeLeft, isAnswered }) => {
   };
 
   return (
-    <div className="absolute z-10 top-9 left-1/2 -translate-x-1/2 text-4xl font-bold text-center px-6 py-3 border-2 shadow-xl border-zinc-900 bg-gray-50 text-zinc-900 rounded-full w-56">
+    <div className="absolute md:scale-100 scale-75 z-10 md:top-9 -top-20 left-1/2 -translate-x-1/2 text-4xl font-bold text-center px-6 py-3 border-2 shadow-xl border-zinc-900 bg-gray-50 text-zinc-900 rounded-full w-56">
       {timeLeft >= 0 ? formatTime(timeLeft) : "Time's up!"}
     </div>
   );

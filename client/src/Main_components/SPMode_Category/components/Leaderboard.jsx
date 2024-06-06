@@ -31,7 +31,10 @@ const Leaderboard = () => {
         </h2>
         <ul>
           {players.map((player, index) => (
-            <li key={index} className="flex items-center mb-2">
+            <li
+              key={index}
+              className="flex items-center mb-2 md:scale-100 scale-90"
+            >
               <h1 className="mr-2 text-xl">{index + 1}.</h1>
               <div className="w-12 h-12 bg-cyan-950 rounded-full flex items-center justify-center mr-4">
                 <img
@@ -59,7 +62,7 @@ const Leaderboard = () => {
         <img
           src={leaderboard}
           alt="battle button"
-          className=" w-fit transition ease-in-out hover:scale-90 hover:drop-shadow-lg"
+          className=" md:w-fit w-7/12 md:mx-0 mx-auto transition ease-in-out hover:scale-90 hover:drop-shadow-lg"
         />
       </NavLink>
     </div>

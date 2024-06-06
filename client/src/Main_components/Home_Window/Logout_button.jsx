@@ -24,7 +24,7 @@ const LogoutButton = (props) => {
   };
 
   return (
-    <div className="absolute -top-6 -left-6">
+    <div className="absolute -top-6 -left-6 md:scale-100 scale-90">
       <button
         onClick={handleLogout}
         className="bg-gray-900 text-slate-600 border border-gray-600 py-1 px-1 rounded-xl text-xl shadow-lg transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
