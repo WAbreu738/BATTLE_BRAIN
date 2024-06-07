@@ -37,7 +37,7 @@ const BattleMode = () => {
   const [winner, setWinner] = useState("");
   const [round, setRound] = useState(0);
   const [showRoundScreen, setShowRoundScreen] = useState(false);
-  const [multiplier, setMultiplier] = useState(1);
+  const [currentMultiplier, setCurrentMultiplier] = useState(1);
   const { state, setMessage } = useStore();
   const navigate = useNavigate();
 
@@ -46,6 +46,8 @@ const BattleMode = () => {
       gameId: state.roomcode,
     },
   });
+
+  const [multiplier] = useMutation(MULTIPLIER);
 
   const [resetIsAnswered] = useMutation(RESET_IS_ANSWERED, {
     variables: {
@@ -71,7 +73,7 @@ const BattleMode = () => {
     if (!loading) {
       // console.log(data.pollGame.playerTwo.player._id);
       // console.log(state.user._id);
-      if (data.pollGame.playerOne.player._id === state.user._id) {
+      if (data?.pollGame?.playerOne?.player?._id === state.user._id) {
         //only player 1 queries API in backend
         // console.log("fetching questions BE");
         currentQuestion();
@@ -81,33 +83,33 @@ const BattleMode = () => {
 
   useEffect(() => {
     if (!loading) {
-      if (data.pollGame.startGame === false) {
+      if (data?.pollGame?.startGame === false) {
         navigate(`/`);
       }
     }
-  }, [data.pollGame.startGame]);
+  }, [data?.pollGame?.startGame]);
 
   useEffect(() => {
     if (!loading) {
-      if (data.pollGame.question != null) {
+      if (data?.pollGame?.question != null) {
         //make sure poll game has info before setting the current question
         setCurrentQuestionFE({
-          question: data.pollGame.question.question,
-          correctAnswer: data.pollGame.question.correctAnswer,
-          incorrectAnswers: data.pollGame.question.incorrectAnswers,
+          question: data?.pollGame?.question?.question,
+          correctAnswer: data?.pollGame?.question?.correctAnswer,
+          incorrectAnswers: data?.pollGame?.question?.incorrectAnswers,
         });
       }
     }
-  }, [data.pollGame.question]);
+  }, [data?.pollGame?.question]);
 
   //sets winner when it changes
   useEffect(() => {
     if (!loading) {
-      if (data.pollGame.winner !== null) {
-        setWinner(data.pollGame.winner);
+      if (data?.pollGame?.winner !== null) {
+        setWinner(data?.pollGame?.winner);
       }
     }
-  }, [data.pollGame.winner]);
+  }, [data?.pollGame?.winner]);
 
   //after intital countdown fetch question and reset everything
   useEffect(() => {
@@ -128,30 +130,46 @@ const BattleMode = () => {
   //after 5 sec hide the round screen
   useEffect(() => {
     if (showRoundScreen) {
-      setMultiplier(generateRandomMultiplier());
+      if (!loading) {
+        //only player one sets the multiplier so not two different values
+        if (state.user._id === data.pollGame.playerOne.player._id) {
+          const randomMultiplier = generateRandomMultiplier();
+          multiplier({
+            variables: { gameId: state.roomcode, multiplier: randomMultiplier },
+          });
+        }
+      }
       const timer = setTimeout(() => {
         setShowRoundScreen(false);
       }, 5000);
+
       return () => clearTimeout(timer);
     }
   }, [showRoundScreen]);
 
+  //listening for when we set multiplier on backent to change front end value
+  useEffect(() => {
+    if (!loading) {
+      setCurrentMultiplier(data?.pollGame?.multiplier);
+    }
+  }, [data?.pollGame?.multiplier]);
+
   //sees if any changes to the score and updates UI accordingly
   useEffect(() => {
     if (!loading) {
-      const playerOneScore = data.pollGame.playerTwo.score;
-      const playerTwoScore = data.pollGame.playerOne.score;
+      const playerOneScore = data?.pollGame?.playerTwo?.score;
+      const playerTwoScore = data?.pollGame?.playerOne?.score;
       setPlayerOneHealth(playerTwoScore);
       setPlayerTwoHealth(playerOneScore);
     }
-  }, [data.pollGame.playerOne.score, data.pollGame.playerTwo.score]);
+  }, [data?.pollGame?.playerOne?.score, data?.pollGame?.playerTwo?.score]);
 
   //if both players have answered move on to the next question and reset everything
   useEffect(() => {
     if (!loading) {
       if (
-        data.pollGame.isPlayerOneAnswered &&
-        data.pollGame.isPlayerTwoAnswered
+        data?.pollGame?.isPlayerOneAnswered &&
+        data?.pollGame?.isPlayerTwoAnswered
       ) {
         setTimeout(() => {
           setAnswerState(null); //if there is truthy value in answer state it triggers colors to pop up
@@ -162,12 +180,15 @@ const BattleMode = () => {
         }, 4000);
       }
     }
-  }, [data.pollGame.isPlayerOneAnswered, data.pollGame.isPlayerTwoAnswered]);
+  }, [
+    data?.pollGame?.isPlayerOneAnswered,
+    data?.pollGame?.isPlayerTwoAnswered,
+  ]);
 
   //redirect to category screen and reset all backend values
   useEffect(() => {
     if (!loading) {
-      if (data.pollGame.startBattle === false) {
+      if (data?.pollGame?.startBattle === false) {
         navigate(`/category/${state.roomcode}`);
       }
     }
@@ -178,7 +199,7 @@ const BattleMode = () => {
     answer,
     correctAnswer,
     timeLeft,
-    multiplier,
+    currentMultiplier,
     setAnswerState,
     fetchQuestions,
     setPlayerOneHealth,
@@ -187,7 +208,7 @@ const BattleMode = () => {
     //setIsAnswered(true); //pauses timer
     setAnswerState("answered"); // toggles colors when answered
 
-    let points = calculatePoints(timeLeft, multiplier);
+    let points = calculatePoints(timeLeft, currentMultiplier);
     const isCorrect = answer === correctAnswer;
 
     await attack({
@@ -215,8 +236,8 @@ const BattleMode = () => {
               <div className="flex flex-col items-center justify-center absolute md:left-3 left-0 md:top-1/2 -bottom-1 md:-translate-y-1/2 z-10">
                 {!loading && (
                   <HealthBar
-                    player={data.pollGame.playerOne.player.username}
-                    avatar={data.pollGame.playerOne.player.profile}
+                    player={data?.pollGame?.playerOne?.player?.username}
+                    avatar={data?.pollGame?.playerOne?.player?.profile}
                     health={playerOneHealth}
                   />
                 )}
@@ -228,15 +249,15 @@ const BattleMode = () => {
                 showRoundScreen={showRoundScreen}
               /> */}
 
-              <div className="flex-grow p-5 ">
+              <div className="flex-grow p-5 w-full">
                 <div className="relative flex justify-between items-center mb-5 p-3 bg-cyan-950 rounded-xl md:mx-16 mx-3">
                   <Round round={round} />
-                  <Multiplier multiplier={multiplier} />
+                  <Multiplier multiplier={currentMultiplier} />
                 </div>
 
                 <div className="p-5 bg-cyan-950 rounded-xl flex justify-center md:mx-16 mx-3 min-h-80">
                   {showRoundScreen && (
-                    <RoundScreen round={round} multiplier={multiplier} />
+                    <RoundScreen round={round} multiplier={currentMultiplier} />
                   )}
                   {!showRoundScreen && currentQuestionFE && (
                     <Question
@@ -248,7 +269,7 @@ const BattleMode = () => {
                           answer,
                           currentQuestionFE.correctAnswer,
                           timeLeft,
-                          multiplier,
+                          currentMultiplier,
                           //setIsAnswered,
                           setAnswerState,
                           //setPointsEarned,
@@ -274,8 +295,8 @@ const BattleMode = () => {
               <div className="flex flex-col items-center justify-center absolute md:right-3 right-0 md:top-1/2 -bottom-1 md:-translate-y-1/2">
                 {!loading && (
                   <HealthBar
-                    player={data.pollGame.playerTwo.player.username}
-                    avatar={data.pollGame.playerTwo.player.profile}
+                    player={data?.pollGame?.playerTwo?.player?.username}
+                    avatar={data?.pollGame?.playerTwo?.player?.profile}
                     health={playerTwoHealth}
                   />
                 )}

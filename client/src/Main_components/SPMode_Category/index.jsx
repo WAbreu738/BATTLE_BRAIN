@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PlayerSec from "./components/player";
 import SPCategoryBtns from "./components/Buttons";
-import Difficulty from "../Category_Window/components/Difficulty";
+import DifficultySP from "./components/DifficultySP";
 import HomeBtn from "../HomeBtn";
 import BackBtn from "../BackBtn";
 import PlayBtn from "./components/PlayBtn";
@@ -17,7 +17,7 @@ const SPCategoryWindow = () => {
             <SPCategoryBtns />
           </div>
           <div className="flex justify-between items-center mt-4">
-            <Difficulty />
+            <DifficultySP />
             {/* <Region /> */}
           </div>
           <div className=" absolute -top-5 -right-5">

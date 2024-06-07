@@ -55,6 +55,18 @@ export const CREATE_GAME = gql`
   }
 `;
 
+export const DELETE_GAME = gql`
+  mutation deleteGame($gameId: ID) {
+    deleteGame(gameId: $gameId)
+  }
+`;
+
+export const USER_LEAVE_GAME = gql`
+  mutation userLeaveGame($gameId: ID, $user: String) {
+    userLeaveGame(gameId: $gameId, user: $user)
+  }
+`;
+
 export const JOIN_GAME = gql`
   mutation joinGame($gameId: ID) {
     joinGame(gameId: $gameId) {

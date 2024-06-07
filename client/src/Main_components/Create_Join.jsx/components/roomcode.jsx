@@ -72,21 +72,26 @@ const RoomCode = () => {
           onChange={handleChange}
         />
         {!loading &&
-          data.getGame &&
-          (joined ? (
-            <button
-              type="submit"
-              className="bg-rose-700 border border-rose-700 text-white ml-4 py-2 px-3 rounded-lg text-lg shadow-lg hover:bg-rose-600 transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
-            >
-              Set Room
-            </button>
+          (data.getGame ? (
+            joined ? (
+              <button
+                type="submit"
+                className="bg-rose-700 border border-rose-700 text-white ml-4 py-2 px-3 rounded-lg text-lg shadow-lg hover:bg-rose-600 transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
+              >
+                Set Room
+              </button>
+            ) : (
+              <NavLink
+                className="bg-cyan-800 border border-cyan-800 text-white ml-4 py-2 px-3 rounded-lg text-lg shadow-lg hover:bg-cyan-700 transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
+                to={`/lobby/${data.getGame._id}`}
+              >
+                Join
+              </NavLink>
+            )
+          ) : state.isRoomcode ? (
+            ""
           ) : (
-            <NavLink
-              className="bg-cyan-800 border border-cyan-800 text-white ml-4 py-2 px-3 rounded-lg text-lg shadow-lg hover:bg-cyan-700 transition ease-in-out hover:scale-105 hover:drop-shadow-lg"
-              to={`/lobby/${data.getGame._id}`}
-            >
-              Join
-            </NavLink>
+            <p className="flex justify-end text-sm">Invalid</p>
           ))}
       </form>
     </div>

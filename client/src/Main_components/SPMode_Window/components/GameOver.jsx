@@ -49,7 +49,7 @@ const GameOver = ({ score }) => {
   return (
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
       <Confetti width={window.innerWidth} height={window.innerHeight} />
-      <div className="text-center text-white">
+      <div className="text-center text-white md:scale-100 scale-90">
         <h1 className="font-bold text-4xl mb-3">{state.user.username}</h1>
         <img
           src={avatarLoading ? "" : avatarData?.getAvatar?.profile}

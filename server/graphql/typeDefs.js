@@ -83,6 +83,8 @@ const typeDefs = gql`
     resetIsAnswered(gameId: ID): Boolean
     bothAnswered(gameId: ID): Boolean
     resetGame(gameId: ID): Boolean
+    deleteGame(gameId: ID): Boolean
+    userLeaveGame(gameId: ID, user: String): Boolean
   },
 `;
 

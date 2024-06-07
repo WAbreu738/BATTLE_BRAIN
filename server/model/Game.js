@@ -61,7 +61,6 @@ const gameSchema = new Schema({
   },
   multiplier: {
     type: Number,
-    default: 1
   },
   startBattle: {
     type: Boolean,

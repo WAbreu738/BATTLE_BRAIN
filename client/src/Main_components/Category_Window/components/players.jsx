@@ -17,19 +17,23 @@ const PlayersSec = () => {
     <div className="absolute flex left-1/2 -translate-x-1/2 md:space-x-80 space-x-60 md:top-8 md:scale-100 scale-90 top-4">
       <div className="w-16 h-16 rounded-full flex flex-col items-center justify-center">
         <img
-          src={loading ? "" : data.pollGame.playerOne.player.profile}
+          src={loading ? "" : data?.pollGame?.playerOne?.player?.profile}
           alt={state.user.username}
           className="w-14 h-14 border-4 border-cyan-950 rounded-full"
         />
-        <p className="font-bold">{data.pollGame.playerOne.player.username}</p>
+        <p className="font-bold">
+          {data?.pollGame?.playerOne?.player?.username}
+        </p>
       </div>
       <div className="w-16 h-16 rounded-full flex flex-col  items-center justify-center ">
         <img
-          src={loading ? "" : data.pollGame.playerTwo.player.profile}
+          src={loading ? "" : data?.pollGame?.playerTwo?.player?.profile}
           alt="Player Avatar"
           className="w-14 h-14 border-4 border-cyan-950 rounded-full"
         />
-        <p className="font-bold">{data.pollGame.playerTwo.player.username}</p>
+        <p className="font-bold">
+          {data?.pollGame?.playerTwo?.player?.username}
+        </p>
       </div>
     </div>
   );

@@ -14,8 +14,8 @@ const PlayerTwo = () => {
   useEffect(() => {
     if (!loading) {
       if (
-        data.pollGame.playerOne.player._id !==
-        data.pollGame.playerTwo.player._id
+        data?.pollGame?.playerOne?.player?._id !==
+        data?.pollGame?.playerTwo?.player?._id
       ) {
         setIsConnected(true);
       } else {

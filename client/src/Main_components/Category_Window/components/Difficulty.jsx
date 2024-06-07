@@ -44,9 +44,9 @@ const Difficulty = (props) => {
             className=" md:w-24 w-fit text-center items-center px-3 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           >
             {props.isPlayerTwo
-              ? (data.pollGame.difficulty === "easy,medium,hard"
+              ? (data?.pollGame?.difficulty === "easy,medium,hard"
                   ? "RANDOM"
-                  : data.pollGame.difficulty.toUpperCase()) || "Difficulty"
+                  : data?.pollGame?.difficulty.toUpperCase()) || "Difficulty"
               : selectedDifficulty || "Difficulty"}
           </button>
           {isOpen && (

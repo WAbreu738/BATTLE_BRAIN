@@ -21,7 +21,7 @@ const LobbyWindow = () => {
 
   useEffect(() => {
     if (!loading) {
-      if (data.pollGame.startGame) {
+      if (data?.pollGame?.startGame) {
         if (state.isStart === false) {
           setIsStart(true);
         }
@@ -66,7 +66,9 @@ const LobbyWindow = () => {
 
         {!loading &&
           state.isConnected &&
-          data.pollGame.playerOne.player._id === state.user._id && <StartBtn />}
+          data?.pollGame?.playerOne?.player?._id === state.user._id && (
+            <StartBtn />
+          )}
         <div className="absolute -top-5 -right-5">
           <HomeBtn />
         </div>

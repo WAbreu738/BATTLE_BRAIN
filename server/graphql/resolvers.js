@@ -48,24 +48,31 @@ const resolvers = {
     },
 
     getGame: async (_, { gameId }, context) => {
-      const game = await Game.findById(gameId);
-      return game;
+      if (gameId !== '') {
+        const game = await Game.findById(gameId);
+        return game;
+      }
+      return
     },
 
     pollGame: async (_, { gameId }, context) => {
       const id = context.req?.user.id;
-
+      //console.log(gameId)
       if (!id) throw new Error("Not Authorized");
+      if (gameId !== '') {
+        const game = await Game.findById(gameId)
+          .populate("playerOne.player")
+          .populate("playerTwo.player")
+          .populate("question")
+          .populate("winner");
 
-      const game = await Game.findById(gameId)
-        .populate("playerOne.player")
-        .populate("playerTwo.player")
-        .populate("question")
-        .populate("winner");
+        return game;
+      }
+      return
 
       //console.log(game)
 
-      return game;
+
     },
 
     getLeaderboard: async (_, args, context) => {
@@ -112,7 +119,7 @@ const resolvers = {
     },
 
     updateHighScore: async (_, { highScore }, context) => {
-      console.log("you got here")
+      //console.log("you got here")
       const user = await User.findOneAndUpdate(
         { _id: context.req?.user.id },
         { $set: { highScore: highScore } }
@@ -122,7 +129,7 @@ const resolvers = {
 
     createGame: async (_, args, context) => {
       const id = context.req?.user.id;
-      console.log("current user", id);
+      //console.log("current user", id);
       if (!id) throw new Error("You cannot perform this action.");
 
       const user = await User.findById(id);
@@ -148,44 +155,71 @@ const resolvers = {
       return game;
     },
 
-    joinGame: async (_, { gameId }, context) => {
-      const id = context.req?.user.id;
-      const user = await User.findById(id);
-
-      if (!id) throw new Error("Not Authorized");
-
-      const game = await Game.findById(gameId)
-        .populate("playerOne.player")
-        .populate("playerTwo.player");
-
-      if (!game) {
-        throw new Error("Game not found.");
+    userLeaveGame: async (_, { gameId, user }) => {
+      if (user === "playerOne") {
+        const updatedGame = await Game.findByIdAndUpdate(gameId, {
+          $set: { "playerOne.player": null }
+          ,
+        })
+      }
+      if (user === "playerTwo") {
+        const updatedGame = await Game.findByIdAndUpdate(gameId, {
+          $set: { "playerTwo.player": null }
+        })
       }
 
-      if (game.playerTwo.player._id.equals(game.playerOne.player._id)) {
-        const updatedGame = await Game.findByIdAndUpdate(gameId, {
-          "playerTwo.player": user._id,
-        })
+      return true
+    },
+
+    deleteGame: async (_, { gameId }, context) => {
+      await Game.deleteOne({ _id: gameId })
+      return true
+    },
+
+    joinGame: async (_, { gameId }, context) => {
+      if (gameId !== "") {
+        const id = context.req?.user.id;
+        const user = await User.findById(id);
+
+        if (!id) throw new Error("Not Authorized");
+
+        const game = await Game.findById(gameId)
           .populate("playerOne.player")
           .populate("playerTwo.player");
-        updatedGame.save();
 
-        console.log("New Game:", updatedGame);
-      } else {
-        throw new Error("Cannot join. Game in progress.");
+        if (!game) {
+          throw new Error("Game not found.");
+        }
+
+        if (game.playerTwo.player._id.equals(game.playerOne.player._id)) {
+          const updatedGame = await Game.findByIdAndUpdate(gameId, {
+            "playerTwo.player": user._id,
+          })
+            .populate("playerOne.player")
+            .populate("playerTwo.player");
+          updatedGame.save();
+
+          //console.log("New Game:", updatedGame);
+        } else {
+          throw new Error("Cannot join. Game in progress.");
+        }
+
+        return {
+          message: "Game join success!",
+        };
       }
-
-      return {
-        message: "Game join success!",
-      };
+      return
     },
 
     startGame: async (_, { gameId, startGame }, context) => {
-      const game = await Game.findByIdAndUpdate(gameId, {
-        $set: { startGame: startGame },
-      });
-      game.save();
-      return game.startGame;
+      if (gameId !== '') {
+        const game = await Game.findByIdAndUpdate(gameId, {
+          $set: { startGame: startGame },
+        });
+        game.save();
+        return game.startGame;
+      }
+      return
     },
 
     startBattle: async (_, { gameId, startBattle }, context) => {
@@ -254,6 +288,7 @@ const resolvers = {
     },
 
     multiplier: async (_, { gameId, multiplier }, context) => {
+      console.log("Multiplier:", multiplier)
       // console.log("Multiplier:", multiplier)
       const game = await Game.findByIdAndUpdate(gameId, { multiplier: multiplier })
       return true
