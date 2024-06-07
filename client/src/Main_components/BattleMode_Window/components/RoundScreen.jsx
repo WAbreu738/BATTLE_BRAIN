@@ -27,7 +27,7 @@ const RoundScreen = ({ round, multiplier }) => {
 
   return (
     <div
-      className={`absolute z-20 h-64 translate-y-1 bg-cyan-800 border p-20 rounded-xl flex flex-col items-center justify-center text-white text-6xl font-bold shadow-2xl ${
+      className={`absolute z-20 h-64 translate-y-1 bg-cyan-800 border md:p-20 p-5 rounded-xl flex flex-col items-center justify-center text-white md:text-6xl text-xl font-bold shadow-2xl ${
         isVisible ? "" : "hidden"
       }`}
     >

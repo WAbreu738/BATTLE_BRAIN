@@ -14,7 +14,7 @@ const PlayersSec = () => {
   const { loading: avatarLoading, data: avatarData } = useQuery(GET_AVATAR);
 
   return (
-    <div className="absolute flex left-1/2 -translate-x-1/2 space-x-80 top-8">
+    <div className="absolute flex left-1/2 -translate-x-1/2 md:space-x-80 space-x-60 md:top-8 md:scale-100 scale-90 top-4">
       <div className="w-16 h-16 rounded-full flex flex-col items-center justify-center">
         <img
           src={loading ? "" : data.pollGame.playerOne.player.profile}

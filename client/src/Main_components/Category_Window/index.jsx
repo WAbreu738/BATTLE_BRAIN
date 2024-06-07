@@ -59,8 +59,8 @@ const CategoryWindow = () => {
   }, [state.category, state.difficulty]);
 
   return (
-    <div className=" flex items-center justify-center h-screen p-4">
-      <div className="relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-8 max-w-lg w-full">
+    <div className=" flex items-center justify-center h-screen p-4 scale-90 md:scale-100">
+      <div className="relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl md:p-8 p-5 max-w-lg w-full">
         <PlayersSec />
         {/* <h2 className="text-4xl font-bold text-white mb-6 text-center">
           Categories
@@ -84,7 +84,7 @@ const CategoryWindow = () => {
           <BackBtn />
         </div>
         {/* <Chat /> */}
-        <div className="absolute w-2/5 left-1/2 -translate-x-1/2 bottom-1">
+        <div className="absolute md:w-2/5 w-4/12 left-1/2 -translate-x-1/2 md:bottom-1 bottom-3.5">
           <BattleBtn isPlayerTwo={isPlayerTwo} />
         </div>
       </div>

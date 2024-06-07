@@ -10,7 +10,7 @@ import { useStore } from "../OptionsProvider";
 const HomeWindow = (props) => {
   const { state } = useStore();
   return (
-    <main className="flex flex-col items-center justify-center h-screen p-4">
+    <main className="flex flex-col items-center justify-center h-screen p-4 scale-90 md:scale-100">
       <div>
         <Logo />
       </div>
@@ -40,7 +40,7 @@ const HomeWindow = (props) => {
 
         <p className=" text-xs absolute bottom-1 right-2">Alpha V1.8</p>
       </div>
-      <div className="bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-5 max-w-lg w-full">
+      <div className="bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl md:p-5 p-3 max-w-lg w-full">
         <GameBtn />
       </div>
     </main>

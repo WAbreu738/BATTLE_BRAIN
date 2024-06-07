@@ -14,6 +14,7 @@ import {
   CURRENT_QUESTION,
   RESET_IS_ANSWERED,
   BOTH_ANSWERED,
+  MULTIPLIER,
 } from "../../graphql/mutations";
 import { POLL_GAME } from "../../graphql/queries";
 import { useQuery, useMutation } from "@apollo/client";
@@ -200,18 +201,18 @@ const BattleMode = () => {
   // HANDLE ANSWER END=========================================
 
   return (
-    <section className="flex flex-col items-center justify-center h-screen relative">
+    <section className="flex flex-col items-center justify-center h-screen relative lg:scale-100 scale-90">
       {winner ? (
         <WinnerDisplay winner={winner} />
       ) : (
         <>
           {countdown > 0 ? (
-            <div className="text-6xl text-white">
+            <div className="md:text-6xl text-4xl text-white">
               <h1>Game starting in {countdown}...</h1>
             </div>
           ) : (
             <div className="bg-cyan-600 border border-cyan-800 relative bg-opacity-90 shadow-xl rounded-xl max-w-4xl w-full flex flex-col md:flex-row items-start">
-              <div className="flex flex-col items-center justify-center absolute left-3 top-1/2 -translate-y-1/2 z-10">
+              <div className="flex flex-col items-center justify-center absolute md:left-3 left-0 md:top-1/2 -bottom-1 md:-translate-y-1/2 z-10">
                 {!loading && (
                   <HealthBar
                     player={data.pollGame.playerOne.player.username}
@@ -228,12 +229,12 @@ const BattleMode = () => {
               /> */}
 
               <div className="flex-grow p-5 ">
-                <div className="relative flex justify-between items-center mb-5 p-3 bg-cyan-950 rounded-xl mx-16">
+                <div className="relative flex justify-between items-center mb-5 p-3 bg-cyan-950 rounded-xl md:mx-16 mx-3">
                   <Round round={round} />
                   <Multiplier multiplier={multiplier} />
                 </div>
 
-                <div className="p-5 bg-cyan-950 rounded-xl flex justify-center mx-16 min-h-80">
+                <div className="p-5 bg-cyan-950 rounded-xl flex justify-center md:mx-16 mx-3 min-h-80">
                   {showRoundScreen && (
                     <RoundScreen round={round} multiplier={multiplier} />
                   )}
@@ -262,15 +263,15 @@ const BattleMode = () => {
                 </div>
 
                 <div className="text-white text-xl mt-3 flex justify-between">
-                  <div className="text-3xl font-bold">P1: {}</div>
+                  <div className="md:text-3xl text-xl font-bold">P1: {}</div>
 
                   {/* <div>{difference}</div>} */}
 
-                  <div className="text-3xl font-bold">{} :P2</div>
+                  <div className="md:text-3xl text-xl font-bold">{} :P2</div>
                 </div>
               </div>
 
-              <div className="flex flex-col items-center justify-center absolute right-3 top-1/2 -translate-y-1/2">
+              <div className="flex flex-col items-center justify-center absolute md:right-3 right-0 md:top-1/2 -bottom-1 md:-translate-y-1/2">
                 {!loading && (
                   <HealthBar
                     player={data.pollGame.playerTwo.player.username}

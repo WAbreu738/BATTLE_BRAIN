@@ -2,7 +2,7 @@ import React from "react";
 
 const HealthBar = ({ player, health, avatar }) => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center md:scale-100 scale-75">
       <img
         src={avatar}
         alt={player}

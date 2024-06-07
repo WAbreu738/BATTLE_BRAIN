@@ -13,7 +13,7 @@ const catagories = [
   {
     name: "ART",
     category: "arts_and_literature",
-    color: "bg-cyan-950 p-8",
+    color: "bg-cyan-950 md:p-8 p-6",
     hover: "hover:bg-yellow-700",
     selected: "bg-yellow-700 scale-105 drop-shadow-lg border border-gray-100",
     image: art,
@@ -21,7 +21,7 @@ const catagories = [
   {
     name: "FILM",
     category: "film_and_tv",
-    color: "bg-cyan-950 p-7",
+    color: "bg-cyan-950 md:p-7 p-5",
     hover: "hover:bg-red-800",
     selected: "bg-red-700 scale-105 drop-shadow-lg border border-gray-100",
     image: film,
@@ -29,7 +29,7 @@ const catagories = [
   {
     name: "FOOD",
     category: "food_and_drink",
-    color: "bg-cyan-950 p-6",
+    color: "bg-cyan-950 md:p-6 p-4",
     hover: "hover:bg-orange-800",
     selected: "bg-orange-700 scale-105 drop-shadow-lg border border-gray-100",
     image: food,

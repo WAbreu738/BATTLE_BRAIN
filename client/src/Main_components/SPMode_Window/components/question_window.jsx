@@ -23,15 +23,15 @@ const Question = ({
   }, [question, correctAnswer, options]);
 
   return (
-    <div className="flex flex-col items-center mt-5">
-      <h2 className="mb-5 text-4xl text-center px-3 py-2 rounded-xl text-zinc-900 bg-gray-100 border border-zinc-900 w-full">
+    <div className="flex flex-col items-center justify-center md:mt-5 mt-3">
+      <h2 className="mb-5 md:text-4xl text-xl font-bold text-center px-3 py-2 rounded-xl text-zinc-900 bg-gray-100 border border-zinc-900 w-full">
         {question}
       </h2>
-      <div className="p-5">
-        <div className="grid grid-cols-2 gap-10">
+      <div className="md:p-5 p-1">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-5 justify-center">
           {shuffledAnswers.map((answer, index) => (
             <button
-              className={`p-3 border border-zinc-900 font-bold rounded-full flex justify-center items-center bg-gray-100 text-zinc-900 min-w-72 max-w-72 transition ease-in-out hover:scale-105 
+              className={`md:p-3 p-2 md:text-base text-sm border border-zinc-900 font-bold md:rounded-full rounded-xl flex justify-center items-center bg-gray-100 text-zinc-900 md:min-w-72 min-w-64 md:max-w-72 max-w-64 transition ease-in-out hover:scale-105 
                 ${
                   answerState && answer === correctAnswer ? "bg-green-500" : ""
                 } 

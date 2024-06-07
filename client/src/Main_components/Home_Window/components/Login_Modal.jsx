@@ -96,7 +96,7 @@ function LoginModal(props) {
           !state.user ? "animate-wiggle animate-infinite animate-ease-out" : ""
         } absolute -top-6 -left-6 border border-gray-600 bg-gray-900 text-slate-500 py-1 px-1 rounded-xl text-xl shadow-lg transition ease-in-out hover:scale-105 hover:drop-shadow-lg`}
       >
-        <img className="h-9" src={loginButton} alt="Login / Register" />
+        <img className="md:h-9 h-7" src={loginButton} alt="Login / Register" />
       </button>
 
       {isModalOpen && (

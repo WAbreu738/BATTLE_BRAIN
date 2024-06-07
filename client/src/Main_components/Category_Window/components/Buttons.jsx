@@ -17,7 +17,7 @@ const CategoryBtns = (props) => {
           onClick={() => handleCategoryClick(item.category)}
           className={`${item.color} ${
             item.hover
-          } rounded-xl text-lg shadow-lg flex items-center justify-center transition ease-in-out hover:scale-105 hover:drop-shadow-lg h-20 ${
+          } rounded-xl text-lg shadow-lg flex items-center justify-center transition ease-in-out hover:scale-105 hover:drop-shadow-lg md:h-20 h-16 ${
             item.category === selectedCategory ? item.selected : ""
           }`}
         >

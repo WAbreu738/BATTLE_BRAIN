@@ -117,36 +117,36 @@ const SPPlay = () => {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center h-screen p-4 ">
+    <section className="flex flex-col items-center justify-center h-screen p-4 lg:scale-100 scale-90">
       {countdown > 0 ? (
-        <div className="text-6xl text-white">
+        <div className="md:text-6xl text-4xl text-white">
           <h1>Game starting in {countdown}...</h1>
         </div>
       ) : gameover ? (
         <GameOver score={score} />
       ) : (
-        <div className="relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl p-10 max-w-4xl w-full">
+        <div className="relative bg-cyan-600 border border-cyan-800 bg-opacity-90 shadow-xl rounded-xl md:p-10 p-5 max-w-4xl w-full">
           <Timer
             timeLeft={timeLeft}
             setTimeLeft={setTimeLeft}
             isAnswered={isAnswered}
           />
 
-          <div className="flex justify-between items-center mb-5 p-3 bg-cyan-800 rounded-xl">
+          <div className="flex justify-between items-center mb-5 p-3 bg-cyan-950 rounded-xl">
             <Round round={round} />
-            <div className="ml-auto flex items-center">
+            <div className="ml-auto flex items-center md:justify-normal justify-around">
               {Array.from({ length: strikes }).map((_, index) => (
                 <div key={index} className="text-3xl text-red-600 mx-1">
                   X
                 </div>
               ))}
-              <div className="text-white font-bold text-3xl text-center ml-4">
+              <div className="text-white font-bold md:text-3xl text-xl text-center ml-4">
                 Score: {score}
               </div>
             </div>
           </div>
 
-          <div className="p-5 bg-cyan-800 rounded-xl flex justify-center min-h-80">
+          <div className="p-5 bg-cyan-950 rounded-xl flex justify-center min-h-80">
             {currentQuestion && (
               <Question
                 question={currentQuestion.question.text}

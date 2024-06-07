@@ -44,9 +44,9 @@ const LobbyWindow = () => {
   };
 
   return (
-    <div className=" flex flex-col items-center justify-center h-screen p-4">
+    <div className=" flex flex-col items-center justify-center h-screen p-4 scale-90 md:scale-100">
       <div className="mb-3">
-        <img className="h-28" src={lobby} alt="Lobby" />
+        <img className="md:h-28 h-24" src={lobby} alt="Lobby" />
       </div>
 
       <div className="flex flex-col items-center relative bg-cyan-600 bg-opacity-90 shadow-lg rounded-xl p-8 max-w-lg w-full">
